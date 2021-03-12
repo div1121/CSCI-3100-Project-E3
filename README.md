@@ -1,2 +1,2 @@
-# CSCI-3100-Project
-CSCI-3100-Project Magic Maze
+# CSCI-3100-Project-E3
+CSCI-3100-Project-E3 Magic Maze
