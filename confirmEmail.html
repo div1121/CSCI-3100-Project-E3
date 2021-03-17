@@ -9,10 +9,10 @@
 			var tokenId = url.searchParams.get("tokenId");
 			try{
 				await app.emailPasswordAuth.confirmUser(token, tokenId);
-				alert("Confirm successfully!You will be redirected to our webpage in a few seconds")
 				setTimeout(function(){
 					window.location.href = "https://luyou00001.github.io/CSCI-3100-Project-E3/";
-				}, 2000);
+				}, 3000);
+				alert("Confirm successfully! You will be redirected to our webpage within a few seconds.")
 			} catch(error) {
 				alert(error.message)
 			}
