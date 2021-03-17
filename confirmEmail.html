@@ -2,13 +2,17 @@
 	<script src="https://unpkg.com/realm-web@1.2.0/dist/bundle.iife.js"></script>
 	<script>
 		const app = new Realm.App({ id: "application-0-exwhb" });
-		function confirm(){
+		async function confirm() {
 			var url_string = window.location;
 			var url = new URL(url_string);
 			var token = url.searchParams.get("token");
 			var tokenId = url.searchParams.get("tokenId");
 			try{
 				await app.emailPasswordAuth.confirmUser(token, tokenId);
+				alert("Confirm successfully!You will be redirected to our webpage in a few seconds")
+				setTimeout(function(){
+					window.location.href = "https://luyou00001.github.io/CSCI-3100-Project-E3/";
+				}, 2000);
 			} catch(error) {
 				alert(error.message)
 			}
