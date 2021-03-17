@@ -1,10 +1,13 @@
 <head>
 	<script>
-		function confirm(){
-			await app.emailPasswordAuth.confirmUser(token, tokenId);
+		function confirm(token, tokenId){
+			try{
+				await app.emailPasswordAuth.confirmUser(token, tokenId);
+			} catch(error) {
+				alert(error)
+			}
 		}
 	</script>
 </head>
-<body onload="confirm">
-	Confirm successfully! You'll be redirected to our webpage in a few seconds
+<body onload="confirm(<?$_GET["token",].", ".$_GET["tokenId"]?>)">
 </body>
