@@ -8,7 +8,7 @@
 			try{
 				await app.emailPasswordAuth.confirmUser(token, tokenId);
 			} catch(error) {
-				alert(error)
+				alert(error.message)
 			}
 		}
 	</script>
