@@ -1,8 +1,8 @@
 <head>
+	import * as Realm from "realm-web";
 	<script>
+		const app = new Realm.App({ id: "application-0-exwhb" });
 		function confirm(){
-			var url_string = window.location;
-			var url = new URL(url_string);
 			var token = url.searchParams.get("token");
 			var tokenId = url.searchParams.get("tokenId");
 			try{
