@@ -53,6 +53,12 @@ function App() {
   return (
     <div className="App">
       <div className="App-header">
+		<h1>
+			Magic Maze
+		</h1>
+		<div>
+			A game created by CSCI3100 Project Group E3
+		</div>
         {user ? <UserDetail user={user} /> : <Login setUser={setUser} />}
       </div>
 	  <Logout />
