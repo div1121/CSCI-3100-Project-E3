@@ -1,0 +1,22 @@
+{
+  "files": {
+    "main.css": "/CSCI-3100-Project-E3/static/css/main.56a84f45.chunk.css",
+    "main.js": "/CSCI-3100-Project-E3/static/js/main.d4e5a11d.chunk.js",
+    "main.js.map": "/CSCI-3100-Project-E3/static/js/main.d4e5a11d.chunk.js.map",
+    "runtime-main.js": "/CSCI-3100-Project-E3/static/js/runtime-main.a64171d4.js",
+    "runtime-main.js.map": "/CSCI-3100-Project-E3/static/js/runtime-main.a64171d4.js.map",
+    "static/js/2.edc7d287.chunk.js": "/CSCI-3100-Project-E3/static/js/2.edc7d287.chunk.js",
+    "static/js/2.edc7d287.chunk.js.map": "/CSCI-3100-Project-E3/static/js/2.edc7d287.chunk.js.map",
+    "static/js/3.79c66ca8.chunk.js": "/CSCI-3100-Project-E3/static/js/3.79c66ca8.chunk.js",
+    "static/js/3.79c66ca8.chunk.js.map": "/CSCI-3100-Project-E3/static/js/3.79c66ca8.chunk.js.map",
+    "index.html": "/CSCI-3100-Project-E3/index.html",
+    "static/css/main.56a84f45.chunk.css.map": "/CSCI-3100-Project-E3/static/css/main.56a84f45.chunk.css.map",
+    "static/js/2.edc7d287.chunk.js.LICENSE.txt": "/CSCI-3100-Project-E3/static/js/2.edc7d287.chunk.js.LICENSE.txt"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.a64171d4.js",
+    "static/js/2.edc7d287.chunk.js",
+    "static/css/main.56a84f45.chunk.css",
+    "static/js/main.d4e5a11d.chunk.js"
+  ]
+}
