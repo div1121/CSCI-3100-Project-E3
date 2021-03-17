@@ -1,0 +1,17 @@
+<head>
+	<script>
+		function confirm(token, tokenId){
+			var url_string = window.location;
+			var url = new URL(url_string);
+			var token = url.searchParams.get("token");
+			var tokenId = url.searchParams.get("tokenId");
+			try{
+				await app.emailPasswordAuth.confirmUser(token, tokenId);
+			} catch(error) {
+				alert(error)
+			}
+		}
+	</script>
+</head>
+<body onload="confirm()">
+</body>
