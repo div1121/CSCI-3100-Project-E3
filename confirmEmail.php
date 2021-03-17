@@ -10,7 +10,7 @@
 	</script>
 </head>
 <body
-<?
+<?php
 	echo 'onload="confirm('.$_GET["token",].", ".$_GET["tokenId"].')"'
 ?>
 >
