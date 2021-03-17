@@ -9,5 +9,9 @@
 		}
 	</script>
 </head>
-<body onload="confirm(<?$_GET["token",].", ".$_GET["tokenId"]?>)">
+<body
+<?
+	echo 'onload="confirm('.$_GET["token",].", ".$_GET["tokenId"].')"'
+?>
+>
 </body>
