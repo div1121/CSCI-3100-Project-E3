@@ -1,6 +1,7 @@
-import React from "react";
+import React, { Component } from "react";
 import * as Realm from "realm-web";
 import {Navbar} from "./Navbar"
+import Game from './Game';
 import "./App.css";
 
 const REALM_APP_ID = "application-0-exwhb";
@@ -11,6 +12,7 @@ function App() {
 	return (
 		<div className="App">
 			<Navbar user={user} setUser={setUser}/>
+			<Game />
 		</div>
 	);
 };
