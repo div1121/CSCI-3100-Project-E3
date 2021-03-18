@@ -1,5 +1,6 @@
 import React from "react";
 import * as Realm from "realm-web";
+import { Button, Modal } from 'react-bootstrap';
 
 const REALM_APP_ID = "application-0-exwhb";
 const app = new Realm.App({ id: REALM_APP_ID });
@@ -13,7 +14,7 @@ function LoginAsGuest({ setUser }) {
 			alert("Failed to connect");
 		}
 	};
-	return <a onClick={loginAsGuest}>login as guest</a>;
+	return <a href="#" onClick={loginAsGuest}>login as guest</a>;
 }
 
 function Register({ email, password}) {
@@ -25,7 +26,7 @@ function Register({ email, password}) {
 			alert("Invalid email or password");
 		}
 	};
-	return <button onClick={register}>Register</button>;
+	return <Button variant="secondary" onClick={register}>Register</Button>;
 }
 
 function LoginWithEmail({ setUser, email, password}) {
@@ -37,7 +38,7 @@ function LoginWithEmail({ setUser, email, password}) {
 			alert("Invalid email or password");
 		}
 	};
-	return <button onClick={loginWithEmail}>Login</button>;
+	return <Button variant="secondary" onClick={loginWithEmail}>Login</Button>;
 }
 
 function LogOut({ setUser }) {
@@ -49,75 +50,59 @@ function LogOut({ setUser }) {
 			alert("Failed to connect");
 		}
 	};
-	return <button onClick={logout}>Log out</button>;
+	return <Button variant="secondary" onClick={logout}>Log out</Button>;
 }
 
 function LoginForm({ setUser }) {
-	const [mode, setMode]  = React.useState("signIn");
+	const [mode, setMode]  = React.useState("Login");
 	const toggleMode = () => {
-		setMode((oldMode) => (oldMode === "signIn" ? "signUp" : "signIn"));
+		setMode((oldMode) => (oldMode === "Login" ? "Register" : "Login"));
 	};
 	
 	const [username, setUsername] = React.useState("");
 	const [email, setEmail] = React.useState("");
 	const [password, setPassword] = React.useState("");
 	
+	function note(){
+		return
+	}
+	
 	React.useEffect(() => {
 		setUsername("");
 		setEmail("");
 		setPassword("");
 	}, [mode]);
-
+	
 	return (
-		<div>
-		{mode === "signIn" ? (
-			<div className="login_form">
-				<input
-					type = "email"
-					placeholder = "email"
-					value = {email}
-					onChange = {(e) => setEmail(e.target.value)}
-					className="form_input"
-				/>
-				<input
-					type = "password"
-					placeholder = "password"
-					value = {password}
-					onChange = {(e) => setPassword(e.target.value)}
-					className="form_input"
-				/>
-				<LoginWithEmail setUser={setUser} email={email} password={password}/>
-			</div>
-		) : (
-			<div className="login_form">
-				<input
-					type = "username"
-					placeholder = "username"
-					value = {username}
-					onChange = {(e) => setUsername(e.target.value)}
-					className="form_input"
-				/>
-				<input
-					type = "email"
-					placeholder = "email"
-					value = {email}
-					onChange = {(e) => setEmail(e.target.value)}
-					className="form_input"
-				/>
-				<input
-					type = "password"
-					placeholder = "password"
-					value = {password}
-					onChange = {(e) => setPassword(e.target.value)}
-					className="form_input"
-				/>
-				<Register email={email} password={password}/>
-			</div>
-		)}
+		<div className="login_form">
+			{mode === "Register"?
+			<input
+				type = "username"
+				placeholder = "username"
+				value = {username}
+				onChange = {(e) => setUsername(e.target.value)}
+				className="form_input"
+			/>
+			:<></>}
+			<input
+				type = "email"
+				placeholder = "email"
+				value = {email}
+				onChange = {(e) => setEmail(e.target.value)}
+				className="form_input"
+			/>
+			<input
+				type = "password"
+				placeholder = "password"
+				value = {password}
+				onChange = {(e) => setPassword(e.target.value)}
+				className="form_input"
+			/>
+			{mode === "Login" ? <LoginWithEmail setUser={setUser} email={email} password={password} /> : <Register email={email} password={password}/>}
 			<div>
 				<span>You may also </span>
-				<a onClick={() => {toggleMode();}}>
-					{mode === "signIn" ? "register a new account" : "go to login"}
+				<a href="#" onClick={() => {toggleMode();}}>
+					{mode === "Login" ? "register a new account" : "go to login"}
 				</a>
 				<span> or </span>
 				<LoginAsGuest setUser={setUser}/>
@@ -126,4 +111,27 @@ function LoginForm({ setUser }) {
 	);
 }
 
-export {LoginAsGuest, Register, LoginWithEmail, LogOut, LoginForm};
+function LoginButton({ setUser }) {
+	const [show, setShow] = React.useState(false);
+	
+	const handleClose = () => setShow(false);
+	const handleShow = () => setShow(true);
+
+	return (
+		<div>
+			<Button variant="secondary" onClick={handleShow}>
+				Login
+			</Button>
+			<Modal show={show} onHide={handleClose}>
+				<Modal.Header closeButton>
+					<Modal.Title>Join us!</Modal.Title>
+				</Modal.Header>
+				<Modal.Body>
+					<LoginForm setUser={setUser} />
+				</Modal.Body>
+			</Modal>
+		</div>
+	);
+}
+
+export {LoginAsGuest, Register, LoginWithEmail, LogOut, LoginForm, LoginButton};
