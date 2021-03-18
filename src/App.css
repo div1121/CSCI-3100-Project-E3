@@ -13,6 +13,10 @@ a:hover {
 	text-decoration: underline;
 }
 
+.navbar-brand {
+	Font-size: 44px;
+}
+
 .Navbar {
 	align-items: left;
 	display:inline;
