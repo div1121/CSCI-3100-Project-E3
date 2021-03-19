@@ -13,10 +13,9 @@ class ChatRoom extends React.Component {
     }
   
     loadFile(){
-	let history = document.getElementById('record');
         fetch('chats.txt')
         .then(res=>res.text())
-        .then(text => history.innerHTML = text);
+        .then(text => document.getElementById('record').innerHTML = text);
     }
 	
     handleChange(event) {
@@ -34,7 +33,7 @@ class ChatRoom extends React.Component {
 		this.setState({value: ''});
 		fetch('chats.txt')
 		.then(res=>res.text())
-		.then(txt => document.querySelector("#chat").innerHTML=txt);
+		.then(text => document.getElementById('record').innerHTML = text);
 		event.preventDefault();
     }
 
