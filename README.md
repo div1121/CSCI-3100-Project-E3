@@ -37,7 +37,9 @@ Brief outline of display of a player list inside a game room with ready option(b
 Allow multiple users to input message and the message of all users can be displayed to all users (only one chat room)
 
 ## Login System
-You may login as guest or login with your email after registration. An comfirmation email will be sent to your email.
+The game requires users to login before they start playing.
+Users may login as guest, register a new account by email and password, login with their account and logout.
+Confirmation is required to create a new account.
 
 
 ## Changelog
