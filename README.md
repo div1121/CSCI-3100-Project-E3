@@ -2,7 +2,7 @@
 
 ## Introduction
 
-**Magic Maze v0.2**
+**Magic Maze v0.2**  
 CSCI-3100-Project-E3 (2021 Spring)  
 Developers: Kenny CHAN, Knife NG, Benny CHENG, Jason CHU, Sun CHOI  
 You may view our game website on: https://luyou00001.github.io/CSCI-3100-Project-E3/  
