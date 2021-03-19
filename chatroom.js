@@ -1,8 +1,22 @@
-fetch('chats.txt')
-.then(res=>res.text())
-.then(txt => document.querySelector("#chat").innerHTML=txt);
+class ChatBox extends React.Component {
+    loadFile(){
+        fetch('chats.txt')
+        .then(res=>res.text())
+        .then(text => this.props.subject=text);
+    }
+    render() {
+        return (
+          <div onLoad={this.loadFile}>{this.props.subject}
+          </div>
+        );
+      }
+}
+
+ReactDOM.render(<ChatBox />, document.querySelector('#chat'));
+
 
 let prevtext="";
+
 class SendChat extends React.Component {
     constructor(props) {
       super(props);
@@ -17,10 +31,9 @@ class SendChat extends React.Component {
     }
   
     handleSubmit(event) {
-     
       fetch('chats.txt')
       .then(res=>res.text())
-      .then(txt => prevtext=txt); 
+      .then(text => prevtext=text); 
       let updatedtext=prevtext+"\n<div><h5>Username: </h5><p>"+this.state.value+"</p></div>";
       fetch('chats.txt', {
         method: 'PUT', body: updatedtext 
@@ -38,12 +51,10 @@ class SendChat extends React.Component {
           <label>
             <textarea value={this.state.value} placeholder="Send a message" onChange={this.handleChange} />
           </label>
-          <input type="submit" value="Submit" />
+          <input type="submit" value="Send" />
         </form>
       );
     }
   }
-
-
 
 ReactDOM.render(<SendChat />, document.querySelector('#app'));
