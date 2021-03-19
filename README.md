@@ -15,14 +15,20 @@ Magic Maze is a real-time fast-paced competitive maze game. Players can compete 
 Our game is a maze game running on a map in rectangular board form. Currently we have a demo version of game which support standalone game mode only. The network version and GUI display of map are coming soon.
 
 ### Game.js
-* Control the game flow
-* Control the movement of player
-* Display the game information (coordinates, etc.)
-** function
+This class is to control the game flow, the movement of player and display the game information.
+* Class state: Saving win statement, board dimensions, player position, entrances' positions, total number of movement.
+* initializeBoardPlayer(): Initialize the board dimension and player position. For the board dimension, the default setting is 5x5x5x5, which means we have 5x5 area board, and each area contains 5x5 cells. The player position will be set to the centre of the area (0, 0).
+* setEntrances(): Randomly set the destination of area of each entrances for each game. Each area contains exactly 4 entrances, connected to the front-nearby 4 areas respectively (for those areas along the board boundary, some entrances will direct to itself)
+* countTotalMoves(): Count the total number of movements of player.
+* handleKeyUp(e), handleKeyDown(e), handleKeyLeft(e), handleKeyRight(e): Send the movement instruction (call the makeMove function) and check whether the move is valid according to the key pressed by the player. If the player runs out of the current area boundary, the move will be invalid and won't be processed.
+* makeMove(newX, newY): Change the current position of player to (newX, newY). If (newX, newY) contains an entrance, player will be directed to the centre of the connected area of that entrance
+* render(): Display the game information (current included the player position and the connected area of each entrances. The later is for debug usage.) and detect the key pressed by the player.
 
 ### GameBoard.js
-* Save the map information
-* Display the map
+This class is to save the map information and display the map.
+* Class state: Saving the board state in an 4d array, each cell contain either '╬' (entrance), ' ' (empty) or '♂' (player).
+* setPlayerPosition(playerPosition), setBoard(props): Change the current position of player to playerPosition (an object includes x and y coordinates) and clear the previous position (set the state to ' '(empty)).
+* render(): Display the map according to the board state. Currently, the display will be in rectangular table form.
 
 ## Game Room
 Brief outline of display of a player list inside a game room with ready option(before the custom game start)
