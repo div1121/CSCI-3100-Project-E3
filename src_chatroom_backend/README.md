@@ -18,14 +18,14 @@ Now: one chat room only
 	
 Backend(Partial):
 
-1. POST the user input text 
+1. POST the user input text: 
 	The user name and the message will save in the database (user ID, timestamp are not included)
 	
-2. GET the chatroom message
+2. GET the chatroom message:
 	Send all the information (e.g. name, message) saved in database
 	
-3. Create the chatroom
+3. Create the chatroom:
 	The information of chatroom is saved in database, such as ID and member
 	
-3. Delete the chatroom
+3. Delete the chatroom:
 	The chatroom is deleted in the database
