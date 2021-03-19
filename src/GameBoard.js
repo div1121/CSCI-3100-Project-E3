@@ -13,11 +13,13 @@ class GameBoard extends Component {
             board: [],
             entityStates: {
                 //
-                entrance: '╬',
-                empty: '　',
-                player: '♂'
+                entrance: 'E',
+                obstacle: 'X',
+                empty: ' ',
+                player: 'O'
             }
         }
+        this.setObstacles = this.setObstacles.bind(this)
         this.setPlayerPosition = this.setPlayerPosition.bind(this)
         this.setBoard = this.setBoard.bind(this)
     }
@@ -26,57 +28,48 @@ class GameBoard extends Component {
         let {
             boardHeight,
             boardWidth,
-            areaHeight,
-            areaWidth,
+            cellHeight,
+            cellWidth,
             playerPosition
         } = this.props
         let board = []
 
-        for (let j = 0; j < boardHeight; j++) {
-            let tempArray_1 = []
-            for (let i = 0; i < boardWidth; i++) {
-                let tempArray_2 = []
-                for (let y = 0; y < areaHeight; y++) {
-                    let tempArray_3 = []
-                    for (let x = 0; x < areaWidth; x++) {
-                        if ((x === 0 && y === 0) || (x === areaWidth - 1 && y === 0) || (x === areaWidth - 1 && y === areaHeight - 1) || (x === 0 && y === areaHeight - 1)) {
-                            tempArray_3.push(this.state.entityStates.entrance)
-                        } else if (playerPosition.x === i * areaWidth + x && playerPosition.y === j * areaHeight + y) {
-                            tempArray_3.push(this.state.entityStates.player)
-                        } else {
-                            tempArray_3.push(this.state.entityStates.empty)
-                        }
-                    }
-                    tempArray_2.push(tempArray_3)
+        for (let i = 0; i < boardHeight; i++) {
+            let innerArray = []
+
+            for (let j = 0; j < boardWidth; j++) {
+                let obj = {}
+                obj['x'] = i
+                obj['y'] = j
+                if (playerPosition.x === i && playerPosition.y === j) {
+                    obj['state'] = this.state.entityStates.player
+                } else {
+                    obj['state'] = this.state.entityStates.empty
                 }
-                tempArray_1.push(tempArray_2)
+
+                //let temp = []
+                innerArray.push(obj)
+                //temp.push(obj)
             }
-            board.push(tempArray_1)
+            board.push(innerArray)
         }
         this.setState({
             board: board,
-            areaHeight,
-            areaWidth,
             playerPosition
         }, () => {
             this.setPlayerPosition(playerPosition)
+            this.setObstacles(this.props.randomPositions)
         })
     }
-
     setPlayerPosition(playerPosition) {
         let {
-            board,
-            areaHeight,
-            areaWidth
+            board
         } = this.state
-        //alert(areaWidth)
-        let px = playerPosition.x, py = playerPosition.y
-        board[Math.floor(px / areaWidth)][Math.floor(py / areaHeight)][px % areaWidth][py % areaHeight] = this.state.entityStates.player
+        board[playerPosition.x][playerPosition.y]["state"] = this.state.entityStates.player
         this.setState({
             board
         })
     }
-
     componentWillReceiveProps(nextProps) {
         if (nextProps === this.props) {} else {
             this.setBoard(nextProps)
@@ -86,22 +79,48 @@ class GameBoard extends Component {
     setBoard(props) {
         let {
             playerPosition,
-            prevPlayerPos,
-            areaHeight,
-            areaWidth
+            prevPlayerPos
         } = props
+        let newTotalObstacles = this.state.totalObstaclesLeft
+
+        if (this.state.totalObstaclesLeft !== undefined && this.state.totalObstaclesLeft === 0) {
+            alert("Game over. Total moves: " + this.props.totalMoves)
+        } else {
+            let {
+                board
+            } = this.state
+            let newPlayerPos = playerPosition
+            if (board[newPlayerPos.x][newPlayerPos.y]["state"] === this.state.entityStates.obstacle) {
+                --newTotalObstacles
+            }
+            board[newPlayerPos.x][newPlayerPos.y]["state"] = this.state.entityStates.player
+            board[prevPlayerPos.x][prevPlayerPos.y]["state"] = this.state.entityStates.empty
+            this.setState({
+                board: board,
+                playerPosition,
+                totalObstaclesLeft: newTotalObstacles
+            }, () => {
+                this.setPlayerPosition(playerPosition)
+            })
+        }
+    }
+    setObstacles(randomPositions) {
         let {
-            board
-        } = this.state
-        let px = prevPlayerPos.x, py = prevPlayerPos.y
-        let nx = playerPosition.x, ny = playerPosition.y
-        board[Math.floor(px / areaWidth)][Math.floor(py / areaHeight)][px % areaWidth][py % areaHeight] = this.state.entityStates.empty
-        board[Math.floor(nx / areaWidth)][Math.floor(ny / areaHeight)][nx % areaWidth][ny % areaHeight] = this.state.entityStates.player
-        this.setState({
-            board: board,
+            board,
             playerPosition
-        }, () => {
-            this.setPlayerPosition(playerPosition)
+        } = this.state
+        let totalObstaclesLeft = 0
+        for (let i = 0; i < randomPositions.length; i++) {
+            if (randomPositions[i].x !== playerPosition.x && randomPositions[i].y !== playerPosition.y) {
+                if (board[randomPositions[i].x][randomPositions[i].y]["state"] !== this.state.entityStates.obstacle) {
+                    ++totalObstaclesLeft
+                    board[randomPositions[i].x][randomPositions[i].y]["state"] = this.state.entityStates.obstacle
+                }
+            }
+        }
+        this.setState({
+            board,
+            totalObstaclesLeft
         })
     }
 
@@ -110,62 +129,38 @@ class GameBoard extends Component {
             board
         } = this.state
         return(
-            <div>
-                {board.map(function(boardRow, i) {
-                return (
-                    <tr>
-                    {boardRow.map(function(area, j) {
-                        let fontColour = "black"
-                        let backgroundColour = "yellow"
-                        if ((i + j) % 2 == 0) {
-                            fontColour = "white"
-                            backgroundColour = "blue"
-                        }
-                        return (
-                            <td
+            <table>
+                <tbody> {
+                    board.map((item, index) => (
+                        <tr key = {
+                            index
+                        }> {
+                            item.map((innerItem, innerIndex) => ( <
+                                td key = {
+                                    innerIndex
+                                }
                                 style = {
                                     {
-                                        textAlign: "center",
-                                        verticalAlign: "middle",
-                                        backgroundColor: backgroundColour,
-                                        color: fontColour
+                                        border: "2px solid black",
+                                        margin: 0,
+                                        width: 50,
+                                        height: 50,
+                                        textAlign: 'center',
+                                        verticalAlign: 'middle'
                                     }
-                                }
-                            >
-                            <table
-                                className = "area"
-                                cellSpacing = "0"
-                                id = "table"
-                                border = "3px"
-                                width = "100"
-                                height = "100"
-                                textAlign = "center"
-                            >
-                                <tbody>
-                                    {area.map(function(areaRow) {
-                                    return (
-                                        <tr>
-                                        {areaRow.map(function(cell) {
-                                            return ( 
-                                            <td className = "area">
-                                                {cell}
-                                                </td>
-                                            )
-                                        })}
-                                        </tr>
-                                    );
-                                    })}
-                                </tbody>
-                            </table>
-                            </td>
-                        )
-                    })}
-                    </tr>
-                );
-                })}
-            </div>
-        )
-    }
+                                } >
+                                <
+                                p > {
+                                    innerItem.state
+                                } < /p> < /
+                                td >
+                            ))
+                        } </tr>
+                    ))
+                }
+                </tbody> </table>
+            )
+        }
 }
 
 export default GameBoard

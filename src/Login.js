@@ -1,8 +1,8 @@
-import React from "react";
-import * as Realm from "realm-web";
+import React from 'react';
+import * as Realm from 'realm-web';
 import { Button, Modal } from 'react-bootstrap';
 
-const REALM_APP_ID = "application-0-exwhb";
+const REALM_APP_ID = 'application-0-exwhb';
 const app = new Realm.App({ id: REALM_APP_ID });
 
 function LoginAsGuest({ setUser }) {
@@ -11,22 +11,22 @@ function LoginAsGuest({ setUser }) {
 			const user = await app.logIn(Realm.Credentials.anonymous());
 			setUser(user);
 		} catch (error) {
-			alert("Failed to connect");
+			alert('Failed to connect');
 		}
 	};
-	return <a href="#" onClick={loginAsGuest}>login as guest</a>;
+	return <a href='#' onClick={loginAsGuest}>login as guest</a>;
 }
 
 function Register({ email, password}) {
 	const register = async () => {
 		try {
 			await app.emailPasswordAuth.registerUser(email, password);
-			alert("A confirmation mail has been sent to the mailbox.")
+			alert('A confirmation mail has been sent to the mailbox.')
 		} catch (error) {
-			alert("Invalid email or password");
+			alert('Invalid email or password');
 		}
 	};
-	return <Button variant="secondary" onClick={register}>Register</Button>;
+	return <Button variant='secondary' onClick={register}>Register</Button>;
 }
 
 function LoginWithEmail({ setUser, email, password}) {
@@ -35,10 +35,10 @@ function LoginWithEmail({ setUser, email, password}) {
 			const user = await app.logIn(Realm.Credentials.emailPassword(email, password));
 			setUser(user);
 		} catch (error) {
-			alert("Invalid email or password");
+			alert('Invalid email or password');
 		}
 	};
-	return <Button variant="secondary" onClick={loginWithEmail}>Login</Button>;
+	return <Button variant='secondary' onClick={loginWithEmail}>Login</Button>;
 }
 
 function LogOut({ setUser }) {
@@ -47,62 +47,62 @@ function LogOut({ setUser }) {
 			await app.currentUser.logOut();
 			setUser(null);
 		} catch (error) {
-			alert("Failed to connect");
+			alert('Failed to connect');
 		}
 	};
-	return <Button variant="secondary" onClick={logout}>Log out</Button>;
+	return <Button size="lg" variant='secondary' onClick={logout}>Log out</Button>;
 }
 
 function LoginForm({ setUser }) {
-	const [mode, setMode]  = React.useState("Login");
+	const [mode, setMode]  = React.useState('Login');
 	const toggleMode = () => {
-		setMode((oldMode) => (oldMode === "Login" ? "Register" : "Login"));
+		setMode((oldMode) => (oldMode === 'Login' ? 'Register' : 'Login'));
 	};
 	
-	const [username, setUsername] = React.useState("");
-	const [email, setEmail] = React.useState("");
-	const [password, setPassword] = React.useState("");
+	const [username, setUsername] = React.useState('');
+	const [email, setEmail] = React.useState('');
+	const [password, setPassword] = React.useState('');
 	
 	function note(){
 		return
 	}
 	
 	React.useEffect(() => {
-		setUsername("");
-		setEmail("");
-		setPassword("");
+		setUsername('');
+		setEmail('');
+		setPassword('');
 	}, [mode]);
 	
 	return (
-		<div className="login_form">
-			{mode === "Register"?
+		<div className='login_form'>
+			{mode === 'Register'?
 			<input
-				type = "username"
-				placeholder = "username"
+				type = 'username'
+				placeholder = 'username'
 				value = {username}
 				onChange = {(e) => setUsername(e.target.value)}
-				className="form_input"
+				className='form_input'
 			/>
 			:<></>}
 			<input
-				type = "email"
-				placeholder = "email"
+				type = 'email'
+				placeholder = 'email'
 				value = {email}
 				onChange = {(e) => setEmail(e.target.value)}
-				className="form_input"
+				className='form_input'
 			/>
 			<input
-				type = "password"
-				placeholder = "password"
+				type = 'password'
+				placeholder = 'password'
 				value = {password}
 				onChange = {(e) => setPassword(e.target.value)}
-				className="form_input"
+				className='form_input'
 			/>
-			{mode === "Login" ? <LoginWithEmail setUser={setUser} email={email} password={password} /> : <Register email={email} password={password}/>}
+			{mode === 'Login' ? <LoginWithEmail setUser={setUser} email={email} password={password} /> : <Register email={email} password={password}/>}
 			<div>
 				<span>You may also </span>
-				<a href="#" onClick={() => {toggleMode();}}>
-					{mode === "Login" ? "register a new account" : "go to login"}
+				<a href='#' onClick={() => {toggleMode();}}>
+					{mode === 'Login' ? 'register a new account' : 'go to login'}
 				</a>
 				<span> or </span>
 				<LoginAsGuest setUser={setUser}/>
@@ -119,7 +119,7 @@ function LoginButton({ setUser }) {
 
 	return (
 		<div>
-			<Button variant="secondary" onClick={handleShow}>
+			<Button size="lg" variant='secondary' onClick={handleShow}>
 				Login
 			</Button>
 			<Modal show={show} onHide={handleClose}>
