@@ -39,6 +39,8 @@ class GameBoard extends Component {
                 for (let y = 0; y < areaHeight; y++) {
                     let tempArray_3 = []
                     for (let x = 0; x < areaWidth; x++) {
+                        //tempArray_3.push(x + '' + y)
+                        
                         if ((x === 0 && y === 0) || (x === areaWidth - 1 && y === 0) || (x === areaWidth - 1 && y === areaHeight - 1) || (x === 0 && y === areaHeight - 1)) {
                             tempArray_3.push(this.state.entityStates.entrance)
                         } else if (playerPosition.x === i * areaWidth + x && playerPosition.y === j * areaHeight + y) {
@@ -46,6 +48,7 @@ class GameBoard extends Component {
                         } else {
                             tempArray_3.push(this.state.entityStates.empty)
                         }
+                        
                     }
                     tempArray_2.push(tempArray_3)
                 }
@@ -53,6 +56,7 @@ class GameBoard extends Component {
             }
             board.push(tempArray_1)
         }
+        board[2][1][2][3] = '??'
         this.setState({
             board: board,
             areaHeight,
