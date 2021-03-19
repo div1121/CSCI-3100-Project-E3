@@ -18,6 +18,7 @@ Our game is a maze game running on a map in rectangular board form. Currently we
 * Control the game flow
 * Control the movement of player
 * Display the game information (coordinates, etc.)
+** function
 
 ### GameBoard.js
 * Save the map information
