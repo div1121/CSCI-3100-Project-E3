@@ -136,7 +136,130 @@ class Game extends Component {
         }
         let newX = playerPosition.x
         let newY = playerPosition.y
-        if (Number(newX) - 1 >= 0) {
+        if (Number(newY) % areaHeight - 1 >= 0) {
+            --newY
+            let x = newX % areaWidth
+            let y = newY % areaHeight
+            if ((x === 0 && y === 0) || (x === areaWidth - 1 && y === 0) || (x === areaWidth - 1 && y === areaHeight - 1) || (x === 0 && y === areaHeight - 1)) {
+                let temp
+                if (x === 0 && y === 0) temp = 0
+                else if (x === areaWidth - 1 && y === 0) temp = 1
+                else if (x === areaWidth - 1 && y === areaHeight - 1) temp = 2
+                else temp = 3
+                let ax = Math.floor(x / boardWidth), ay = Math.floor(y / boardHeight)
+                x = randomEntrances[ax + ay * boardWidth][temp][0] * areaWidth + 2
+                y = randomEntrances[ax + ay * boardWidth][temp][1] * areaHeight + 2
+                playerPosition["x"] = x
+                playerPosition["y"] = y
+            }
+            else playerPosition["y"] = newY
+            this.setState({
+                playerPosition,
+                prevPlayerPos: prevPos
+            })
+            this.countTotalMoves()
+        }
+    }
+    handleKeyDown(e) {
+        e.preventDefault()
+        let {
+            playerPosition,
+            randomEntrances,
+            boardHeight,
+            boardWidth,
+            areaWidth,
+            areaHeight
+        } = this.state
+
+        let prevPos = {
+            x: playerPosition.x,
+            y: playerPosition.y
+        }
+        let newX = playerPosition.x
+        let newY = playerPosition.y
+        if (Number(newY) % areaHeight + 1 < areaHeight) {
+            ++newY
+            let x = newX % areaWidth
+            let y = newY % areaHeight
+            if ((x === 0 && y === 0) || (x === areaWidth - 1 && y === 0) || (x === areaWidth - 1 && y === areaHeight - 1) || (x === 0 && y === areaHeight - 1)) {
+                let temp
+                if (x === 0 && y === 0) temp = 0
+                else if (x === areaWidth - 1 && y === 0) temp = 1
+                else if (x === areaWidth - 1 && y === areaHeight - 1) temp = 2
+                else temp = 3
+                let ax = Math.floor(x / boardWidth), ay = Math.floor(y / boardHeight)
+                x = randomEntrances[ax + ay * boardWidth][temp][0] * areaWidth + 2
+                y = randomEntrances[ax + ay * boardWidth][temp][1] * areaHeight + 2
+                playerPosition["x"] = x
+                playerPosition["y"] = y
+            }
+            else playerPosition["y"] = newY
+            this.setState({
+                playerPosition,
+                prevPlayerPos: prevPos
+            })
+            this.countTotalMoves()
+        }
+    }
+    handleKeyRight(e) {
+        e.preventDefault()
+        let {
+            playerPosition,
+            randomEntrances,
+            boardHeight,
+            boardWidth,
+            areaWidth,
+            areaHeight
+        } = this.state
+
+        let prevPos = {
+            x: playerPosition.x,
+            y: playerPosition.y
+        }
+        let newX = playerPosition.x
+        let newY = playerPosition.y
+        if (Number(newX) % areaWidth + 1 < areaWidth) {
+            ++newX
+            let x = newX % areaWidth
+            let y = newY % areaHeight
+            if ((x === 0 && y === 0) || (x === areaWidth - 1 && y === 0) || (x === areaWidth - 1 && y === areaHeight - 1) || (x === 0 && y === areaHeight - 1)) {
+                let temp
+                if (x === 0 && y === 0) temp = 0
+                else if (x === areaWidth - 1 && y === 0) temp = 1
+                else if (x === areaWidth - 1 && y === areaHeight - 1) temp = 2
+                else temp = 3
+                let ax = Math.floor(x / boardWidth), ay = Math.floor(y / boardHeight)
+                x = randomEntrances[ax + ay * boardWidth][temp][0] * areaWidth + 2
+                y = randomEntrances[ax + ay * boardWidth][temp][1] * areaHeight + 2
+                playerPosition["x"] = x
+                playerPosition["y"] = y
+            }
+            else playerPosition["x"] = newX
+            this.setState({
+                playerPosition,
+                prevPlayerPos: prevPos
+            })
+            this.countTotalMoves()
+        }
+    }
+    handleKeyLeft(e) {
+        e.preventDefault()
+        let {
+            playerPosition,
+            randomEntrances,
+            boardHeight,
+            boardWidth,
+            areaWidth,
+            areaHeight
+        } = this.state
+
+        let prevPos = {
+            x: playerPosition.x,
+            y: playerPosition.y
+        }
+        let newX = playerPosition.x
+        let newY = playerPosition.y
+        if (Number(newX) % areaWidth - 1 >= 0) {
             --newX
             let x = newX % areaWidth
             let y = newY % areaHeight
@@ -160,73 +283,6 @@ class Game extends Component {
             this.countTotalMoves()
         }
     }
-    handleKeyDown(e) {
-        e.preventDefault()
-        let {
-            playerPosition,
-            boardHeight,
-        } = this.state
-
-        let prevPos = {
-            x: playerPosition.x,
-            y: playerPosition.y
-        }
-
-        let newX = playerPosition.x
-        if (Number(newX) + 1 < boardHeight) {
-            ++newX
-            playerPosition["x"] = newX
-            this.setState({
-                playerPosition,
-                prevPlayerPos: prevPos
-            })
-            this.countTotalMoves()
-        }
-    }
-    handleKeyRight(e) {
-        e.preventDefault()
-        let {
-            playerPosition,
-            boardWidth
-        } = this.state
-
-        let prevPos = {
-            x: playerPosition.x,
-            y: playerPosition.y
-        }
-
-        let newY = playerPosition.y
-        if (Number(newY) + 1 < boardWidth) {
-            ++newY
-            playerPosition["y"] = newY
-            this.setState({
-                playerPosition,
-                prevPlayerPos: prevPos
-            })
-            this.countTotalMoves()
-        }
-    }
-    handleKeyLeft(e) {
-        e.preventDefault()
-        let {
-            playerPosition,
-        } = this.state
-
-        let prevPos = {
-            x: playerPosition.x,
-            y: playerPosition.y
-        }
-        let newY = playerPosition.y
-        if (Number(newY) - 1 >= 0) {
-            --newY
-            playerPosition["y"] = newY
-            this.setState({
-                playerPosition,
-                prevPlayerPos: prevPos
-            })
-            this.countTotalMoves()
-        }
-    }
 
     render() {
 
@@ -235,13 +291,15 @@ class Game extends Component {
             randomEntrances,
             boardWidth
         } = this.state
+        /*
         let temp = playerPosition["x"] + playerPosition["y"] * boardWidth
         let status = 'Entrance: '
         if (randomEntrances[temp]) {
             for (let i = 0; i < 4; i++) {
                 status += '(' + randomEntrances[temp][i][0] + ', ' + randomEntrances[temp][i][1] + ') '
             }
-        }
+        }*/
+        let status = '(' + playerPosition["x"] + ', ' + playerPosition["y"] + ')'
 
         return(<div>
             <div className = "status">
