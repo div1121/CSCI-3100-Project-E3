@@ -1,7 +1,6 @@
 import React from 'react';
 
 
-let prevtext="";
 class ChatRoom extends React.Component {
     constructor(props) {
 		super(props);
@@ -23,6 +22,7 @@ class ChatRoom extends React.Component {
     }
   
     handleSubmit(event) {
+	        let prevtext = "";
 		fetch('chats.txt')
 		.then(res=>res.text())
 		.then(txt => prevtext=txt); 
@@ -40,7 +40,7 @@ class ChatRoom extends React.Component {
     render() {
 		return (
 			<div className='chat_room'>
-				<div id="record" onLoad={this.loadFile} border="3px"></div>
+				<div id="record" onLoad={this.loadFile} onChange={this.loadFile} border="3px"></div>
 				<form onSubmit={this.handleSubmit}>
 					<label>
 						<textarea value={this.state.value} placeholder="Send a message" onChange={this.handleChange} />
