@@ -1,6 +1,6 @@
 # CSCI-3100-Project-E3 Magic Maze
 
-## Introduction
+## **Introduction**
 
 **Magic Maze v0.2**  
 
