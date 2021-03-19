@@ -46,7 +46,7 @@ class ChatRoom extends React.Component {
 					<label>
 						<textarea value={this.state.value} placeholder="Send a message" onChange={this.handleChange} />
 					</label>
-					<input type="submit" value="Submit" />
+					<input type="submit" value="Send" />
 				</form>
 			</div>
 		);
