@@ -3,9 +3,9 @@
 ## Introduction
 
 **Magic Maze v0.2**
-CSCI-3100-Project-E3 (2021 Spring)
-<p>Developers: Kenny CHAN, Knife NG, Benny CHENG, Jason CHU, Sun CHOI</p>
-<p>**You may view our game website on: https://luyou00001.github.io/CSCI-3100-Project-E3/**</p>
+CSCI-3100-Project-E3 (2021 Spring)  
+Developers: Kenny CHAN, Knife NG, Benny CHENG, Jason CHU, Sun CHOI  
+You may view our game website on: https://luyou00001.github.io/CSCI-3100-Project-E3/  
 
 Magic Maze is a real-time fast-paced competitive maze game. Players can compete with each other by teleporting to the destination in the fastest way on the map. The map contains multiple routes for users to explore and find the fastest way to the end requires memories and fortune.
 
