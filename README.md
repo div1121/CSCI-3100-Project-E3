@@ -10,6 +10,7 @@ You may view our game website on: https://luyou00001.github.io/CSCI-3100-Project
 
 Magic Maze is a real-time fast-paced competitive maze game. Players can compete with each other by teleporting to the destination in the fastest way on the map. The map contains multiple routes for users to explore and find the fastest way to the end requires memories and fortune.
 
+
 ## Game and GameBoard
 Our game is a maze game running on a map in rectangular board form. Currently we have a demo version of game which support standalone game mode only. The network version and GUI display of map are coming soon.
 
@@ -22,8 +23,10 @@ Our game is a maze game running on a map in rectangular board form. Currently we
 * Save the map information
 * Display the map
 
+
 ## Login System
 You may login as guest or login with your email after registration. An comfirmation email will be sent to your email.
+
 
 ## Changelog
 
