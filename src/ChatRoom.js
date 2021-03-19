@@ -1,8 +1,5 @@
 import React from 'react';
 
-fetch('chats.txt')	
-.then(res=>res.text())
-.then(txt => document.querySelector("#chat").innerHTML=txt);
 
 let prevtext="";
 class ChatRoom extends React.Component {
@@ -10,10 +7,17 @@ class ChatRoom extends React.Component {
 		super(props);
 		this.state = {value: ''};
   
-		this.handleChange = this.handleChange.bind(this);
+		this.loadFile = this.loadFile.bind(this);
+	        this.handleChange = this.handleChange.bind(this);
 		this.handleSubmit = this.handleSubmit.bind(this);
     }
   
+    loadFile(){
+        fetch('chats.txt')
+        .then(res=>res.text())
+        .then(text => this.props.subject=text);
+    }
+	
     handleChange(event) {
 		this.setState({value: event.target.value});
     }
@@ -37,7 +41,7 @@ class ChatRoom extends React.Component {
 		return (
 			<div className='chat_room'>
 				<h1>Chat room</h1>
-				<div id="chat"></div>
+				<div onLoad={this.loadFile}>{this.props.subject}</div>
 				<form onSubmit={this.handleSubmit}>
 					<label>
 						<textarea value={this.state.value} placeholder="Send a message" onChange={this.handleChange} />
