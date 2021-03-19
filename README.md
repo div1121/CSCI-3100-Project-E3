@@ -41,6 +41,9 @@ The game requires users to login before they start playing.
 Users may login as guest, register a new account by email and password, login with their account and logout.
 Confirmation is required to create a new account.
 
+## User interface
+Our webpage uses the Bootstrap library to design the user interface.
+
 
 ## Changelog
 
