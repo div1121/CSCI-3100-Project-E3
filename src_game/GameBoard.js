@@ -2,7 +2,6 @@ import React, {
     Component
 } from 'react';
 import pressed from "pressed"
-// Initialize the system
 pressed.start()
 
 class GameBoard extends Component {
@@ -12,7 +11,6 @@ class GameBoard extends Component {
         this.state = {
             board: [],
             entityStates: {
-                //
                 entrance: '╬',
                 empty: '　',
                 player: '♂'
@@ -37,9 +35,7 @@ class GameBoard extends Component {
                 let tempArray_2 = []
                 for (let y = 0; y < areaHeight; y++) {
                     let tempArray_3 = []
-                    for (let x = 0; x < areaWidth; x++) {
-                        //tempArray_3.push(x + '' + y)
-                        
+                    for (let x = 0; x < areaWidth; x++) {                        
                         if ((x === 0 && y === 0) || (x === areaWidth - 1 && y === 0) || (x === areaWidth - 1 && y === areaHeight - 1) || (x === 0 && y === areaHeight - 1)) {
                             tempArray_3.push(this.state.entityStates.entrance)
                         } else if (playerPosition.x === i * areaWidth + x && playerPosition.y === j * areaHeight + y) {
@@ -47,7 +43,6 @@ class GameBoard extends Component {
                         } else {
                             tempArray_3.push(this.state.entityStates.empty)
                         }
-                        
                     }
                     tempArray_2.push(tempArray_3)
                 }
@@ -55,7 +50,6 @@ class GameBoard extends Component {
             }
             board.push(tempArray_1)
         }
-        board[2][1][2][3] = '??'
         this.setState({
             board: board,
             areaHeight,
@@ -72,7 +66,6 @@ class GameBoard extends Component {
             areaHeight,
             areaWidth
         } = this.state
-        //alert(areaWidth)
         let px = playerPosition.x, py = playerPosition.y
         board[Math.floor(py / areaHeight)][Math.floor(px / areaWidth)][py % areaHeight][px % areaWidth] = this.state.entityStates.player
         this.setState({
@@ -112,17 +105,17 @@ class GameBoard extends Component {
         let {
             board
         } = this.state
-        //console.log(board);
+        console.log(board);
         return(
             <div>
                 {board.map(function(boardRow, i) {
                 return (
                     <tr>
                     {boardRow.map(function(area, j) {
-                        let fontColour = "black"
+                        let fontColour = "blue"
                         let backgroundColour = "yellow"
                         if ((i + j) % 2 == 0) {
-                            fontColour = "white"
+                            fontColour = "yellow"
                             backgroundColour = "blue"
                         }
                         return (
