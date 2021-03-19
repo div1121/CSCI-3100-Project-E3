@@ -140,13 +140,15 @@ class Game extends Component {
             --newY
             let x = newX % areaWidth
             let y = newY % areaHeight
+            //console.log(x)
+            //console.log(y)
             if ((x === 0 && y === 0) || (x === areaWidth - 1 && y === 0) || (x === areaWidth - 1 && y === areaHeight - 1) || (x === 0 && y === areaHeight - 1)) {
                 let temp
                 if (x === 0 && y === 0) temp = 0
                 else if (x === areaWidth - 1 && y === 0) temp = 1
                 else if (x === areaWidth - 1 && y === areaHeight - 1) temp = 2
                 else temp = 3
-                let ax = Math.floor(x / boardWidth), ay = Math.floor(y / boardHeight)
+                let ax = Math.floor(newX / boardWidth), ay = Math.floor(newY / boardHeight)
                 x = randomEntrances[ax + ay * boardWidth][temp][0] * areaWidth + 2
                 y = randomEntrances[ax + ay * boardWidth][temp][1] * areaHeight + 2
                 playerPosition["x"] = x
@@ -187,7 +189,7 @@ class Game extends Component {
                 else if (x === areaWidth - 1 && y === 0) temp = 1
                 else if (x === areaWidth - 1 && y === areaHeight - 1) temp = 2
                 else temp = 3
-                let ax = Math.floor(x / boardWidth), ay = Math.floor(y / boardHeight)
+                let ax = Math.floor(newX / boardWidth), ay = Math.floor(newY / boardHeight)
                 x = randomEntrances[ax + ay * boardWidth][temp][0] * areaWidth + 2
                 y = randomEntrances[ax + ay * boardWidth][temp][1] * areaHeight + 2
                 playerPosition["x"] = x
@@ -228,7 +230,7 @@ class Game extends Component {
                 else if (x === areaWidth - 1 && y === 0) temp = 1
                 else if (x === areaWidth - 1 && y === areaHeight - 1) temp = 2
                 else temp = 3
-                let ax = Math.floor(x / boardWidth), ay = Math.floor(y / boardHeight)
+                let ax = Math.floor(newX / boardWidth), ay = Math.floor(newY / boardHeight)
                 x = randomEntrances[ax + ay * boardWidth][temp][0] * areaWidth + 2
                 y = randomEntrances[ax + ay * boardWidth][temp][1] * areaHeight + 2
                 playerPosition["x"] = x
@@ -269,7 +271,7 @@ class Game extends Component {
                 else if (x === areaWidth - 1 && y === 0) temp = 1
                 else if (x === areaWidth - 1 && y === areaHeight - 1) temp = 2
                 else temp = 3
-                let ax = Math.floor(x / boardWidth), ay = Math.floor(y / boardHeight)
+                let ax = Math.floor(newX / boardWidth), ay = Math.floor(newY / boardHeight)
                 x = randomEntrances[ax + ay * boardWidth][temp][0] * areaWidth + 2
                 y = randomEntrances[ax + ay * boardWidth][temp][1] * areaHeight + 2
                 playerPosition["x"] = x

@@ -31,7 +31,6 @@ class GameBoard extends Component {
             playerPosition
         } = this.props
         let board = []
-
         for (let j = 0; j < boardHeight; j++) {
             let tempArray_1 = []
             for (let i = 0; i < boardWidth; i++) {
@@ -75,7 +74,7 @@ class GameBoard extends Component {
         } = this.state
         //alert(areaWidth)
         let px = playerPosition.x, py = playerPosition.y
-        board[Math.floor(px / areaWidth)][Math.floor(py / areaHeight)][px % areaWidth][py % areaHeight] = this.state.entityStates.player
+        board[Math.floor(py / areaHeight)][Math.floor(px / areaWidth)][py % areaHeight][px % areaWidth] = this.state.entityStates.player
         this.setState({
             board
         })
@@ -99,8 +98,8 @@ class GameBoard extends Component {
         } = this.state
         let px = prevPlayerPos.x, py = prevPlayerPos.y
         let nx = playerPosition.x, ny = playerPosition.y
-        board[Math.floor(px / areaWidth)][Math.floor(py / areaHeight)][px % areaWidth][py % areaHeight] = this.state.entityStates.empty
-        board[Math.floor(nx / areaWidth)][Math.floor(ny / areaHeight)][nx % areaWidth][ny % areaHeight] = this.state.entityStates.player
+        board[Math.floor(py / areaHeight)][Math.floor(px / areaWidth)][py % areaHeight][px % areaWidth] = this.state.entityStates.empty
+        board[Math.floor(ny / areaHeight)][Math.floor(nx / areaWidth)][ny % areaHeight][nx % areaWidth] = this.state.entityStates.player
         this.setState({
             board: board,
             playerPosition
@@ -113,6 +112,7 @@ class GameBoard extends Component {
         let {
             board
         } = this.state
+        //console.log(board);
         return(
             <div>
                 {board.map(function(boardRow, i) {
