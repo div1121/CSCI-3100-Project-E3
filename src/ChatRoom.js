@@ -13,9 +13,10 @@ class ChatRoom extends React.Component {
     }
   
     loadFile(){
+	let history = document.getElementById('record');
         fetch('chats.txt')
         .then(res=>res.text())
-        .then(text => this.props.subject=text);
+        .then(text => history.innerHTML = text);
     }
 	
     handleChange(event) {
@@ -40,8 +41,7 @@ class ChatRoom extends React.Component {
     render() {
 		return (
 			<div className='chat_room'>
-				<h1>Chat room</h1>
-				<div onLoad={this.loadFile}>{this.props.subject}</div>
+				<div id="record" onLoad={this.loadFile} border="3px"></div>
 				<form onSubmit={this.handleSubmit}>
 					<label>
 						<textarea value={this.state.value} placeholder="Send a message" onChange={this.handleChange} />
