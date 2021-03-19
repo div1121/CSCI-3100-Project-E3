@@ -23,6 +23,11 @@ Our game is a maze game running on a map in rectangular board form. Currently we
 * Save the map information
 * Display the map
 
+## Game Room
+Brief outline of display of a player list inside a game room with ready option(before the custom game start)
+
+## Chat Room
+Allow multiple users to input message and the message of all users can be displayed to all users (only one chat room)
 
 ## Login System
 You may login as guest or login with your email after registration. An comfirmation email will be sent to your email.
