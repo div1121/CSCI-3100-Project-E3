@@ -1,11 +1,13 @@
 import React, { Component } from 'react';
 
+//member
 class Playerline extends Component{
     render(){
         let str = "Ready"
         if (this.props.isready){
             str = "Cancel"
         }
+        // invite button display (to be implemented)
         return (<tr>
             <td>
             {this.props.playername}</td>
@@ -16,10 +18,12 @@ class Playerline extends Component{
     }
 }
 
+// Class Chatroom (to be imported)
+
 class Gameroom extends Component{
     constructor(props) {
         super(props);
-        this.state = {room_name: this.props.roomname, player_list: this.props.player_list, player_num: this.props.player_num, ready_num: 0 ,ready_state: Array(4).fill(false)};
+        this.state = {room_name: this.props.roomname, player_list: this.props.player_list, player_num: this.props.player_num, ready_num: 0 ,ready_state: Array(4).fill(false),password: "0",id: "1"};
         this.addready = this.addready.bind(this)
         this.minusready = this.minusready.bind(this)
     }
@@ -43,6 +47,8 @@ class Gameroom extends Component{
         }
         this.setState({ready_num: ready_num,ready_state:array});
     }
+
+    //invite button function for each player (to be implemented)
 
     render(){
         let list = [0,0,0,0];
