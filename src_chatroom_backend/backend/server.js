@@ -59,6 +59,10 @@ app.post('/messages', async (req, res) => {
 
 });
 
+// create chat room (To be implemented)
+
+// delete chat room (To be implemented)
+
 io.on('connection', () =>{
     console.log('a user is connected')
 });

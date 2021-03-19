@@ -7,7 +7,7 @@ Frontend(Partial):
 1. Display the game room view: render() (Draft: unfinished)
 	It should contain a title of game room, list of players and ready buttons
 
-2. Player can interact with buttons addready(),minusready(): (Draft: unfinished)
+2. Player can interact with buttons: (Draft: unfinished)
 	click "ready" to be ready
 	click "cancel" to cancel its ready state
 	Number of ready are recoreded

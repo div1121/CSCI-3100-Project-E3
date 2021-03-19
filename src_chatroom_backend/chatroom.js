@@ -55,6 +55,6 @@ class SendChat extends React.Component {
     }
   }
 
-  // class chatroom
+  // class chatroom (multiple chatroom) (To be implemented)
 
   export default SendChat;
