@@ -4,7 +4,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import { Container, Row, Col } from 'react-bootstrap'
 import * as Realm from 'realm-web';
 import { TopNavbar } from './Navbar'
-import Chatroom from './Chatroom';
+import ChatRoom from './ChatRoom';
 import Menu from './Menu';
 
 const REALM_APP_ID = 'application-0-exwhb';
@@ -17,7 +17,7 @@ function App() {
 			<TopNavbar user={user} setUser={setUser}/>
 			<Container fluid>
 				<Row>
-					<Col><Chatroom /></Col>
+					<Col><ChatRoom /></Col>
 					<Col><Menu /></Col>
 				</Row>
 			</Container>
