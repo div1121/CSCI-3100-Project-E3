@@ -17,7 +17,7 @@ var Message = mongoose.model('Message',new Schema({
     message : String
 }));
 
-var dbUrl = 'mongodb+srv://div1121:chuchunto1121@cluster0.gpxvi.mongodb.net/myFirstDatabase?retryWrites=true&w=majority';
+var dbUrl = 'mongodb+srv://freshuser:FocRTUAfbj8Mej6R@cluster0.gpxvi.mongodb.net/myFirstDatabase?retryWrites=true&w=majority';
 
 app.get('/', (req,res) => {
     res.send('App Works !!!!');
