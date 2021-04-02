@@ -3,7 +3,11 @@ var bodyParser = require('body-parser')
 var app = express();
 
 var http = require('http').Server(app);
-var io = require('socket.io')(http);
+var io = require('socket.io')(http, {
+    cors: {
+        origin: '*',
+    }
+});
 
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
@@ -40,9 +44,9 @@ app.get('/messages/:user', (req, res) => {
 
 app.post('/messages', async (req, res) => {
     try{
-        console.log(req.body);
+        //console.log(req.body);
         var message = new Message(req.body);
-        console.log(message)
+        //console.log(message)
         var savedMessage = await message.save()
         console.log('saved');
 
@@ -58,10 +62,6 @@ app.post('/messages', async (req, res) => {
     }
 
 });
-
-// create chat room (To be implemented)
-
-// delete chat room (To be implemented)
 
 io.on('connection', () =>{
     console.log('a user is connected')

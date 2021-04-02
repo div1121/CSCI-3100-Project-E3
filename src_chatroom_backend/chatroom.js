@@ -1,5 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import socketIOClient from 'socket.io-client';
 
 class SendChat extends React.Component {
     constructor(props) {
@@ -18,7 +19,7 @@ class SendChat extends React.Component {
   
     handleSubmit(event) {
         let obj = {name: this.props.name, message: this.state.value}
-        console.log(obj);
+        //console.log(obj);
         fetch('/messages', {
             method: 'POST', headers: {
                 'Content-Type': 'application/json'
@@ -26,14 +27,22 @@ class SendChat extends React.Component {
             body: JSON.stringify(obj)
          });
         this.setState({value: ''});
-        fetch('/messages')
-            .then(res=>res.json())
-            .then(res=>this.setState({history:res}));
+        //fetch('/messages').then(res=>res.json()).then(res=>this.setState({history:res}));
       event.preventDefault();
     }
 
+    componentDidMount(){
+        const ws = socketIOClient("http://localhost:8000");
+        ws.on('message', message => {
+            console.log(message);
+            let his = this.state.history;
+            his.push(message);
+            this.setState({history:his});
+        });
+    }
+
     render(){
-        console.log(this.state.history);
+        //console.log(this.state.history);
         let history = this.state.history;
         let chatlist = [];
         for (var i=0;i<history.length;i++){
@@ -54,7 +63,5 @@ class SendChat extends React.Component {
       );
     }
   }
-
-  // class chatroom (multiple chatroom) (To be implemented)
 
   export default SendChat;
