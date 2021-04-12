@@ -4,12 +4,14 @@ import React, {
 import GameBoard from './GameBoard'
 import _ from 'lodash'
 import KeyHandler, {KEYDOWN} from 'react-key-handler';
+import ws from './service';
 
 class Game extends Component {
 
     constructor(props) {
         super(props)
         this.state = {
+            roomname: this.props.roomname,
             win: false,
             showGameBoard: false,
             boardHeight: 0,
@@ -123,6 +125,8 @@ class Game extends Component {
             areaHeight
         } = this.state
         if (Number(playerPosition.y) % areaHeight - 1 >= 0) this.makeMove(playerPosition.x, playerPosition.y - 1)
+        let obj = {playerPositionX: playerPosition.x, playerPositionY: playerPosition.y};
+        ws.emit('move', obj);
     }
 
     handleKeyDown(e) {
@@ -132,6 +136,8 @@ class Game extends Component {
             areaHeight
         } = this.state
         if (Number(playerPosition.y) % areaHeight + 1 < areaHeight) this.makeMove(playerPosition.x, playerPosition.y + 1)
+        let obj = {playerPositionX: playerPosition.x, playerPositionY: playerPosition.y};
+        ws.emit('move', obj);
     }
 
     handleKeyRight(e) {
@@ -141,6 +147,8 @@ class Game extends Component {
             areaWidth
         } = this.state
         if (Number(playerPosition.x) % areaWidth + 1 < areaWidth) this.makeMove(playerPosition.x + 1, playerPosition.y)
+        let obj = {playerPositionX: playerPosition.x, playerPositionY: playerPosition.y};
+        ws.emit('move', obj);
     }
 
     handleKeyLeft(e) {
@@ -150,6 +158,8 @@ class Game extends Component {
             areaWidth
         } = this.state
         if (Number(playerPosition.x) % areaWidth - 1 >= 0) this.makeMove(playerPosition.x - 1, playerPosition.y)
+        let obj = {playerPositionX: playerPosition.x, playerPositionY: playerPosition.y};
+        ws.emit('move', obj);
     }
 
     makeMove(newX, newY) {
