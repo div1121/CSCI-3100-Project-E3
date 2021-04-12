@@ -174,6 +174,12 @@ io.on('connection', socket =>{
             //socket.leave(data.roomname);
         }
     });
+    
+    socket.on('move',async (data)=>{
+        
+        
+        io.to(data.roomname).emit('position',data);
+    });
 });
 
 mongoose.connect(dbUrl,(err) => {
