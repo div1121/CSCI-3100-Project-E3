@@ -1,55 +1,67 @@
 import React from 'react';
+import ws from './service';
 
-
-class ChatRoom extends React.Component {
+class SendChat extends React.Component {
     constructor(props) {
-		super(props);
-		this.state = {value: ''};
-  
-		this.loadFile = this.loadFile.bind(this);
-	        this.handleChange = this.handleChange.bind(this);
-		this.handleSubmit = this.handleSubmit.bind(this);
+      super(props);
+      this.state = {roomid:this.props.roomid, playerid:this.props.userid, name:this.props.name, value: '', history: []};
+      this.handleChange = this.handleChange.bind(this);
+      this.handleSubmit = this.handleSubmit.bind(this);
     }
   
-    loadFile(){
-        fetch('chats.txt')
-        .then(res=>res.text())
-        .then(text => document.getElementById('record').innerHTML = text);
-    }
-	
     handleChange(event) {
-		this.setState({value: event.target.value});
+        const target = event.target;
+        const value = target.type === 'checkbox' ? target.checked : target.value;
+        const name = target.name;
+
+        this.setState({
+            [name]: value
+        });
     }
   
     handleSubmit(event) {
-	        let prevtext = "";
-		fetch('chats.txt')
-		.then(res=>res.text())
-		.then(txt => prevtext=txt); 
-		let updatedtext=prevtext+"\n<div><h5>Username: </h5><p>"+this.state.value+"</p></div>";
-		fetch('chats.txt', {
-			method: 'PUT', body: updatedtext 
-		});
-		this.setState({value: ''});
-		fetch('chats.txt')
-		.then(res=>res.text())
-		.then(text => document.getElementById('record').innerHTML = text);
-		event.preventDefault();
+        let obj = {roomid:this.state.roomid, userid:this.state.playerid, name: this.state.name, message: this.state.value}
+        ws.emit('messages',obj);
+        this.setState({value: ''});
+        event.preventDefault();
     }
 
-    render() {
-		return (
-			<div className='chat_room'>
-				<div id="record" onLoad={this.loadFile} onChange={this.loadFile} border="3px"></div>
-				<form onSubmit={this.handleSubmit}>
-					<label>
-						<textarea value={this.state.value} placeholder="Send a message" onChange={this.handleChange} />
-					</label>
-					<input type="submit" value="Send" />
-				</form>
-			</div>
-		);
-	}
-}
+    componentDidMount(){
+        fetch('/messages?'+new URLSearchParams({roomid:this.props.roomid}))
+            .then(res=>res.json())
+            .then(res=>{
+                this.setState({history:res})
+                //console.log(res);
+                //console.log(this.props.roomname);
+            });
+        ws.on('message', message => {
+            console.log(message);
+            let his = this.state.history;
+            his.push(message);
+            this.setState({history:his});
+        });
+    }
 
-export default ChatRoom;
+    render(){
+        //console.log(this.state.history);
+        let history = this.state.history;
+        let chatlist = [];
+        for (var i=0;i<history.length;i++){
+            let name = history[i].name;
+            let message = history[i].message;
+            chatlist.push(<div>{name}: {message}</div>);
+        }
+      return (
+          <div>
+              {chatlist}
+            <form onSubmit={this.handleSubmit}>
+                <label>Input Text</label><br></br>
+                <textarea name="value" value={this.state.value} placeholder="Send a message" onChange={this.handleChange} />
+                <input type="submit" value="Submit" />
+            </form>
+          </div>
+      );
+    }
+  }
+
+  export default SendChat;
