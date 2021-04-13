@@ -4,40 +4,36 @@ import ws from './service';
 class SendChat extends React.Component {
     constructor(props) {
       super(props);
-      this.state = {roomname:this.props.roomname, name:this.props.name, value: '', history: []};
+      this.state = {roomid:this.props.roomid, playerid:this.props.userid, name:this.props.name, value: '', history: []};
       this.handleChange = this.handleChange.bind(this);
       this.handleSubmit = this.handleSubmit.bind(this);
-        fetch('/messages?'+new URLSearchParams({roomname:this.props.roomname}))
+    }
+  
+    handleChange(event) {
+        const target = event.target;
+        const value = target.type === 'checkbox' ? target.checked : target.value;
+        const name = target.name;
+
+        this.setState({
+            [name]: value
+        });
+    }
+  
+    handleSubmit(event) {
+        let obj = {roomid:this.state.roomid, userid:this.state.playerid, name: this.state.name, message: this.state.value}
+        ws.emit('messages',obj);
+        this.setState({value: ''});
+        event.preventDefault();
+    }
+
+    componentDidMount(){
+        fetch('/messages?'+new URLSearchParams({roomid:this.props.roomid}))
             .then(res=>res.json())
             .then(res=>{
                 this.setState({history:res})
                 //console.log(res);
                 //console.log(this.props.roomname);
             });
-    }
-  
-    handleChange(event) {
-      this.setState({value: event.target.value});
-    }
-  
-    handleSubmit(event) {
-        let obj = {roomname:this.state.roomname, name: this.state.name, message: this.state.value}
-        //console.log(obj);
-        /*
-        fetch('/messages', {
-            method: 'POST', headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(obj)
-         });
-         */
-        ws.emit('messages',obj);
-        this.setState({value: ''});
-        //fetch('/messages').then(res=>res.json()).then(res=>this.setState({history:res}));
-        event.preventDefault();
-    }
-
-    componentDidMount(){
         ws.on('message', message => {
             console.log(message);
             let his = this.state.history;
@@ -58,12 +54,11 @@ class SendChat extends React.Component {
       return (
           <div>
               {chatlist}
-        <form onSubmit={this.handleSubmit}>
-          <label>
-            <textarea value={this.state.value} placeholder="Send a message" onChange={this.handleChange} />
-          </label>
-          <input type="submit" value="Submit" />
-        </form>
+            <form onSubmit={this.handleSubmit}>
+                <label>Input Text</label><br></br>
+                <textarea name="value" value={this.state.value} placeholder="Send a message" onChange={this.handleChange} />
+                <input type="submit" value="Submit" />
+            </form>
           </div>
       );
     }

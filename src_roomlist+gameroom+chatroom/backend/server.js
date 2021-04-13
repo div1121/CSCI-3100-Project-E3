@@ -21,15 +21,17 @@ var Room = mongoose.model('Room',new Schema({
 }));
 
 var RoomMember = mongoose.model('RoomMember',new Schema({
-    roomname: String,
-    name : String,
+    roomid: String,
+    userid : String,
+    name: String,
     socketID : String,
-    ready : Boolean
+    ready: Boolean
 }));
 
 var Message = mongoose.model('Message',new Schema({
-    roomname: String,
-    name : String,
+    roomid: String,
+    userid : String,
+    name: String,
     message : String
 }));
 
@@ -40,18 +42,18 @@ app.get('/', (req,res) => {
 });
 
 app.get('/messages', (req, res) => {
-    var name = req.query.roomname;
+    var id = req.query.roomid;
     //console.log(name);
-    Message.find({roomname:name},(err, messages)=> {
+    Message.find({roomid:id},(err, messages)=> {
         //console.log(messages);
         res.send(messages);
     });
 });
 
 app.get('/roommember', (req, res) => {
-    var name = req.query.roomname;
+    var id = req.query.roomid;
     //console.log(name);
-    RoomMember.find({roomname:name}, (err, messages) => {
+    RoomMember.find({roomid:id}, (err, messages) => {
         //console.log(messages);
         res.send(messages);
     });
@@ -95,83 +97,99 @@ app.post('/messages', async (req, res) => {
 */
 
 io.on('connection', socket =>{
+    // data -> roomname / userid / user name (name)
     console.log('a user is connected')
     socket.on('createroom',async (data) => {
         console.log('create room')
-        data = {roomname: data.roomname, numofusers: 0};
-        var room = new Room(data);
+
+        var rom = {roomname: data.roomname, numofusers: 1};
+        var room = new Room(rom);
         let obj = await room.save();
-        //console.log(obj);
-        io.emit('createroom',data);
+
+        var id = obj._id.toString();
+        var memberdata = {roomid: id, userid: data.userid, name:data.name, socketID: socket.id, ready: false};
+        var roommember = new RoomMember(memberdata);
+        let memobj = await roommember.save();
+
+        io.emit('createroom',obj);
+        socket.join(id);
+        socket.broadcast.to(id).emit('addroommember',{roomid: id, userid: data.userid, name: data.name});
+        socket.emit('getroominfo',{roomid:id, roomname:data.roomname});
     });
 
     socket.on('joinroom',async (data) => {
+        // roomid, roomname, userid, username
         console.log('in room')
-        let doc = await Room.findOne({roomname:data.roomname});
-        if (!doc || doc.numofusers<4) {
-            let t = (doc) ? doc.numofusers : 0;
-            let res = await Room.updateOne({roomname: data.roomname}, {numofusers: t + 1});
-            data = {roomname: data.roomname, name: data.name, socketID: socket.id, ready: false};
-            var roommember = new RoomMember(data);
+        //console.log(data.roomid);
+        var id = mongoose.Types.ObjectId(data.roomid);
+        //console.log(typeof id);
+        //console.log(id);
+        let doc = await Room.findOneAndUpdate({_id: id, roomname:data.roomname},{$inc : {'numofusers' : 1}},{new: true});
+        //console.log(doc);
+        if (doc.numofusers>4) {
+            doc = await Room.findOneAndUpdate({_id: id,roomname:data.roomname},{$inc : {'numofusers' : -1}},{new: true});
+            socket.emit('failjoin',{roomname: data.roomname});
+        }
+        else {
+            var rdata = {roomid: data.roomid, userid: data.userid, name:data.name, socketID: socket.id, ready: false};
+            var roommember = new RoomMember(rdata);
             let obj = await roommember.save();
-            io.emit('addroomlist',{roomname:data.roomname, numofusers: t + 1});
-            socket.join(obj.roomname);
-            socket.broadcast.to(data.roomname).emit('addroommember',{roomname: data.roomname, name: data.name, numofusers: t+1})
-            socket.emit('roommemberOK');
-            /*
-            socket.emit('message', {
-                name: 'Admin',
-                message: obj.name + ', Welcome to ' + obj.roomname + '.'
-            });
-            socket.broadcast.to(obj.roomname).emit('message', {
-                name: 'Admin',
-                message: obj.name + 'has joined.'
-            });
-            */
+
+            io.emit('addroomlist', doc);
+            socket.join(data.roomid);
+            socket.broadcast.to(data.roomid).emit('addroommember', {roomid:data.roomid, userid: data.userid, name: data.name});
+            socket.emit('getroominfo',{roomid:id, roomname:data.roomname});
         }
     });
 
     socket.on('messages',async (data)=>{
+        //roomid, userid, name, message
         var message = new Message(data);
         let res = await message.save();
-        io.to(data.roomname).emit('message',data);
+        io.to(data.roomid).emit('message',data);
     });
 
-    socket.on('readychange',(data)=>{
-       io.to(data.roomname).emit('readychange',data);
+    socket.on('readychange',async (data)=>{
+        // roomid, userid, number , ready array, save
+        // console.log(data.save);
+        let doc = await RoomMember.findOneAndUpdate({roomid: data.roomid, userid:data.userid}, {ready : data.save},{new: true});
+        // console.log(doc);
+        io.to(data.roomid).emit('readychange',data);
     });
 
     socket.on("leaveroom", async (data) => {
-        await RoomMember.deleteOne({roomname:data.roomname,name:data.name});
-        let doc = await Room.findOne({roomname:data.roomname});
-        if (doc.numofusers>=2) {
-            await Room.updateOne({roomname: doc.roomname}, {numofusers: doc.numofusers - 1});
-            socket.broadcast.to(data.roomname).emit('decreaseroommember',data);
-            io.emit('downroomlist',{roomname:data.roomname, numofusers: doc.numofusers - 1});
+        // data -> roomid, roomname / userid / user name (name)
+        await RoomMember.deleteOne({roomid:data.roomid, userid:data.userid});
+        var id = mongoose.Types.ObjectId(data.roomid);
+        let doc = await Room.findOneAndUpdate({_id: id},{$inc : {'numofusers' : -1}},{new: true});
+        if (!doc || doc.numofusers<=0) {
+            await Room.deleteOne({_id: id});
+            await Message.deleteMany({roomid:data.roomid});
+            io.emit('deleteroom',doc);
         }
         else {
-            await Room.deleteOne({roomname: doc.roomname});
-            await Message.deleteMany({roomname: doc.roomname});
-            io.emit('deleteroom',{roomname: doc.roomname});
+            socket.broadcast.to(data.roomid).emit('decreaseroommember',{roomid:data.roomid, userid: data.userid, name: data.name});
+            io.emit('downroomlist',doc);
         }
-        socket.leave(data.roomname);
+        socket.leave(data.roomid);
     });
     socket.on("disconnect", async () =>{
         console.log("disconnect");
         let data = await RoomMember.findOne({socketID:socket.id});
         if (data) {
-            await RoomMember.deleteOne({roomname: data.roomname, name: data.name});
-            let doc = await Room.findOne({roomname: data.roomname});
-            if (doc.numofusers >= 2) {
-                await Room.updateOne({roomname: doc.roomname}, {numofusers: doc.numofusers - 1});
-                socket.broadcast.to(data.roomname).emit('decreaseroommember', data);
-                io.emit('downroomlist', {roomname: data.roomname, numofusers: doc.numofusers - 1});
-            } else {
-                await Room.deleteOne({roomname: doc.roomname});
-                await Message.deleteMany({roomname: doc.roomname});
-                io.emit('deleteroom', {roomname: doc.roomname});
+            await RoomMember.deleteOne({roomid:data.roomid, userid:data.userid});
+            var id = mongoose.Types.ObjectId(data.roomid);
+            let doc = await Room.findOneAndUpdate({_id: id},{$inc : {'numofusers' : -1}},{new: true});
+            if (!doc || doc.numofusers<=0) {
+                await Room.deleteOne({_id: id});
+                await Message.deleteMany({roomid:data.roomid});
+                io.emit('deleteroom',doc);
             }
-            //socket.leave(data.roomname);
+            else {
+                socket.broadcast.to(data.roomid).emit('decreaseroommember',{roomid:data.roomid, userid: data.userid, name: data.name});
+                io.emit('downroomlist',doc);
+            }
+            socket.leave(data.roomid);
         }
     });
 });

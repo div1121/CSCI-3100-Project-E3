@@ -1,66 +1,76 @@
 import React, { Component } from 'react';
-import Gameroom from "./Gameroom";
+import GameRoom from "./Gameroom";
 import SendChat from "./chatroom";
-import Roomlist from "./Roomlist";
+import RoomList from "./Roomlist";
 import ws from "./service";
 
 class App extends Component {
 	constructor(props) {
 		super(props);
-		this.state = {playername:"Alice",gameroomenter:null,datasave:false,value:''};
-		this.handleadd = this.handleadd.bind(this);
-		this.handleleave = this.handleleave.bind(this);
-		this.handleChange = this.handleChange.bind(this);
-		this.handleSubmit = this.handleSubmit.bind(this);
+		this.state = {user_name:"Alice", user_id:"123456", game_room_enter:null, game_room_id:null, loading:false, input_room_name:""};
+		this.handleEnterRoom = this.handleEnterRoom.bind(this);
+		this.handleLeaveRoom = this.handleLeaveRoom.bind(this);
+		this.handleInputChange = this.handleInputChange.bind(this);
+		this.handleCreateRoom = this.handleCreateRoom.bind(this);
 	}
 
-	handleChange(event) {
-		this.setState({value: event.target.value});
+	handleInputChange(event) {
+		const target = event.target;
+		const value = target.type === 'checkbox' ? target.checked : target.value;
+		const name = target.name;
+
+		this.setState({
+			[name]: value
+		});
 	}
 
-	handleSubmit(event) {
-		let obj = {roomname: this.state.value}
+	handleCreateRoom(event) {
+		let obj = {roomname: this.state.input_room_name, userid: this.state.user_id, name: this.state.user_name};
 		ws.emit('createroom',obj);
-		this.handleadd(this.state.value);
-		this.setState({value: ''});
+		this.setState({ input_room_name: '', loading: true});
 		event.preventDefault();
 	}
 
-	handleadd(name){
-		let obj = {roomname: name, name: this.state.playername};
+	handleEnterRoom(roomid,roomname){
+		let obj = {roomid: roomid, roomname: roomname, userid: this.state.user_id, name: this.state.user_name};
 		ws.emit('joinroom', obj);
-		this.setState({gameroomenter:name})
+		this.setState({loading: true});
 	}
 
-	handleleave(){
-		ws.emit('leaveroom',{roomname:this.state.gameroomenter,name:this.state.playername});
-		this.setState({gameroomenter:null, datasave:false});
+	handleLeaveRoom(){
+		ws.emit('leaveroom',{roomid:this.state.game_room_id, roomname:this.state.game_room_enter, userid:this.state.user_id, name:this.state.user_name});
+		this.setState({game_room_enter:null, game_room_id:null});
 	}
 
 	componentDidMount() {
-		ws.on('roommemberOK',()=>{
-			this.setState({datasave:true})
+		ws.on('getroominfo',(data)=>{
+			this.setState({game_room_enter:data.roomname,game_room_id:data.roomid, loading: false});
+			//ws.off('createroom');
+			//ws.off('addroomlist');
+			//ws.off('downroomlist');
+			//ws.off('deleteroom');
 		});
+		ws.on('failjoin',(data)=>{
+			alert("Fail to join the room: " + data.roomname);
+		})
 	}
 
 	render() {
 		return (
 			<div className="App">
-			<h1>Room list</h1>
-			<button onClick={()=>this.setState({playername:"Peter"})}>Boy</button>
-			<Roomlist handleadd={this.handleadd} />
-			<form onSubmit={this.handleSubmit}>
-				<label>The Room name created:
-						<textarea value={this.state.value} onChange={this.handleChange} />
-				</label>
-				<input type="submit" value="Submit" />
-			</form>
-				{ this.state.gameroomenter!=null && this.state.datasave &&
+			<button onClick={()=>this.setState({user_name:"Peter",user_id:"654321"})}>Boy</button>
+				{
+					this.state.game_room_enter==null && this.state.game_room_id==null &&
+					<RoomList room_name={this.state.input_room_name} handleCreateRoom={this.handleCreateRoom}
+							  handleEnterRoom={this.handleEnterRoom} handleInputChange={this.handleInputChange} loading={this.state.loading}/>
+				}
+				{
+					this.state.game_room_enter!=null && this.state.game_room_id!=null  &&
 					<div>
 					<h1>Game Room</h1>
-					<Gameroom roomname={this.state.gameroomenter} player={this.state.playername} handleleave={this.handleleave}/>
+					<GameRoom roomid={this.state.game_room_id} roomname={this.state.game_room_enter} playername={this.state.user_name} playerid={this.state.user_id} handleleave={this.handleLeaveRoom}/>
 					<h1>Chat Room</h1>
-					<SendChat roomname={this.state.gameroomenter} name={this.state.playername} />
+					<SendChat roomid={this.state.game_room_id} userid={this.state.user_id} name={this.state.user_name} />
 					</div>
 				}
 			</div>
