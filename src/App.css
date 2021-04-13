@@ -8,7 +8,20 @@ a:hover {
 	text-decoration: underline;
 }
 
+button.MenuButton {
+	font-size: 30px;
+	font-family: serif;
+	height: 100px;
+	width: 90%;
+	margin-bottom: 10px;
+	border-radius: 20px;
+}
+
 .navbar-brand {
+	Font-size: 44px;
+}
+
+.navbar-text > temp{
 	Font-size: 44px;
 }
 
@@ -29,4 +42,9 @@ a:hover {
 
 .btn {
 	margin-right: 10px;
+}
+
+navbarRight {
+	flex: 1;
+	display: flex;
 }

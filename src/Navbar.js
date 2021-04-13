@@ -1,7 +1,8 @@
 import { Nav, Navbar, Button, Form, FormControl } from 'react-bootstrap';
-import { LoginAsGuest, Register, LoginWithEmail, LogOut, LoginForm, LoginButton } from './Login'
+import { LogoutButton, LoginButton } from './Login';
+import { ProfileButton } from './Profile';
 
-function TopNavbar({ user, setUser }) {
+function TopNavbar({ userID, username, setUserID, setUsername }) {
 	return(
 	<div>
 		<Navbar className='py-4' bg='dark' variant='dark'>
@@ -9,16 +10,16 @@ function TopNavbar({ user, setUser }) {
 			<Nav>
 				<Navbar.Text>• A game created by CSCI3100 Project Group E3</Navbar.Text>
 			</Nav>
-			<Nav className='ml-auto'>
-				{!user?
-					<Nav.Link href='#home'><LoginButton setUser={setUser}/></Nav.Link>
-				:(
-					<>
-						<Navbar.Text>Your id: {user.id}</Navbar.Text>
-						<Nav.Link href='#home'><LogOut setUser={setUser}/></Nav.Link>
-					</>
-				)}
-			</Nav>
+			<Nav className='ml-auto'></Nav>
+			{userID===null?
+				<Nav.Link href='#home'><LoginButton setUserID={setUserID} setUsername={setUsername}/></Nav.Link>
+			:(
+				<>
+					<Navbar.Brand>Welcome {username}</Navbar.Brand>
+					<Nav.Link href='#home'><ProfileButton userID={userID} username={username} setUsername={setUsername}/></Nav.Link>
+					<Nav.Link href='#home'><LogoutButton setUserID={setUserID} setUsername={setUsername}/></Nav.Link>
+				</>
+			)}
 		</Navbar>
 	</div>
 	)
