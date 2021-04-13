@@ -37,6 +37,8 @@ var Message = mongoose.model('Message',new Schema({
 
 var dbUrl = 'mongodb+srv://freshuser:FocRTUAfbj8Mej6R@cluster0.gpxvi.mongodb.net/myFirstDatabase?retryWrites=true&w=majority';
 
+var globalplayer = [];
+
 app.get('/', (req,res) => {
     res.send('App Works !!!!');
 });
@@ -157,6 +159,32 @@ io.on('connection', socket =>{
         io.to(data.roomid).emit('readychange',data);
     });
 
+    socket.on('ranking', async (data)=>{
+        //userid, username
+        var info = {userid:data.userid,name:data.name,socketid:socket.id};
+        globalplayer.push(info);
+        console.log(globalplayer);
+        if (globalplayer.length==4){
+            var temp = globalplayer.splice(0,5);
+            globalplayer = globalplayer.splice(0,4);
+            var rom = {roomname: "Ranking", numofusers: 4};
+            var room = new Room(rom);
+            let obj = await room.save();
+            var id = obj._id.toString();
+            for (var i=0;i<temp.length;i++){
+                var memberdata = {roomid: id, userid: temp[i].userid, name:temp[i].name, socketID: temp[i].socketid, ready: false};
+                var roommember = new RoomMember(memberdata);
+                let memobj = await roommember.save();
+            }
+            for (var i=0;i<temp.length;i++) {
+                var ele = temp[i];
+                var sid = ele.socketid;
+                io.to(sid).emit('getroominfo',{roomid:id, roomname:"Ranking"});
+            }
+            io.emit('createroom',obj);
+        }
+    });
+
     socket.on("leaveroom", async (data) => {
         // data -> roomid, roomname / userid / user name (name)
         await RoomMember.deleteOne({roomid:data.roomid, userid:data.userid});
@@ -192,6 +220,7 @@ io.on('connection', socket =>{
             socket.leave(data.roomid);
         }
     });
+
 });
 
 mongoose.connect(dbUrl,(err) => {

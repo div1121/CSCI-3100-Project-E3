@@ -24,7 +24,11 @@ class Roomline extends Component{
 class RoomList extends React.Component {
     constructor(props) {
         super(props);
-        this.state = {room_list:[]};
+        this.state = {room_list:[], input_room_name:"", loading:false};
+        this.handleChange = this.handleChange.bind(this);
+        this.handleCreateRoom = this.handleCreateRoom.bind(this);
+        this.handleEnterRoom = this.handleEnterRoom.bind(this);
+        this.handleRank = this.handleRank.bind(this);
     }
 
     componentDidMount(){
@@ -62,13 +66,53 @@ class RoomList extends React.Component {
                 display.splice(display.findIndex(isMatch),1);
             this.setState({room_list:display});
         });
+
+        ws.on('getroominfo',(data)=>{
+            console.log("OK");
+            this.setState({loading: false});
+            this.props.setGameroomenter(data.roomname);
+            this.props.setGameroomid(data.roomid);
+        });
+
+        ws.on('failjoin',(data)=>{
+            alert("Fail to join the room: " + data.roomname);
+        })
     }
+
+    handleRank(){
+        this.setState({loading: true});
+        ws.emit('ranking',{userid: this.props.user_id, name: this.props.user_name});
+    }
+
+    handleChange(event) {
+        const target = event.target;
+        const value = target.type === 'checkbox' ? target.checked : target.value;
+        const name = target.name;
+
+        this.setState({
+            [name]: value
+        });
+    }
+
+    handleCreateRoom(event) {
+        let obj = {roomname: this.state.input_room_name, userid: this.props.user_id, name: this.props.user_name};
+        ws.emit('createroom',obj);
+        this.setState({ input_room_name: '', loading:true});
+        event.preventDefault();
+    }
+
+    handleEnterRoom(roomid,roomname){
+        let obj = {roomid: roomid, roomname: roomname, userid: this.props.user_id, name: this.props.user_name};
+        ws.emit('joinroom', obj);
+        this.setState({loading: true});
+    }
+
 
     render() {
         let room_list = this.state.room_list;
         //console.log(room_list);
         const displaylist = room_list.map((room) =>
-            <Roomline roomname={room.roomname} numofusers={room.numofusers} handleadd={()=>this.props.handleEnterRoom(room._id,room.roomname)} loading={this.props.loading}></Roomline>
+            <Roomline roomname={room.roomname} numofusers={room.numofusers} handleadd={()=>this.handleEnterRoom(room._id,room.roomname)} loading={this.state.loading}></Roomline>
         );
         return (
             <div>
@@ -77,16 +121,21 @@ class RoomList extends React.Component {
                     {displaylist}
                 </table>
                 {
-                    <form onSubmit={this.props.handleCreateRoom}>
+                    <form onSubmit={this.handleCreateRoom}>
                         <fieldset>
                             <legend>Create Room:</legend>
                             <label>Room Name</label>
-                            <input value={this.props.room_name} name="input_room_name"
-                                   onChange={this.props.handleInputChange}/><br></br>
-                            <input type="submit" value="Submit"/>
+                            <input name="input_room_name"
+                                   type="text"
+                                   value={this.state.input_room_name}
+                                   onChange={this.handleChange}
+                                    />
+                                   <br></br>
+                            <input type="submit" value="Submit" />
                         </fieldset>
                     </form>
                 }
+                <button onClick={this.handleRank}>Rank</button>
             </div>
         );
     }
