@@ -1,27 +1,21 @@
-import { Nav, Navbar, Button, Form, FormControl } from 'react-bootstrap';
 import { LogoutButton, LoginButton } from './Login';
 import { ProfileButton } from './Profile';
 
 function TopNavbar({ userID, username, setUserID, setUsername }) {
 	return(
-	<div>
-		<Navbar className='py-4' bg='dark' variant='dark'>
-			<Navbar.Brand href="https://github.com/luyou00001/CSCI-3100-Project-E3	">Magic Maze</Navbar.Brand>
-			<Nav>
-				<Navbar.Text>• A game created by CSCI3100 Project Group E3</Navbar.Text>
-			</Nav>
-			<Nav className='ml-auto'></Nav>
+		<div>
+			<a href="https://github.com/luyou00001/CSCI-3100-Project-E3	">Magic Maze</a>
+			<span>• A game created by CSCI3100 Project Group E3</span>
 			{userID===null?
-				<Nav.Link href='#home'><LoginButton setUserID={setUserID} setUsername={setUsername}/></Nav.Link>
+				<LoginButton setUserID={setUserID} setUsername={setUsername}/>
 			:(
 				<>
-					<Navbar.Brand>Welcome {username}</Navbar.Brand>
-					<Nav.Link href='#home'><ProfileButton userID={userID} username={username} setUsername={setUsername}/></Nav.Link>
-					<Nav.Link href='#home'><LogoutButton setUserID={setUserID} setUsername={setUsername}/></Nav.Link>
+					<span>Welcome {username}</span>
+					<ProfileButton userID={userID} username={username} setUsername={setUsername}/>
+					<LogoutButton setUserID={setUserID} setUsername={setUsername}/>
 				</>
 			)}
-		</Navbar>
-	</div>
+		</div>
 	)
 }
 

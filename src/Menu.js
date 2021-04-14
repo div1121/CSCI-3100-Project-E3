@@ -18,7 +18,7 @@ function CustomRoom({ setMode }) {
 
 function Demo({ setMode }) {
 	const demo = () => {
-		setMode("Demo");
+		setMode("Game");
 	}
 	return <button className="MenuButton" onClick={demo}>Demo</button>
 }

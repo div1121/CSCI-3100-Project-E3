@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import './App.css';
-import 'bootstrap/dist/css/bootstrap.min.css';
 import { Container, Row, Col } from 'react-bootstrap'
 import { TopNavbar } from './Navbar'
 import Menu from './Menu';
@@ -17,31 +16,29 @@ function App() {
 	const [gameRoomID, setGameRoomID] = React.useState(null);
 	const [mode, setMode] = React.useState("Home");
 	return (
-		<div>
-			<TopNavbar userID={userID} username={username} setUserID={setUserID} setUsername={setUsername}/>
-			{mode === "Game"?
-				<></>
-			:
-				<Container fluid>
-					<Row>
-						<Col>
-							<Chatroom roomid={gameRoomID} userid={userID} name={username} />
-						</Col>
-						<Col>
-							{gameRoomID !== null?
-								<GameRoom roomid={gameRoomID} roomname={gameRoomEnter} playername={username} playerid={userID} setGameroomenter={setGameRoomEnter} setGameroomid={setGameRoomID}/>
-							:mode === "FindingRoom"?
-								<RoomList user_id={userID} user_name={username} setGameroomenter={setGameRoomEnter} setGameroomid={setGameRoomID}/>
-							:mode === "Demo"?
-								<Game />
-							:
-								<Menu setMode={setMode} />
-							}
-						</Col>
-					</Row>
-				</Container>
-			}
-			<HomeButton setMode={setMode}/>
+		<div className="app">
+			<div className="app_header">
+				<TopNavbar userID={userID} username={username} setUserID={setUserID} setUsername={setUsername}/>
+			</div>
+			<div className="app_body">
+				{mode === "Game"?
+					<Game />
+				:
+					<>
+						<Chatroom roomid={gameRoomID} userid={userID} name={username} />
+						{gameRoomID !== null?
+							<GameRoom roomid={gameRoomID} roomname={gameRoomEnter} playername={username} playerid={userID} setGameroomenter={setGameRoomEnter} setGameroomid={setGameRoomID}/>
+						:mode === "FindingRoom"?
+							<RoomList user_id={userID} user_name={username} setGameroomenter={setGameRoomEnter} setGameroomid={setGameRoomID}/>
+						:mode === "Demo"?
+							<Game />
+						:
+							<Menu setMode={setMode} />
+						}
+					</>
+				}
+				<HomeButton setMode={setMode}/>
+			</div>
 		</div>
 	);
 };
