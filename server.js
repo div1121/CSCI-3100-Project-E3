@@ -24,6 +24,7 @@ const userSchema = mongoose.Schema({
 	name: String,
 	email: String,
 	password: String,
+	score: Number
 });
 
 const Room = mongoose.model('Room',new Schema({
