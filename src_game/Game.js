@@ -127,6 +127,7 @@ class Game extends Component {
             playerNumber: playerNumber,
             playerName: playerName,
             preScore: preScore,
+            playerID: playerID,
             playerScore: playerScore,
             playerFacing: playerFacing,
             playerPosition: playerPosition,
