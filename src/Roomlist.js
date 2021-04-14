@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import ws from './service';
+//const baseURL = "http://localhost:9000";
+const baseURL = "https://magic-maze-backend.herokuapp.com";
 
 class Roomline extends Component{
     render(){
@@ -32,11 +34,11 @@ class RoomList extends React.Component {
     }
 
     componentDidMount(){
-        fetch('/room')
+        fetch(baseURL+'/room')
             .then(res=>res.json())
             .then(res=>this.setState({room_list:res}));
         ws.on('createroom', data => {
-            //console.log(data);
+            console.log(data);
             let display = this.state.room_list;
             display.push(data);
             //console.log(display);
@@ -69,6 +71,7 @@ class RoomList extends React.Component {
 
         ws.on('getroominfo',(data)=>{
             console.log("OK");
+            console.log(data);
             this.setState({loading: false});
             this.props.setGameroomenter(data.roomname);
             this.props.setGameroomid(data.roomid);
