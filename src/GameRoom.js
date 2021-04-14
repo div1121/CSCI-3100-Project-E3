@@ -18,6 +18,12 @@ class Playerline extends Component{
                         <button onClick={this.props.handleready}>{str}</button>
                     </td>
                 }
+                {
+                    this.props.position && this.props.ready_num===4 &&
+                    <td>
+                        <button onClick={this.props.startGame}>Start</button>
+                    </td>
+                }
             </tr>
             )
     }
@@ -31,6 +37,7 @@ class Gameroom extends Component{
         this.state = {roomid:this.props.roomid, roomname: this.props.roomname, player_list: [], player_id: [], player_num: 0, ready_num: 0 ,ready_state: []};
         this.addready = this.addready.bind(this);
         this.minusready = this.minusready.bind(this);
+        this.handleLeaveRoom = this.handleLeaveRoom.bind(this);
     }
 
     componentDidMount(){
@@ -107,6 +114,13 @@ class Gameroom extends Component{
         ws.emit('readychange',{roomid:this.state.roomid, userid:this.props.playerid, ready_num: ready_num, ready_state:array, save:false})
     }
 
+    handleLeaveRoom(){
+        ws.emit('leaveroom',{roomid:this.state.roomid, roomname:this.state.roomname, userid:this.props.playerid, name:this.props.playername});
+        //this.setState({game_room_enter:null, game_room_id:null});
+        this.props.setGameroomenter(null);
+        this.props.setGameroomid(null);
+    }
+
     //invite button function for each player (to be implemented)
     render(){
         let list = [];
@@ -123,15 +137,19 @@ class Gameroom extends Component{
         let display = [];
         for (let i=0;i<this.state.player_num;i++){
             display.push(<Playerline isready={this.state.ready_state[i]}
-                                     playername={this.state.player_list[i]} handleready={list[i]}/>);
+                                     playername={this.state.player_list[i]}
+                                     handleready={list[i]}
+                                     position={i===0 && list[0]!==null}
+                                     ready_num={this.state.ready_num}/>);
         }
         return (<div>
-            <h1>{this.props.roomname}</h1>
+            <h1>Game Room</h1>
+            <h1>You're in: {this.props.roomname}</h1>
             <table>
                 {display}
             </table>
             <h2>Number of ready: {this.state.ready_num}</h2>
-            <button onClick={this.props.handleleave}>Leave</button>
+            <button onClick={this.handleLeaveRoom}>Leave</button>
         </div>)
     }
 }

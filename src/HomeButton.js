@@ -5,7 +5,7 @@ function HomeButton({ setMode }) {
 	const home = () => {
 		setMode("Home");
 	}
-	return <Button size="lg" variant="primary" onClick={home}>Home</Button>
+	return <button size="lg" variant="primary" onClick={home}>Home</button>
 }
 
 export default HomeButton;

@@ -11,7 +11,7 @@ function Match() {
 
 function CustomRoom({ setMode }) {
 	const customRoom = () => {
-		setMode("CustomRoom");
+		setMode("FindingRoom");
 	}
 	return <button className="MenuButton" onClick={customRoom}>Custom room</button>
 }

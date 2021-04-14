@@ -3,32 +3,43 @@ import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Container, Row, Col } from 'react-bootstrap'
 import { TopNavbar } from './Navbar'
-import Chatroom from './ChatRoom';
 import Menu from './Menu';
-import Game from './Game';
+import Chatroom from './ChatRoom';
+import RoomList from "./RoomList";
 import GameRoom from './GameRoom';
+import Game from './Game';
 import HomeButton from './HomeButton';
 
 function App() {
 	const [userID, setUserID] = React.useState(sessionStorage.getItem('userID'));
 	const [username, setUsername] = React.useState(sessionStorage.getItem('username'));
+	const [gameRoomEnter, setGameRoomEnter] = React.useState(null);
+	const [gameRoomID, setGameRoomID] = React.useState(null);
 	const [mode, setMode] = React.useState("Home");
 	return (
 		<div>
 			<TopNavbar userID={userID} username={username} setUserID={setUserID} setUsername={setUsername}/>
-			{mode === "Home"?
+			{mode === "Game"?
+				<></>
+			:
 				<Container fluid>
 					<Row>
-						<Col><Chatroom /></Col>
-						<Col><Menu setMode={setMode} /></Col>
+						<Col>
+							<Chatroom roomid={gameRoomID} userid={userID} name={username} />
+						</Col>
+						<Col>
+							{gameRoomID !== null?
+								<GameRoom roomid={gameRoomID} roomname={gameRoomEnter} playername={username} playerid={userID} setGameroomenter={setGameRoomEnter} setGameroomid={setGameRoomID}/>
+							:mode === "FindingRoom"?
+								<RoomList user_id={userID} user_name={username} setGameroomenter={setGameRoomEnter} setGameroomid={setGameRoomID}/>
+							:mode === "Demo"?
+								<Game />
+							:
+								<Menu setMode={setMode} />
+							}
+						</Col>
 					</Row>
 				</Container>
-			:mode === "Demo"?
-				<Game />
-			:mode === "CustomRoom"?
-				<GameRoom room_name={"Game1"} player_list={["Paul","Alice","Sun","Jason"]} player_num={4}/>
-			:
-				<></>
 			}
 			<HomeButton setMode={setMode}/>
 		</div>

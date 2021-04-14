@@ -3,7 +3,7 @@ import { Button, Modal } from 'react-bootstrap';
 import axios from './Axios';
 import validator from 'validator';
 
-function Register({ setUserID, setUsername, name, email, password }) {
+function Register({ setUserID, setUsername, name, email, password, rePassword }) {
 	const register = async (e) => {
 		e.preventDefault();
 		var canRegister = false;
@@ -17,6 +17,8 @@ function Register({ setUserID, setUsername, name, email, password }) {
 			alert("Password is empty!");
 		}else if(password.length<8) {
 			alert("Password should contain at least 8 letters!");
+		}else if(password!=rePassword){
+			alert("Re-entered password is not same to new password!");
 		}else try {
 			await axios.post("/loginAccount", {
 				email: email,
@@ -95,11 +97,13 @@ function LoginForm({ setUserID, setUsername }) {
 	const [name, setName] = React.useState('');
 	const [email, setEmail] = React.useState('');
 	const [password, setPassword] = React.useState('');
+	const [rePassword, setRePassword] = React.useState('');
 	
 	React.useEffect(() => {
 		setName('');
 		setEmail('');
 		setPassword('');
+		setRePassword('');
 	}, [mode]);
 	
 	return (
@@ -127,6 +131,15 @@ function LoginForm({ setUserID, setUsername }) {
 				onChange = {(e) => setPassword(e.target.value)}
 				className='form_input'
 			/>
+			{mode === 'Register'?
+			<input
+				type = 'password'
+				placeholder = 'Re-enter password'
+				value = {rePassword}
+				onChange = {(e) => setRePassword(e.target.value)}
+				className='form_input'
+			/>
+			:<></>}
 			{mode === 'Login' ? 
 				<LoginWithEmail
 					setUserID={setUserID}
@@ -141,6 +154,7 @@ function LoginForm({ setUserID, setUsername }) {
 					name={name}
 					email={email}
 					password={password}
+					rePassword={rePassword}
 				/>
 			}
 			<div>
