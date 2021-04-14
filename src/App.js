@@ -22,12 +22,12 @@ function App() {
 			</div>
 			<div className="appBody">
 				{mode === "Game"?
-					<Game />
+					<div className="Game"><Game userid={userID} roomid={gameRoomID}/></div>
 				:
 					<>
 						{gameRoomID !== null?
 						<>
-							<GameRoom roomid={gameRoomID} roomname={gameRoomEnter} playername={username} playerid={userID} setGameroomenter={setGameRoomEnter} setGameroomid={setGameRoomID}/>
+							<GameRoom setMode={setMode} roomid={gameRoomID} roomname={gameRoomEnter} playername={username} playerid={userID} setGameroomenter={setGameRoomEnter} setGameroomid={setGameRoomID}/>
 							<Chatroom roomid={gameRoomID} userid={userID} name={username} />
 						</>
 						:mode === "FindingRoom"?
