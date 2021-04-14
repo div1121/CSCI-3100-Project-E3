@@ -17,30 +17,30 @@ function App() {
 
 	return (
 		<div className="app">
-			<div className="appHeader">
-				<TopNavbar userID={userID} username={username} setUserID={setUserID} setUsername={setUsername}/>
-			</div>
-			<div className="appBody">
-				{mode === "Game"?
-					<div className="Game"><Game userid={userID} roomid={gameRoomID}/></div>
-				:
-					<>
-						{gameRoomID !== null?
-						<>
-							<GameRoom setMode={setMode} roomid={gameRoomID} roomname={gameRoomEnter} playername={username} playerid={userID} setGameroomenter={setGameRoomEnter} setGameroomid={setGameRoomID}/>
-							<Chatroom roomid={gameRoomID} userid={userID} name={username} />
-						</>
-						:mode === "FindingRoom"?
-							<RoomList user_id={userID} user_name={username} setGameroomenter={setGameRoomEnter} setGameroomid={setGameRoomID}/>
-						:mode === "Demo"?
-							<Game />
-						:
-							<Menu setMode={setMode} userID={userID} username={username} setGameRoomEnter={setGameRoomEnter} setGameRoomID={setGameRoomID} />
-						}
-					</>
-				}
-				<HomeButton setMode={setMode}/>
-			</div>
+			{mode === "Game"?
+				<div className="game"><Game userid={userID} roomid={gameRoomID}/></div>
+			:
+			<>
+				<div className="appHeader">
+					<TopNavbar userID={userID} username={username} setUserID={setUserID} setUsername={setUsername}/>
+					<HomeButton setMode={setMode}/>
+				</div>
+				<div className="appBody">
+							{gameRoomID !== null?
+							<>
+								<GameRoom setMode={setMode} roomid={gameRoomID} roomname={gameRoomEnter} playername={username} playerid={userID} setGameroomenter={setGameRoomEnter} setGameroomid={setGameRoomID}/>
+								<Chatroom roomid={gameRoomID} userid={userID} name={username} />
+							</>
+							:mode === "FindingRoom"?
+								<RoomList user_id={userID} user_name={username} setGameroomenter={setGameRoomEnter} setGameroomid={setGameRoomID}/>
+							:mode === "Demo"?
+								<Game />
+							:
+								<Menu setMode={setMode} userID={userID} username={username} setGameRoomEnter={setGameRoomEnter} setGameRoomID={setGameRoomID} />
+							}
+				</div>
+			</>
+			}
 		</div>
 	);
 };

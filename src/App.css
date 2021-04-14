@@ -123,6 +123,10 @@
 	margin-right: 10px;
 }
 
+.game {
+	height: 100%;
+}
+
 navbarRight {
 	flex: 1;
 	display: flex;
