@@ -56,6 +56,9 @@ GameRoom Testcase:
 1. Ready state change (passed)
 2. 4 readys with one start (passed)
 
+Roomlist Testcase:
+1. New Room update (passed)
+2. New Room delete (passed)
 
 ## Changelog
 
