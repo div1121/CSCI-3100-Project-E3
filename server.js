@@ -1,6 +1,5 @@
 import express from 'express';
 import mongoose from 'mongoose';
-import User from './dbUser.js';
 import { createServer } from 'http';
 import { Server, Socket } from "socket.io";
 import Cors from 'cors';
@@ -20,12 +19,12 @@ const Schema = mongoose.Schema;
 app.use(express.json());
 app.use(Cors());
 
-const userSchema = mongoose.Schema({
-	name: String,
-	email: String,
-	password: String,
-	score: Number
-});
+const User = mongoose.model('userinfo', new Schema({	
+	name: String,	
+	email: String,	
+	password: String,	
+    score: Number	
+}));
 
 const Room = mongoose.model('Room',new Schema({
     roomname: String,
@@ -46,7 +45,6 @@ const Message = mongoose.model('Message',new Schema({
     name: String,
     message : String
 }));
-
 
 const dbUrl = 'mongodb+srv://csci3100e3:magicmaze@cluster0.ablzq.mongodb.net/userdb?retryWrites=true&w=majority';
 
@@ -98,7 +96,7 @@ app.post('/forgetPassword', (req, res) => {
 app.post('/loginAccount', (req, res) => {
 	const dbUser = req.body;
 	
-	User.find(dbUser, {"_id" : 1, "name" : 1}, (err, data) => {
+	User.find(dbUser, {"_id" : 1, "name" : 1, "score" : 1}, (err, data) => {
 		if (err) {
 			res.status(500).send(err);
 		} else {
@@ -161,7 +159,8 @@ app.get('/room', (req, res) => {
     });
 });
 
-
+var globalplayer = [];
+		
 io.on('connection', (socket) =>{
     // data -> roomname / userid / user name (name)
     console.log('a user is connected')
@@ -225,7 +224,6 @@ io.on('connection', (socket) =>{
 	
     socket.on('ranking', async (data)=>{
         //userid, username
-		var globalplayer = [];
         var info = {userid:data.userid,name:data.name,socketid:socket.id};
         globalplayer.push(info);
         console.log(globalplayer);
@@ -287,40 +285,40 @@ io.on('connection', (socket) =>{
     });
     socket.on('move', (data)=>{
         io.to(data.roomid).emit('move',data.pos);
-});
-	
-socket.on('entrances', (data) => {
-    const id = data.roomid;
-    
-    let randomEntrances=[], boardHeight=0, boardWidth=0,randomValues;
-    for (let i = 0; i < boardHeight; i++) {
-        for (let j = 0; j < boardWidth; j++) {
-            randomEntrances.push([])
-            let entranceDifferences = [[1, -1], [1, 0], [0, 1], [-1, 1]]
-            let temp = 4
-            while (temp > 0) {
-                randomValues = Math.floor(Math.random() * temp)
-                let targetWidth = j + entranceDifferences[randomValues][0]
-                let targetHeight = i + entranceDifferences[randomValues][1]
-                if (targetWidth < 0 || targetWidth >= boardHeight || targetHeight < 0 || targetHeight >= boardHeight) {
-                    randomEntrances[j + i * boardWidth].push([])
-                    randomEntrances[j + i * boardWidth][4 - temp].push(j)
-                    randomEntrances[j + i * boardWidth][4 - temp].push(i)
-                }
-                else {
-                    randomEntrances[j + i * boardWidth].push([])
-                    randomEntrances[j + i * boardWidth][4 - temp].push(targetWidth)
-                    randomEntrances[j + i * boardWidth][4 - temp].push(targetHeight)
-                }
-                temp--
-                entranceDifferences.splice(randomValues, 1)
-            }
-        }
-    }
-    io.to(data.roomid).emit('entrances',randomEntrances);
-}
-
-	
+	});
+    socket.on('startgame', async (data) => {
+        io.to(data.roomid).emit('startgame');
+    });
+	socket.on('entrances', (data) => {
+		const id = data.roomid;
+		
+		let randomEntrances=[], boardHeight=0, boardWidth=0,randomValues;
+		for (let i = 0; i < boardHeight; i++) {
+			for (let j = 0; j < boardWidth; j++) {
+				randomEntrances.push([])
+				let entranceDifferences = [[1, -1], [1, 0], [0, 1], [-1, 1]]
+				let temp = 4
+				while (temp > 0) {
+					randomValues = Math.floor(Math.random() * temp)
+					let targetWidth = j + entranceDifferences[randomValues][0]
+					let targetHeight = i + entranceDifferences[randomValues][1]
+					if (targetWidth < 0 || targetWidth >= boardHeight || targetHeight < 0 || targetHeight >= boardHeight) {
+						randomEntrances[j + i * boardWidth].push([])
+						randomEntrances[j + i * boardWidth][4 - temp].push(j)
+						randomEntrances[j + i * boardWidth][4 - temp].push(i)
+					}
+					else {
+						randomEntrances[j + i * boardWidth].push([])
+						randomEntrances[j + i * boardWidth][4 - temp].push(targetWidth)
+						randomEntrances[j + i * boardWidth][4 - temp].push(targetHeight)
+					}
+					temp--
+					entranceDifferences.splice(randomValues, 1)
+				}
+			}
+		}
+		io.to(data.roomid).emit('entrances',randomEntrances);
+	});
 });
 
 http.listen(port, ()=>console.log(`Listening on: ${port}`));
