@@ -328,11 +328,19 @@ class Game extends Component {
             his.push(data);
             this.setState({playerPosition:pos});
         })
+        /*
         fetch(baseURL+'/entrances?'+new URLSearchParams({roomid:this.props.roomid}))
             .then(res=>res.json())
             .then(res=>{
                 this.setState({randomEntrances:res})
             });
+         */
+        if (this.state.playerIndex==0) {
+            ws.emit('entrances', {roomid: this.props.roomid});
+        }
+        ws.on('entrances',(data)=>{
+            this.setState({randomEntrances:res});
+        });
     }
     
     render() {
