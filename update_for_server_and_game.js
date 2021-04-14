@@ -1,15 +1,17 @@
-// for move
-//backend
+// for updating all players' positions
+//backend inside io.on
 socket.on('move', (data)=>{
     io.to(data.roomid).emit('move',data.pos);
 });
 
 
-//frontend
+//Game.js
 import ws from './service';
 componentDidMount() {
     ws.on('move', (data)=>{
-         this.setState({playerPosition: data});
+	    let pos = this.state.playerPosition;
+            his.push(data);
+            this.setState({playerPosition:pos});
         })
     }
 
@@ -21,7 +23,7 @@ ws.emit('move',obj);
 
 
 
-//for entrance
+//for generating random entrances
 //backend
 const Entrances = mongoose.model('Entrances',new Schema({
     roomid: String,
