@@ -9,7 +9,7 @@ socket.on('move', (data)=>{
 import ws from './service';
 componentDidMount() {
     ws.on('move', (data)=>{
-         this.setState({playPosition: data});
+         this.setState({playerPosition: data});
         })
     }
 
