@@ -40,7 +40,6 @@ class Game extends Component {
         this.initializeBoardPlayer = this.initializeBoardPlayer.bind(this)
         this.startGame = this.startGame.bind(this)
         this.setRanking = this.setRanking.bind(this)
-        this.setEntrances = this.setEntrances.bind(this)
         this.countTotalMoves = this.countTotalMoves.bind(this)
         this.setTime = this.setTime.bind(this)
         this.handleKeyUp = this.handleKeyUp.bind(this)
