@@ -47,6 +47,11 @@ const Message = mongoose.model('Message',new Schema({
     message : String
 }));
 
+const Entrances = mongoose.model('Entrances',new Schema({
+    roomid: String,
+    randomEntrances: Array
+}));
+
 const dbUrl = 'mongodb+srv://csci3100e3:magicmaze@cluster0.ablzq.mongodb.net/userdb?retryWrites=true&w=majority';
 
 mongoose.connect(dbUrl,{
@@ -159,6 +164,41 @@ app.get('/room', (req, res) => {
         res.send(messages);
     });
 });
+
+app.get('/entrances', (req, res) => {
+    const id = req.query.roomid;
+    
+    let randomEntrances=[], boardHeight=0, boardWidth=0,randomValues;
+    for (let i = 0; i < boardHeight; i++) {
+        for (let j = 0; j < boardWidth; j++) {
+            randomEntrances.push([])
+            let entranceDifferences = [[1, -1], [1, 0], [0, 1], [-1, 1]]
+            let temp = 4
+            while (temp > 0) {
+                randomValues = Math.floor(Math.random() * temp)
+                let targetWidth = j + entranceDifferences[randomValues][0]
+                let targetHeight = i + entranceDifferences[randomValues][1]
+                if (targetWidth < 0 || targetWidth >= boardHeight || targetHeight < 0 || targetHeight >= boardHeight) {
+                    randomEntrances[j + i * boardWidth].push([])
+                    randomEntrances[j + i * boardWidth][4 - temp].push(j)
+                    randomEntrances[j + i * boardWidth][4 - temp].push(i)
+                }
+                else {
+                    randomEntrances[j + i * boardWidth].push([])
+                    randomEntrances[j + i * boardWidth][4 - temp].push(targetWidth)
+                    randomEntrances[j + i * boardWidth][4 - temp].push(targetHeight)
+                }
+                temp--
+                entranceDifferences.splice(randomValues, 1)
+            }
+        }
+    }
+    
+    Entrances.create({ roomid: id, randomEntrances: randomEntrances}, function (err, user) { if (err) return handleError(err);});  
+    Entrances.find({"roomid": id}, (err, messages) => {
+        res.send(messages);
+    });
+}
 
 io.on('connection', (socket) =>{
     // data -> roomname / userid / user name (name)
@@ -283,6 +323,10 @@ io.on('connection', (socket) =>{
             socket.leave(data.roomid);
         }
     });
+    socket.on('move', (data)=>{
+        io.to(data.roomid).emit('move',data.pos);
+});
+	
 });
 
 http.listen(port, ()=>console.log(`Listening on: ${port}`));
