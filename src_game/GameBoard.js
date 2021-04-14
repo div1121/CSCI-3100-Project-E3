@@ -35,7 +35,7 @@ import silver_border_long from "./picture/border/silver_border_long.gif"
 import bronze_border_long from "./picture/border/bronze_border_long.gif"
 import stone_border_long from "./picture/border/stone_border_long.gif"
 import border_long_2 from "./picture/border/border_long_2.gif"
-import empty_img from "./picture/empty.gif";
+import empty_img from "./picture/empty.gif"
 pressed.start()
 
 class GameBoard extends Component {
@@ -118,7 +118,8 @@ class GameBoard extends Component {
             boardHeight,
             boardWidth,
             areaHeight,
-            areaWidth
+            areaWidth,
+            gameOver
         } = props
         let {
             board,
@@ -137,6 +138,7 @@ class GameBoard extends Component {
             board[Math.floor(ny / areaHeight)][Math.floor(nx / areaWidth)][ny % areaHeight][nx % areaWidth] = entityStates.player + i
             if (Math.floor(ny / areaHeight) + Math.floor(nx / areaWidth) - 1 < vanishNum) vanishNum = Math.floor(ny / areaHeight) + Math.floor(nx / areaWidth) - 1
         }
+        if (gameOver) vanishNum = boardHeight + boardWidth - 2
         for (let i = 0; i <= vanishNum; i++) vanish[i] = true
         this.setState({
             board: board,
@@ -153,7 +155,8 @@ class GameBoard extends Component {
             boardHeight,
             startTime,
             currentTime,
-            ranking
+            ranking,
+            gameOver
         } = this.props
         let {
             board,
@@ -183,29 +186,43 @@ class GameBoard extends Component {
                         w_2 = "200"
                         w_0 = "80"
                         t_0 = ""
-                        t_1 = "Name: " + "Player" + i
-                        t_2 = "Position: (" + playerPos[0].x + ", " + playerPos[0].y + ")"
-                        t_3 = "Level: " + playerLevel[ranking[i]]
-                        let playerStatus = "Unfinished"
-                        if (playerLevel === boardWidth + boardHeight - 2) playerStatus = "Finished"
-                        t_4 = "Status: " + playerStatus
-                        t_5 = "Score: 1000"
-                        if (ranking[i] === 0) {
+                        if (gameOver) {
+                            t_1 = "Name: " + "Player" + ranking[i]
+                            t_2 = "Position: (" + playerPos[0].x + ", " + playerPos[0].y + ")"
+                            t_3 = "Level: " + playerLevel[ranking[i]]
+                            let playerStatus = "Unfinished"
+                            if (playerLevel[ranking[i]] === boardWidth + boardHeight - 2) playerStatus = "Finished"
+                            t_4 = "Status: " + playerStatus
+                            t_5 = "Score: 1000 + 2 = 1002"
+                        }
+                        else {
+                            t_1 = "Name: " + "Player" + ranking[i]
+                            t_2 = "Position: (" + playerPos[0].x + ", " + playerPos[0].y + ")"
+                            t_3 = "Level: " + playerLevel[ranking[i]]
+                            let playerStatus = "Unfinished"
+                            if (playerLevel[ranking[i]] === boardWidth + boardHeight - 2) playerStatus = "Finished"
+                            t_4 = "Status: " + playerStatus
+                            t_5 = "Score: 1000"
+                        }
+                        if (i === 0) {
                             border_square = gold_border_square
                             border_long = gold_border_long
                         }
-                        if (ranking[i] === 1) {
+                        if (i === 1) {
                             border_square = silver_border_square
                             border_long = silver_border_long
                         }
-                        if (ranking[i] === 2) {
+                        if (i === 2) {
                             border_square = bronze_border_square
                             border_long = bronze_border_long
                         }
-                        if (ranking[i] === 3) {
+                        if (i === 3) {
                             border_square = stone_border_square
                             border_long = stone_border_long
                         }
+                    }
+                    else {
+                        if (gameOver) t_0 = "GAME OVER!"
                     }
                     return (
                         <tr>
