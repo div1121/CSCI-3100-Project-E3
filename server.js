@@ -4,13 +4,14 @@ import User from './dbUser.js';
 import { createServer } from 'http';
 import { Server, Socket } from "socket.io";
 import Cors from 'cors';
+import nodemailer from 'nodemailer';
 
 const app = express();
 const port = process.env.PORT || 9000;
 const http = createServer(app);
 const io = new Server(http, {
     cors: {
-        origin: '*',
+        origin: '*',	
     }
 });
 
@@ -52,6 +53,39 @@ app.get('/', (req,res) => {
 });
 
 const db = mongoose.connection;
+
+const transporter = nodemailer.createTransport({
+	service: 'gmail',
+	auth: {
+		user: 'csci3100magicmaze@gmail.com',
+		pass: 'magicmazecsci3100'
+	}
+});
+
+app.post('/forgetPassword', (req, res) => {
+	const dbUser = req.body;
+	User.find(dbUser, {"email" : 1}, (err, data) => {
+		if (err) {
+			res.status(500).send(err);
+		} else {
+			res.status(200).send(data);
+			console.log(data[0]);
+			const mailOptions = {
+				from: 'csci3100magicmaze@gmail.com',
+				to: data[0].email,
+				subject: 'Sending Email using Node.js',
+				text: 'That was easy!'
+			};
+			transporter.sendMail(mailOptions, (error, info) => {
+				if (error) {
+					console.log(error);
+				} else {
+					console.log('Email sent: ' + info.response);
+				}
+			});
+		}
+	})
+})
 
 app.post('/loginAccount', (req, res) => {
 	const dbUser = req.body;
@@ -95,7 +129,11 @@ app.get('/messages', (req, res) => {
     //console.log(name);
     Message.find({"roomid": id}, (err, messages) => {
         //console.log(messages);
-        res.send(messages);
+		if (err) {
+			res.status(500).send(err);
+		} else {
+			res.status(201).send(messages);
+		}
     });
 });
 
@@ -174,7 +212,34 @@ io.on('connection', (socket) =>{
         // console.log(doc);
         io.to(data.roomid).emit('readychange',data);
     });
-
+	
+    socket.on('ranking', async (data)=>{
+        //userid, username
+		var globalplayer = [];
+        var info = {userid:data.userid,name:data.name,socketid:socket.id};
+        globalplayer.push(info);
+        console.log(globalplayer);
+        if (globalplayer.length==4){
+            var temp = globalplayer.splice(0,5);
+            globalplayer = globalplayer.splice(0,4);
+            var rom = {roomname: "Ranking", numofusers: 4};
+            var room = new Room(rom);
+            let obj = await room.save();
+            var id = obj._id.toString();
+            for (var i=0;i<temp.length;i++){
+                var memberdata = {roomid: id, userid: temp[i].userid, name:temp[i].name, socketID: temp[i].socketid, ready: false};
+                var roommember = new RoomMember(memberdata);
+                let memobj = await roommember.save();
+            }
+            for (var i=0;i<temp.length;i++) {
+                var ele = temp[i];
+                var sid = ele.socketid;
+                io.to(sid).emit('getroominfo',{roomid:id, roomname:"Ranking"});
+            }
+            io.emit('createroom',obj);
+        }
+    });
+	
     socket.on("leaveroom", async (data) => {
         // data -> roomid, roomname / userid / user name (name)
         await RoomMember.deleteOne({roomid:data.roomid, userid:data.userid});
