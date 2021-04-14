@@ -30,6 +30,11 @@ import gold_border_square from "./picture/border/gold_border_square.gif"
 import silver_border_square from "./picture/border/silver_border_square.gif"
 import bronze_border_square from "./picture/border/bronze_border_square.gif"
 import stone_border_square from "./picture/border/stone_border_square.gif"
+import gold_border_long from "./picture/border/gold_border_long.gif"
+import silver_border_long from "./picture/border/silver_border_long.gif"
+import bronze_border_long from "./picture/border/bronze_border_long.gif"
+import stone_border_long from "./picture/border/stone_border_long.gif"
+import border_long_2 from "./picture/border/border_long_2.gif"
 import empty_img from "./picture/empty.gif";
 pressed.start()
 
@@ -143,12 +148,12 @@ class GameBoard extends Component {
         let {
             playerPosition,
             playerFacing,
-            areaHeight,
-            areaWidth,
+            playerLevel,
             boardWidth,
             boardHeight,
             startTime,
-            currentTime
+            currentTime,
+            ranking
         } = this.props
         let {
             board,
@@ -166,29 +171,41 @@ class GameBoard extends Component {
             <div>
                 {board.map(function(boardRow, i) {
                     let playerPos = [{x: 0, y: 0}]
-                    let border_square = empty_img
+                    let border_square = border_long_2
+                    let border_long = empty_img
                     let w_0 = "0", w_1 = "300", w_2 = "0"
                     let timePass = 60 + startTime - currentTime
                     let t_0 = "Time: " + timePass, t_1 = "", t_2 = "", t_3 = "", t_4 = "", t_5 = ""
                     if (i < 4) {
-                        playerPos[0].x = playerPosition[i].x
-                        playerPos[0].y = playerPosition[i].y
+                        playerPos[0].x = playerPosition[ranking[i]].x
+                        playerPos[0].y = playerPosition[ranking[i]].y
                         w_1 = "100"
                         w_2 = "200"
                         w_0 = "80"
                         t_0 = ""
                         t_1 = "Name: " + "Player" + i
                         t_2 = "Position: (" + playerPos[0].x + ", " + playerPos[0].y + ")"
-                        let playerLevel = Math.floor(playerPos[0].x / areaWidth) + Math.floor(playerPos[0].y / areaHeight)
-                        t_3 = "Level: " + playerLevel
+                        t_3 = "Level: " + playerLevel[ranking[i]]
                         let playerStatus = "Unfinished"
                         if (playerLevel === boardWidth + boardHeight - 2) playerStatus = "Finished"
                         t_4 = "Status: " + playerStatus
                         t_5 = "Score: 1000"
-                        if (i === 0) border_square = gold_border_square
-                        if (i === 1) border_square = silver_border_square
-                        if (i === 2) border_square = bronze_border_square
-                        if (i === 3) border_square = stone_border_square
+                        if (ranking[i] === 0) {
+                            border_square = gold_border_square
+                            border_long = gold_border_long
+                        }
+                        if (ranking[i] === 1) {
+                            border_square = silver_border_square
+                            border_long = silver_border_long
+                        }
+                        if (ranking[i] === 2) {
+                            border_square = bronze_border_square
+                            border_long = bronze_border_long
+                        }
+                        if (ranking[i] === 3) {
+                            border_square = stone_border_square
+                            border_long = stone_border_long
+                        }
                     }
                     return (
                         <tr>
@@ -259,7 +276,7 @@ class GameBoard extends Component {
                             </td>
                             {playerPos.map(function(p) {
                                 let obj_img = empty_img
-                                if (i < 4) obj_img = playerImg[i][1]
+                                if (i < 4) obj_img = playerImg[ranking[i]][1]
                                 return (
                                     <td
                                         style = {{
@@ -284,6 +301,7 @@ class GameBoard extends Component {
                                             height = "100"
                                             bordercolor = "black"
                                             style = {{
+                                                backgroundImage: `url(${border_long})`,
                                                 color: "white",
                                                 fontSize: "12px"
                                             }}
