@@ -1,5 +1,5 @@
 import React, {
-    Component
+    Component, useEffect
 } from 'react';
 import GameBoard from './GameBoard'
 import background from "./picture/bakground.jpg";
@@ -12,6 +12,8 @@ class Game extends Component {
         super(props)
         this.state = {
             win: false,
+            startTime: 0,
+            currentTime: 0,
             showGameBoard: false,
             boardHeight: 0,
             boardWidth: 0,
@@ -29,6 +31,7 @@ class Game extends Component {
         this.startGame = this.startGame.bind(this)
         this.setEntrances = this.setEntrances.bind(this)
         this.countTotalMoves = this.countTotalMoves.bind(this)
+        this.setTime = this.setTime.bind(this)
         this.handleKeyUp = this.handleKeyUp.bind(this)
         this.handleKeyDown = this.handleKeyDown.bind(this)
         this.handleKeyRight = this.handleKeyRight.bind(this)
@@ -47,6 +50,10 @@ class Game extends Component {
         let areaHeight = 5
         let playerNumber = 4
         let playerFacing = []
+        let startTime = 0
+        let currentTime = 0
+        let nowTime = new Date()
+        startTime = nowTime.getHours() * 3600 + nowTime.getMinutes() * 60 + nowTime.getSeconds()
         /*let playerPosition = []
         let prevPlayerPos = []*/
         for (let i = 0; i < playerNumber; i++) {
@@ -77,6 +84,8 @@ class Game extends Component {
             playerFacing,
             playerPosition,
             prevPlayerPos,
+            startTime,
+            currentTime,
             showGameBoard: true
         }, () => {
             this.startGame()
@@ -127,6 +136,22 @@ class Game extends Component {
         this.setState({
             totalMoves: ++this.state.totalMoves
         })
+    }
+
+    setTime() {
+        let {
+            currentTime
+        } = this.state
+        let nowTime = new Date()
+        currentTime = nowTime.getHours() * 3600 + nowTime.getMinutes() * 60 + nowTime.getSeconds()
+        this.setState({
+            currentTime: currentTime
+        })
+    }
+
+    countTime() {
+        setInterval(this.setTime, 1)
+        
     }
 
     handleKeyUp(e) {
@@ -308,6 +333,12 @@ class Game extends Component {
                             }
                             prevPlayerPos = {
                                 this.state.prevPlayerPos
+                            }
+                            startTime = {
+                                this.state.startTime
+                            }
+                            currentTime = {
+                                this.state.currentTime
                             }
                             totalMoves = {
                                 this.state.totalMoves
