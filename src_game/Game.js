@@ -145,8 +145,8 @@ class Game extends Component {
 
     startGame() {
         this.setRanking()
+        this.setTime()
     }
-
     
     countTotalMoves() {
         this.setState({
@@ -163,10 +163,6 @@ class Game extends Component {
         this.setState({
             currentTime: currentTime
         })
-    }
-
-    countTime() {
-        setInterval(this.setTime, 1)
     }
 
     setRanking() {
@@ -321,7 +317,9 @@ class Game extends Component {
         this.countTotalMoves()
         this.setRanking()
     }
+
     componentDidMount() {
+        this.interval = setInterval(this.setTime, 1000);
         ws.on('move', (data)=>{
 	        let pos = this.state.playerPosition;
             his.push(data);
