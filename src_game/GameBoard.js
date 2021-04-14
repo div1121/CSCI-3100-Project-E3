@@ -148,6 +148,7 @@ class GameBoard extends Component {
 
     render() {
         let {
+            playerNumber,
             playerName,
             preScore,
             playerScore,
@@ -180,9 +181,10 @@ class GameBoard extends Component {
                     let border_square = border_long_2
                     let border_long = empty_img
                     let w_0 = "0", w_1 = "300", w_2 = "0"
-                    let timePass = 60 + startTime - currentTime
+                    let timePass = 64 + startTime - currentTime
                     let t_0 = "Time: " + timePass, t_1 = "", t_2 = "", t_3 = "", t_4 = "", t_5 = "", t_6 = ""
-                    if (i < 4) {
+                    let colour_0 = "white"
+                    if (i < playerNumber) {
                         playerPos[0].x = playerPosition[ranking[i]].x
                         playerPos[0].y = playerPosition[ranking[i]].y
                         w_1 = "100"
@@ -242,6 +244,15 @@ class GameBoard extends Component {
                     }
                     else {
                         if (gameOver) t_0 = "GAME OVER!"
+                        if (timePass > 61) {
+                            t_0 = "Ready... " + (timePass - 61)
+                        }
+                        if (timePass === 61) {
+                            t_0 = "GO!!!"
+                        }
+                        if (timePass <= 5 || timePass >= 61) {
+                            colour_0 = "red"
+                        }
                     }
                     return (
                         <tr>
@@ -312,7 +323,7 @@ class GameBoard extends Component {
                             </td>
                             {playerPos.map(function(p) {
                                 let obj_img = empty_img
-                                if (i < 4) obj_img = playerImg[ranking[i]][1]
+                                if (i < playerNumber) obj_img = playerImg[ranking[i]][1]
                                 return (
                                     <td
                                         style = {{
@@ -325,7 +336,7 @@ class GameBoard extends Component {
                                             height = "100"
                                             style = {{
                                                 backgroundImage: `url(${border_square})`,
-                                                color: "white",
+                                                color: colour_0,
                                                 fontSize: "40px"
                                             }}
                                         >
