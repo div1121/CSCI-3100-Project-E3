@@ -23,11 +23,11 @@ class Playerline extends Component{
                 {
                     this.props.position && this.props.ready_num===4 &&
                     <td>
-                        <button onClick={this.props.startGame}>Start</button>
+                        <button onClick={this.props.startgame}>Start</button>
                     </td>
                 }
             </tr>
-            )
+        )
     }
 }
 
@@ -40,8 +40,13 @@ class Gameroom extends Component{
         this.addready = this.addready.bind(this);
         this.minusready = this.minusready.bind(this);
         this.handleLeaveRoom = this.handleLeaveRoom.bind(this);
+        this.startgame = this.startgame.bind(this);
     }
 
+	startgame()	{
+        ws.emit('startgame',{roomid:this.props.roomid});
+	}
+	
     componentDidMount(){
         fetch(baseURL+'/roommember?'+new URLSearchParams({roomid:this.props.roomid}))
             .then(res=>res.json())
@@ -79,6 +84,10 @@ class Gameroom extends Component{
 
         ws.on('readychange', data => {
             this.setState({ready_num: data.ready_num, ready_state:data.ready_state});
+        });
+		
+        ws.on('startgame', () => {
+            this.props.setMode("Game");
         });
 
         ws.on('decreaseroommember', data =>{
@@ -142,7 +151,10 @@ class Gameroom extends Component{
                                      playername={this.state.player_list[i]}
                                      handleready={list[i]}
                                      position={i===0 && list[0]!==null}
-                                     ready_num={this.state.ready_num}/>);
+                                     ready_num={this.state.ready_num}
+									 setMode={this.props.setMode}
+									 roomid={this.state.roomid}
+									 startgame={this.startgame}/>);
         }
         return (<div>
             <h1>Game Room</h1>

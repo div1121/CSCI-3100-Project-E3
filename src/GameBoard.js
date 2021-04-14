@@ -26,7 +26,16 @@ import man_4_back from "./picture/man/man_4_back.gif";
 import man_4_front from "./picture/man/man_4_front.gif";
 import man_4_left from "./picture/man/man_4_left.gif";
 import man_4_right from "./picture/man/man_4_right.gif";
-import empty_img from "./picture/empty.gif";
+import gold_border_square from "./picture/border/gold_border_square.gif"
+import silver_border_square from "./picture/border/silver_border_square.gif"
+import bronze_border_square from "./picture/border/bronze_border_square.gif"
+import stone_border_square from "./picture/border/stone_border_square.gif"
+import gold_border_long from "./picture/border/gold_border_long.gif"
+import silver_border_long from "./picture/border/silver_border_long.gif"
+import bronze_border_long from "./picture/border/bronze_border_long.gif"
+import stone_border_long from "./picture/border/stone_border_long.gif"
+import border_long_2 from "./picture/border/border_long_2.gif"
+import empty_img from "./picture/empty.gif"
 pressed.start()
 
 class GameBoard extends Component {
@@ -109,7 +118,8 @@ class GameBoard extends Component {
             boardHeight,
             boardWidth,
             areaHeight,
-            areaWidth
+            areaWidth,
+            gameOver
         } = props
         let {
             board,
@@ -128,6 +138,7 @@ class GameBoard extends Component {
             board[Math.floor(ny / areaHeight)][Math.floor(nx / areaWidth)][ny % areaHeight][nx % areaWidth] = entityStates.player + i
             if (Math.floor(ny / areaHeight) + Math.floor(nx / areaWidth) - 1 < vanishNum) vanishNum = Math.floor(ny / areaHeight) + Math.floor(nx / areaWidth) - 1
         }
+        if (gameOver) vanishNum = boardHeight + boardWidth - 2
         for (let i = 0; i <= vanishNum; i++) vanish[i] = true
         this.setState({
             board: board,
@@ -137,8 +148,19 @@ class GameBoard extends Component {
 
     render() {
         let {
+            playerNumber,
+            playerName,
+            preScore,
+            playerScore,
             playerPosition,
-            playerFacing
+            playerFacing,
+            playerLevel,
+            boardWidth,
+            boardHeight,
+            startTime,
+            currentTime,
+            ranking,
+            gameOver
         } = this.props
         let {
             board,
@@ -151,10 +173,87 @@ class GameBoard extends Component {
             [man_3_back, man_3_front, man_3_left, man_3_right],
             [man_4_back, man_4_front, man_4_left, man_4_right]
         ]
-        console.log(board);
+        //console.log(board);
         return(
             <div>
                 {board.map(function(boardRow, i) {
+                    let playerPos = [{x: 0, y: 0}]
+                    let border_square = border_long_2
+                    let border_long = empty_img
+                    let w_0 = "0", w_1 = "300", w_2 = "0"
+                    let timePass = 64 + startTime - currentTime
+                    let t_0 = "Time: " + timePass, t_1 = "", t_2 = "", t_3 = "", t_4 = "", t_5 = "", t_6 = ""
+                    let colour_0 = "white"
+                    if (i < playerNumber) {
+                        playerPos[0].x = playerPosition[ranking[i]].x
+                        playerPos[0].y = playerPosition[ranking[i]].y
+                        w_1 = "100"
+                        w_2 = "200"
+                        w_0 = "80"
+                        t_0 = ""
+                        if (gameOver) {
+                            t_1 = "Name: " + playerName[ranking[i]]
+                            t_2 = "Position: (" + playerPos[0].x + ", " + playerPos[0].y + ")"
+                            t_3 = "Level: " + playerLevel[ranking[i]]
+                            let playerStatus = "Unfinished"
+                            if (playerLevel[ranking[i]] === boardWidth + boardHeight - 2) playerStatus = "Finished"
+                            t_4 = "Status: " + playerStatus
+                            if (i === 0) {
+                                if (playerStatus === "Finished") t_6 = " + 2 = "
+                                else t_6 = " + 0 = "
+                            }
+                            if (i === 1) {
+                                if (playerStatus === "Finished") t_6 = " + 1 = "
+                                else t_6 = " - 1 = "
+                            }
+                            if (i === 2) {
+                                if (playerStatus === "Finished") t_6 = " - 1 = "
+                                else t_6 = " - 3 = "
+                            }
+                            if (i === 3) {
+                                if (playerStatus === "Finished") t_6 = " - 2 = "
+                                else t_6 = " - 4 = "
+                            }
+                            t_5 = "Score: " + preScore[ranking[i]] + t_6 + playerScore[ranking[i]]
+                        }
+                        else {
+                            t_1 = "Name: " + playerName[ranking[i]]
+                            t_2 = "Position: (" + playerPos[0].x + ", " + playerPos[0].y + ")"
+                            t_3 = "Level: " + playerLevel[ranking[i]]
+                            let playerStatus = "Unfinished"
+                            if (playerLevel[ranking[i]] === boardWidth + boardHeight - 2) playerStatus = "Finished"
+                            t_4 = "Status: " + playerStatus
+                            t_5 = "Score: " + preScore[ranking[i]]
+                        }
+                        if (i === 0) {
+                            border_square = gold_border_square
+                            border_long = gold_border_long
+                        }
+                        if (i === 1) {
+                            border_square = silver_border_square
+                            border_long = silver_border_long
+                        }
+                        if (i === 2) {
+                            border_square = bronze_border_square
+                            border_long = bronze_border_long
+                        }
+                        if (i === 3) {
+                            border_square = stone_border_square
+                            border_long = stone_border_long
+                        }
+                    }
+                    else {
+                        if (gameOver) t_0 = "GAME OVER!"
+                        if (timePass > 61) {
+                            t_0 = "Ready... " + (timePass - 61)
+                        }
+                        if (timePass === 61) {
+                            t_0 = "GO!!!"
+                        }
+                        if (timePass <= 5 || timePass >= 61) {
+                            colour_0 = "red"
+                        }
+                    }
                     return (
                         <tr>
                             {boardRow.map(function(area, j) {
@@ -182,7 +281,7 @@ class GameBoard extends Component {
                                             className = "area"
                                             cellSpacing = "0"
                                             id = "table"
-                                            border = "2px"
+                                            border = "3px"
                                             width = "100"
                                             height = "100"
                                             textAlign = "center"
@@ -222,9 +321,56 @@ class GameBoard extends Component {
                                 >
                                 </table>
                             </td>
+                            {playerPos.map(function(p) {
+                                let obj_img = empty_img
+                                if (i < playerNumber) obj_img = playerImg[ranking[i]][1]
+                                return (
+                                    <td
+                                        style = {{
+                                            backgroundImage: `url(${black_floor})`,
+                                            verticalAlign: "middle",
+                                            textAlign: "center"
+                                        }}>
+                                        <td
+                                            width = {w_1}
+                                            height = "100"
+                                            style = {{
+                                                backgroundImage: `url(${border_square})`,
+                                                color: colour_0,
+                                                fontSize: "40px"
+                                            }}
+                                        >
+                                            {t_0}
+                                            <img align="center" height="60" width={w_0} src={obj_img}/>
+                                        </td>
+                                        <td
+                                            width = {w_2}
+                                            height = "100"
+                                            bordercolor = "black"
+                                            style = {{
+                                                backgroundImage: `url(${border_long})`,
+                                                color: "white",
+                                                fontSize: "12px"
+                                            }}
+                                        >
+                                            <p>
+                                                {t_1}
+                                                <br></br>
+                                                {t_2}
+                                                <br></br>
+                                                {t_3}
+                                                <br></br>
+                                                {t_4}
+                                                <br></br>
+                                                {t_5}
+                                            </p>
+                                        </td>
+                                    </td>
+                                )
+                            })}
                         </tr>
                     );
-                    })}
+                })}
             </div>
         )
     }
