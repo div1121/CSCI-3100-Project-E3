@@ -5,6 +5,7 @@ import GameBoard from './GameBoard'
 import background from "./picture/background.jfif";
 import _ from 'lodash'
 import KeyHandler, {KEYDOWN} from 'react-key-handler';
+import ws from './service';
 const baseURL = "https://magic-maze-backend.herokuapp.com";
 
 class Game extends Component {
@@ -351,10 +352,24 @@ class Game extends Component {
             levelCounter,
             gameOver
         })
+        let obj = {roomid: this.state.roomid, pos: this.state.playerPosition};
+        ws.emit('move',obj);
         this.countTotalMoves()
         this.setRanking()
     }
-
+    componentDidMount() {
+        ws.on('move', (data)=>{
+	        let pos = this.state.playerPosition;
+            his.push(data);
+            this.setState({playerPosition:pos});
+        })
+        fetch(baseURL+'/entrances?'+new URLSearchParams({roomid:this.props.roomid}))
+            .then(res=>res.json())
+            .then(res=>{
+                this.setState({randomEntrances:res})
+            });
+    }
+    
     render() {
 
         let {
