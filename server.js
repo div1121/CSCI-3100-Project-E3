@@ -125,14 +125,14 @@ app.post('/updateAccount', (req, res) => {
 })
 
 app.get('/messages', (req, res) => {
-    const id = req.body.roomid;
+    const id = req.query.roomid;
     //console.log(name);
     Message.find({"roomid": id}, (err, messages) => {
         //console.log(messages);
 		if (err) {
 			res.status(500).send(err);
 		} else {
-			res.status(201).send(messages);
+			res.status(200).send(messages);
 		}
     });
 });
