@@ -1,5 +1,7 @@
 import React from 'react';
 import ws from './service';
+//const baseURL = "http://localhost:9000";
+const baseURL = "https://magic-maze-backend.herokuapp.com";
 
 class SendChat extends React.Component {
     constructor(props) {
@@ -8,7 +10,7 @@ class SendChat extends React.Component {
       this.handleChange = this.handleChange.bind(this);
       this.handleSubmit = this.handleSubmit.bind(this);
     }
-  
+
     handleChange(event) {
         const target = event.target;
         const value = target.type === 'checkbox' ? target.checked : target.value;
@@ -27,7 +29,8 @@ class SendChat extends React.Component {
     }
 
     componentDidMount(){
-        fetch('/messages?'+new URLSearchParams({roomid:this.props.roomid}))
+		//console.log("hihiihhiihihiihi");
+        fetch(baseURL+'/messages?'+new URLSearchParams({roomid:this.props.roomid}))
             .then(res=>res.json())
             .then(res=>{
                 this.setState({history:res})
@@ -35,7 +38,7 @@ class SendChat extends React.Component {
                 //console.log(this.props.roomname);
             });
         ws.on('message', message => {
-            console.log(message);
+            // console.log(message);
             let his = this.state.history;
             his.push(message);
             this.setState({history:his});
@@ -52,11 +55,12 @@ class SendChat extends React.Component {
             chatlist.push(<div>{name}: {message}</div>);
         }
       return (
-          <div>
+          <div className="chat">
+              <h1>Chat Room</h1>
               {chatlist}
             <form onSubmit={this.handleSubmit}>
                 <label>Input Text</label><br></br>
-                <textarea name="value" value={this.state.value} placeholder="Send a message" onChange={this.handleChange} />
+                <textarea name="value" type="text" value={this.state.value} placeholder="Send a message" onChange={this.handleChange} />
                 <input type="submit" value="Submit" />
             </form>
           </div>
