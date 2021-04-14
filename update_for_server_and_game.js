@@ -26,7 +26,7 @@ componentDidUpdate(prevProps, prevState) {
 //backend
 const Entrances = mongoose.model('Entrances',new Schema({
     roomid: String,
-    randomEntrances: //what type can represent array?
+    randomEntrances: Array
 }));
 
 app.get('/entrances', (req, res) => {
