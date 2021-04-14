@@ -59,6 +59,7 @@ class Game extends Component {
         let boardHeight = 5
         let areaWidth = 5
         let areaHeight = 5
+        let playerIndex = 0
         let playerID = []
         let playerNumber = 0
         let playerName = ["Jason", "Kenny", "Benny", "Knife"]
@@ -78,6 +79,7 @@ class Game extends Component {
                 playerName = []
                 playerNumber = res.length
                 for (let i = 0; i < res.length; i++) {
+                    if (res[i].userid === this.props.userid) playerIndex = i
                     playerID.push(res[i].userid);
                     playerName.push(res[i].name);
                 }
@@ -125,6 +127,7 @@ class Game extends Component {
             boardWidth: boardWidth,
             areaWidth: areaWidth,
             areaHeight: areaHeight,
+            playerIndex: playerIndex,
             playerNumber: playerNumber,
             playerName: playerName,
             preScore: preScore,
