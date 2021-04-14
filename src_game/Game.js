@@ -12,6 +12,7 @@ class Game extends Component {
         super(props)
         this.state = {
             win: false,
+            playerIndex: 0,
             startTime: 0,
             currentTime: 0,
             showGameBoard: false,
@@ -159,10 +160,11 @@ class Game extends Component {
         let {
             playerPosition,
             areaHeight,
-            playerFacing
+            playerFacing,
+            playerIndex
         } = this.state
-        playerFacing[0] = 0
-        if (Number(playerPosition[0].y) % areaHeight - 1 >= 0) this.makeMove(playerPosition[0].x, playerPosition[0].y - 1)
+        playerFacing[playerIndex] = 0
+        if (Number(playerPosition[playerIndex].y) % areaHeight - 1 >= 0) this.makeMove(playerPosition[playerIndex].x, playerPosition[playerIndex].y - 1)
     }
 
     handleKeyDown(e) {
@@ -170,10 +172,11 @@ class Game extends Component {
         let {
             playerPosition,
             areaHeight,
-            playerFacing
+            playerFacing,
+            playerIndex
         } = this.state
-        playerFacing[0] = 1
-        if (Number(playerPosition[0].y) % areaHeight + 1 < areaHeight) this.makeMove(playerPosition[0].x, playerPosition[0].y + 1)
+        playerFacing[playerIndex] = 1
+        if (Number(playerPosition[playerIndex].y) % areaHeight + 1 < areaHeight) this.makeMove(playerPosition[playerIndex].x, playerPosition[playerIndex].y + 1)
     }
 
     handleKeyRight(e) {
@@ -181,10 +184,11 @@ class Game extends Component {
         let {
             playerPosition,
             areaWidth,
-            playerFacing
+            playerFacing,
+            playerIndex
         } = this.state
-        playerFacing[0] = 3
-        if (Number(playerPosition[0].x) % areaWidth + 1 < areaWidth) this.makeMove(playerPosition[0].x + 1, playerPosition[0].y)
+        playerFacing[playerIndex] = 3
+        if (Number(playerPosition[playerIndex].x) % areaWidth + 1 < areaWidth) this.makeMove(playerPosition[playerIndex].x + 1, playerPosition[playerIndex].y)
     }
 
     handleKeyLeft(e) {
@@ -192,10 +196,11 @@ class Game extends Component {
         let {
             playerPosition,
             areaWidth,
-            playerFacing
+            playerFacing,
+            playerIndex
         } = this.state
-        playerFacing[0] = 2
-        if (Number(playerPosition[0].x) % areaWidth - 1 >= 0) this.makeMove(playerPosition[0].x - 1, playerPosition[0].y)
+        playerFacing[playerIndex] = 2
+        if (Number(playerPosition[playerIndex].x) % areaWidth - 1 >= 0) this.makeMove(playerPosition[playerIndex].x - 1, playerPosition[playerIndex].y)
     }
 
     makeMove(newX, newY) {
@@ -207,13 +212,14 @@ class Game extends Component {
             boardWidth,
             areaWidth,
             areaHeight,
+            playerIndex,
             win
         } = this.state
         let prevPos = {
-            x: playerPosition[0].x,
-            y: playerPosition[0].y
+            x: playerPosition[playerIndex].x,
+            y: playerPosition[playerIndex].y
         }
-        prevPlayerPos[0] = prevPos
+        prevPlayerPos[playerIndex] = prevPos
         let x = newX % areaWidth
         let y = newY % areaHeight
         if ((x === 0 && y === 0) || (x === areaWidth - 1 && y === 0) || (x === areaWidth - 1 && y === areaHeight - 1) || (x === 0 && y === areaHeight - 1)) {
@@ -223,15 +229,15 @@ class Game extends Component {
             else if (x === areaWidth - 1 && y === areaHeight - 1) temp = 2
             else temp = 3
             let ax = Math.floor(newX / areaWidth), ay = Math.floor(newY / areaHeight)
-            let tx = randomEntrances[ax + ay * boardWidth][temp][0] * areaWidth + Math.floor(areaWidth / 2)
+            let tx = randomEntrances[ax + ay * boardWidth][temp][playerIndex] * areaWidth + Math.floor(areaWidth / 2)
             let ty = randomEntrances[ax + ay * boardWidth][temp][1] * areaHeight + Math.floor(areaHeight / 2)
-            playerPosition[0].x = tx
-            playerPosition[0].y = ty
+            playerPosition[playerIndex].x = tx
+            playerPosition[playerIndex].y = ty
             if (Math.floor(tx / areaWidth) === boardWidth - 1 && Math.floor(ty / areaHeight) === boardHeight - 1) win = true
         }
         else {
-            playerPosition[0].x = newX
-            playerPosition[0].y = newY
+            playerPosition[playerIndex].x = newX
+            playerPosition[playerIndex].y = newY
         }
         this.setState({
             playerPosition,
