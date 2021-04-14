@@ -5,6 +5,7 @@ import GameBoard from './GameBoard'
 import background from "./picture/background.jfif";
 import _ from 'lodash'
 import KeyHandler, {KEYDOWN} from 'react-key-handler';
+const baseURL = "https://magic-maze-backend.herokuapp.com";
 
 class Game extends Component {
 
@@ -22,6 +23,7 @@ class Game extends Component {
             areaWidth: 0,
             randomEntrances: [],
             randomPositions: [],
+            playerID: [],
             playerName: [],
             preScore: [],
             playerScore: [],
@@ -56,7 +58,8 @@ class Game extends Component {
         let boardHeight = 5
         let areaWidth = 5
         let areaHeight = 5
-        let playerNumber = 4
+        let playerID = []
+        let playerNumber = 0
         let playerName = ["Jason", "Kenny", "Benny", "Knife"]
         let preScore = [1000, 900, 800, 700]
         let playerScore = [1000, 900, 800, 700]
@@ -67,6 +70,27 @@ class Game extends Component {
         let currentTime = 0
         let nowTime = new Date()
         startTime = nowTime.getHours() * 3600 + nowTime.getMinutes() * 60 + nowTime.getSeconds()
+        fetch(baseURL + '/roommember?' + new URLSearchParams({roomid:this.props.roomid}))
+            .then(res => res.json())
+            .then(res => {
+                playerID = []
+                playerName = []
+                playerNumber = res.length
+                for (let i = 0; i < res.length; i++) {
+                    playerID.push(res[i].userid);
+                    playerName.push(res[i].name);
+                }
+            })
+        preScore = []
+        playerScore = []
+        for (let i = 0; i < playerNumber; i++) {
+            fetch(baseURL + '/loginAccount?' + new URLSearchParams({_id:this.props.playerID[i]}))
+            .then(res => res.json())
+            .then(res => {
+                preScore.push(res[0].score)
+                playerScore.push(res[0].score)
+            })
+        }
         /*let playerPosition = []
         let prevPlayerPos = []*/
         for (let i = 0; i < boardWidth + boardHeight - 1; i++) levelCounter.push([])
@@ -74,7 +98,6 @@ class Game extends Component {
             playerFacing.push(1)
             /*playerPosition.push({x: Math.floor(areaWidth / 2), y: Math.floor(areaHeight / 2)})
             prevPlayerPos.push({x: Math.floor(areaWidth / 2), y: Math.floor(areaHeight / 2)})*/
-            
         }
         playerFacing[0] = 0
         playerFacing[1] = 1
@@ -336,6 +359,8 @@ class Game extends Component {
         let {
             ranking,
             preScore,
+            playerNumber,
+            playerID,
             playerScore,
             playerLevel,
             playerPosition,
@@ -348,6 +373,7 @@ class Game extends Component {
             totalMoves,
             gameOver
         } = this.state
+        /*
         let status = '*GM Mode* Coordinates: (' + playerPosition[0].x + ', ' + playerPosition[0].y + ') '
         let temp = Math.floor(playerPosition[0].x / areaWidth) + Math.floor(playerPosition[0].y / areaHeight) * boardWidth
         status += 'Entrance: '
@@ -356,7 +382,7 @@ class Game extends Component {
             for (let i = 0; i < 4; i++) {
                 status += '(' + randomEntrances[temp][i][0] + ', ' + randomEntrances[temp][i][1] + ') '
             }
-        }
+        }*/
         
         if (gameOver) {
             /*gameOver = false
@@ -383,7 +409,14 @@ class Game extends Component {
             else {
                 playerScore[ranking[3]] = preScore[ranking[3]] - 4
             }
+            for (let i = 0; i < playerNumber; i++) {
+                fetch(baseURL + '/updateAccount?' + new URLSearchParams({
+                    _id: playerID[i],
+                    score: playerScore[i],
+                }))
+            }
         }
+
 
         return(<div>
             <div style={{
@@ -392,7 +425,7 @@ class Game extends Component {
                 color: "white"
                 }}>
                 <div className = "status">
-                    {status}
+                    {/*status*/}
                 </div>
                 <KeyHandler
                     keyEventName = {KEYDOWN}
