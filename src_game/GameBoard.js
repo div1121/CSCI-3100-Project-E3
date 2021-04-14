@@ -148,6 +148,9 @@ class GameBoard extends Component {
 
     render() {
         let {
+            playerName,
+            preScore,
+            playerScore,
             playerPosition,
             playerFacing,
             playerLevel,
@@ -178,7 +181,7 @@ class GameBoard extends Component {
                     let border_long = empty_img
                     let w_0 = "0", w_1 = "300", w_2 = "0"
                     let timePass = 60 + startTime - currentTime
-                    let t_0 = "Time: " + timePass, t_1 = "", t_2 = "", t_3 = "", t_4 = "", t_5 = ""
+                    let t_0 = "Time: " + timePass, t_1 = "", t_2 = "", t_3 = "", t_4 = "", t_5 = "", t_6 = ""
                     if (i < 4) {
                         playerPos[0].x = playerPosition[ranking[i]].x
                         playerPos[0].y = playerPosition[ranking[i]].y
@@ -187,22 +190,38 @@ class GameBoard extends Component {
                         w_0 = "80"
                         t_0 = ""
                         if (gameOver) {
-                            t_1 = "Name: " + "Player" + ranking[i]
+                            t_1 = "Name: " + playerName[ranking[i]]
                             t_2 = "Position: (" + playerPos[0].x + ", " + playerPos[0].y + ")"
                             t_3 = "Level: " + playerLevel[ranking[i]]
                             let playerStatus = "Unfinished"
                             if (playerLevel[ranking[i]] === boardWidth + boardHeight - 2) playerStatus = "Finished"
                             t_4 = "Status: " + playerStatus
-                            t_5 = "Score: 1000 + 2 = 1002"
+                            if (i === 0) {
+                                if (playerStatus === "Finished") t_6 = " + 2 = "
+                                else t_6 = " + 0 = "
+                            }
+                            if (i === 1) {
+                                if (playerStatus === "Finished") t_6 = " + 1 = "
+                                else t_6 = " - 1 = "
+                            }
+                            if (i === 2) {
+                                if (playerStatus === "Finished") t_6 = " - 1 = "
+                                else t_6 = " - 3 = "
+                            }
+                            if (i === 3) {
+                                if (playerStatus === "Finished") t_6 = " - 2 = "
+                                else t_6 = " - 4 = "
+                            }
+                            t_5 = "Score: " + preScore[ranking[i]] + t_6 + playerScore[ranking[i]]
                         }
                         else {
-                            t_1 = "Name: " + "Player" + ranking[i]
+                            t_1 = "Name: " + playerName[ranking[i]]
                             t_2 = "Position: (" + playerPos[0].x + ", " + playerPos[0].y + ")"
                             t_3 = "Level: " + playerLevel[ranking[i]]
                             let playerStatus = "Unfinished"
                             if (playerLevel[ranking[i]] === boardWidth + boardHeight - 2) playerStatus = "Finished"
                             t_4 = "Status: " + playerStatus
-                            t_5 = "Score: 1000"
+                            t_5 = "Score: " + preScore[ranking[i]]
                         }
                         if (i === 0) {
                             border_square = gold_border_square
