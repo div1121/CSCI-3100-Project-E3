@@ -1,16 +1,16 @@
 {
   "files": {
-    "main.css": "/CSCI-3100-Project-E3/static/css/main.f15dd67d.chunk.css",
-    "main.js": "/CSCI-3100-Project-E3/static/js/main.a2e846da.chunk.js",
-    "main.js.map": "/CSCI-3100-Project-E3/static/js/main.a2e846da.chunk.js.map",
+    "main.css": "/CSCI-3100-Project-E3/static/css/main.e014e08c.chunk.css",
+    "main.js": "/CSCI-3100-Project-E3/static/js/main.a396d311.chunk.js",
+    "main.js.map": "/CSCI-3100-Project-E3/static/js/main.a396d311.chunk.js.map",
     "runtime-main.js": "/CSCI-3100-Project-E3/static/js/runtime-main.7a04051b.js",
     "runtime-main.js.map": "/CSCI-3100-Project-E3/static/js/runtime-main.7a04051b.js.map",
-    "static/js/2.dc05246d.chunk.js": "/CSCI-3100-Project-E3/static/js/2.dc05246d.chunk.js",
-    "static/js/2.dc05246d.chunk.js.map": "/CSCI-3100-Project-E3/static/js/2.dc05246d.chunk.js.map",
+    "static/js/2.4f0482f7.chunk.js": "/CSCI-3100-Project-E3/static/js/2.4f0482f7.chunk.js",
+    "static/js/2.4f0482f7.chunk.js.map": "/CSCI-3100-Project-E3/static/js/2.4f0482f7.chunk.js.map",
     "index.html": "/CSCI-3100-Project-E3/index.html",
-    "static/css/main.f15dd67d.chunk.css.map": "/CSCI-3100-Project-E3/static/css/main.f15dd67d.chunk.css.map",
-    "static/js/2.dc05246d.chunk.js.LICENSE.txt": "/CSCI-3100-Project-E3/static/js/2.dc05246d.chunk.js.LICENSE.txt",
-    "static/media/bakground.2924c2be.jpg": "/CSCI-3100-Project-E3/static/media/bakground.2924c2be.jpg",
+    "static/css/main.e014e08c.chunk.css.map": "/CSCI-3100-Project-E3/static/css/main.e014e08c.chunk.css.map",
+    "static/js/2.4f0482f7.chunk.js.LICENSE.txt": "/CSCI-3100-Project-E3/static/js/2.4f0482f7.chunk.js.LICENSE.txt",
+    "static/media/background.b5734c67.jfif": "/CSCI-3100-Project-E3/static/media/background.b5734c67.jfif",
     "static/media/black_floor.6c1f5898.jpg": "/CSCI-3100-Project-E3/static/media/black_floor.6c1f5898.jpg",
     "static/media/blue_entrance.e46c9ef3.gif": "/CSCI-3100-Project-E3/static/media/blue_entrance.e46c9ef3.gif",
     "static/media/blue_floor.fa8adefa.jpg": "/CSCI-3100-Project-E3/static/media/blue_floor.fa8adefa.jpg",
@@ -20,8 +20,8 @@
   },
   "entrypoints": [
     "static/js/runtime-main.7a04051b.js",
-    "static/js/2.dc05246d.chunk.js",
-    "static/css/main.f15dd67d.chunk.css",
-    "static/js/main.a2e846da.chunk.js"
+    "static/js/2.4f0482f7.chunk.js",
+    "static/css/main.e014e08c.chunk.css",
+    "static/js/main.a396d311.chunk.js"
   ]
 }
