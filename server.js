@@ -290,7 +290,7 @@ io.on('connection', (socket) =>{
 });
 	
 socket.on('entrances', (data) => {
-    const id = data;
+    const id = data.roomid;
     
     let randomEntrances=[], boardHeight=0, boardWidth=0,randomValues;
     for (let i = 0; i < boardHeight; i++) {
@@ -317,7 +317,7 @@ socket.on('entrances', (data) => {
             }
         }
     }
-    io.to(data).emit('entrances',randomEntrances);
+    io.to(data.roomid).emit('entrances',randomEntrances);
 }
 
 	
