@@ -1,6 +1,5 @@
 import express from 'express';
 import mongoose from 'mongoose';
-import User from './dbUser.js';
 import { createServer } from 'http';
 import { Server, Socket } from "socket.io";
 import Cors from 'cors';
@@ -20,12 +19,12 @@ const Schema = mongoose.Schema;
 app.use(express.json());
 app.use(Cors());
 
-const userSchema = mongoose.Schema({
-	name: String,
-	email: String,
-	password: String,
-	score: Number
-});
+const User = mongoose.model('userinfo', new Schema({	
+	name: String,	
+	email: String,	
+	password: String,	
+    score: Number	
+}));
 
 const Room = mongoose.model('Room',new Schema({
     roomname: String,
@@ -102,7 +101,7 @@ app.post('/forgetPassword', (req, res) => {
 app.post('/loginAccount', (req, res) => {
 	const dbUser = req.body;
 	
-	User.find(dbUser, {"_id" : 1, "name" : 1}, (err, data) => {
+	User.find(dbUser, {"_id" : 1, "name" : 1, "score" : 1}, (err, data) => {
 		if (err) {
 			res.status(500).send(err);
 		} else {
@@ -198,7 +197,7 @@ app.get('/entrances', (req, res) => {
     Entrances.find({"roomid": id}, (err, messages) => {
         res.send(messages);
     });
-}
+});
 
 io.on('connection', (socket) =>{
     // data -> roomname / userid / user name (name)
@@ -325,8 +324,10 @@ io.on('connection', (socket) =>{
     });
     socket.on('move', (data)=>{
         io.to(data.roomid).emit('move',data.pos);
-});
-	
+	});
+    socket.on('startgame', async (data) => {
+        io.to(data.roomid).emit('startgame');
+    });
 });
 
 http.listen(port, ()=>console.log(`Listening on: ${port}`));
