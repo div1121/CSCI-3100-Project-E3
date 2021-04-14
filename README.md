@@ -44,6 +44,18 @@ Confirmation is required to create a new account.
 ## User interface
 Our webpage uses the Bootstrap library to design the user interface.
 
+Matching Testcase:
+1. Only Four Players can enter the room (passed)
+2. Less than four players will wait (passed)
+
+ChatRoom Testcase:
+1. Enter the romm will load history chat (passed)
+2. Send chat and everyone in room can see (passed)
+
+GameRoom Testcase:
+1. Ready state change (passed)
+2. 4 readys with one start (passed)
+
 
 ## Changelog
 
