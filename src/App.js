@@ -1,4 +1,4 @@
-import React, { Component, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import './App.css';
 import { TopNavbar } from './Navbar'
 import Menu from './Menu';
@@ -9,18 +9,18 @@ import Game from './Game';
 import HomeButton from './HomeButton';
 
 function App() {
-	const [userID, setUserID] = React.useState(sessionStorage.getItem('userID'));
-	const [username, setUsername] = React.useState(sessionStorage.getItem('username'));
-	const [gameRoomEnter, setGameRoomEnter] = React.useState(null);
-	const [gameRoomID, setGameRoomID] = React.useState(null);
-	const [mode, setMode] = React.useState("Home");
-	
+	const [userID, setUserID] = useState(sessionStorage.getItem('userID'));
+	const [username, setUsername] = useState(sessionStorage.getItem('username'));
+	const [gameRoomEnter, setGameRoomEnter] = useState(null);
+	const [gameRoomID, setGameRoomID] = useState(null);
+	const [mode, setMode] = useState("Home");
+
 	return (
 		<div className="app">
-			<div className="app_header">
+			<div className="appHeader">
 				<TopNavbar userID={userID} username={username} setUserID={setUserID} setUsername={setUsername}/>
 			</div>
-			<div className="app_body">
+			<div className="appBody">
 				{mode === "Game"?
 					<Game />
 				:
@@ -35,7 +35,7 @@ function App() {
 						:mode === "Demo"?
 							<Game />
 						:
-							<Menu setMode={setMode} userID={userID} setUserID={setUserID} setUsername={setUsername} />
+							<Menu setMode={setMode} userID={userID} username={username} setGameRoomEnter={setGameRoomEnter} setGameRoomID={setGameRoomID} />
 						}
 					</>
 				}

@@ -9,7 +9,7 @@
 	background-color: white;
 }
 
-.app_header {
+.appHeader {
 	display: flex;
 	background-color: #343a40;
     align-items: center;
@@ -17,10 +17,10 @@
 	width: 100vw;
 }
 
-.app_body {
+.appBody {
 	display: flex;
 	background-color: #ededed;
-	height: 450px;
+	height: 100%;
 	width: 100vw;
 }
 
@@ -30,42 +30,93 @@
 	flex: 0.65;
 }
 
-a {
-    color: #1a0dab;
-    text-decoration: none;
-    -webkit-tap-highlight-color: rgba(0,0,0,.10);
+.menu {
+	margin-top: 20px;
+	margin-bottom: 50px;
+	display: flex;
+    align-items: center;
+	justify-content: space-between;
+	flex-direction: column;
 }
 
-button.MenuButton {
+.menu > .menuButton {
 	font-size: 30px;
 	font-family: serif;
 	height: 100px;
-	width: 90%;
+	width: 300px;
 	margin-bottom: 10px;
 	border-radius: 20px;
 }
 
-.navbar-brand {
-	Font-size: 44px;
+.topNavbar {
+	color: #ededed;
+	display: flex;
+	width: 100%;
 }
 
-.navbar-text > temp{
-	Font-size: 44px;
+.topNavbarLeft {
+	margin-left: 10px;
+	width: 50%;
+	align-items: center;
+	display: flex;
 }
 
-.Navbar {
-	align-items: left;
-	display:inline;
+.topNavbarLeft > a {
+	color: white;
+	text-decoration: none;
 }
 
-.form_input {
+.topNavbarLeft > span {
+	margin-left: 10px;
+}
+
+.topNavbarRight {
+	margin-right: 10px;
+	width: 50%;
+	align-items: center;
+	display: flex;
+	justify-content: flex-end;
+}
+
+.topNavbarRight > h3 {
+	margin-right: 10px;
+}
+
+.topNavbarRight > Button {
+	margin-left: 10px;
+}
+
+.formInput {
+	height: 20px;
 	max-width: 200px;
 }
 
-.login_form {
+.form {
 	align-items: center;
 	display: flex;
 	flex-direction: column;
+}
+
+.form > input {
+	margin-top: 10px;
+	margin-bottom: 5px;
+}
+
+.form > h3 {
+	margin-top: 15px;
+	margin-bottom: 15px;
+}
+
+.form > .formFooter {
+	margin-right: 10px;
+	width: 100%;
+	align-items: center;
+	display: flex;
+	justify-content: flex-end;
+}
+
+.form > .formFooter > Button {
+	margin-left: 10px;
 }
 
 .btn {
