@@ -175,7 +175,7 @@ class GameBoard extends Component {
                     let border_long = empty_img
                     let w_0 = "0", w_1 = "300", w_2 = "0"
                     let timePass = 60 + startTime - currentTime
-                    let t_0 = "Timer: " + timePass, t_1 = "", t_2 = "", t_3 = "", t_4 = "", t_5 = ""
+                    let t_0 = "Time: " + timePass, t_1 = "", t_2 = "", t_3 = "", t_4 = "", t_5 = ""
                     if (i < 4) {
                         playerPos[0].x = playerPosition[ranking[i]].x
                         playerPos[0].y = playerPosition[ranking[i]].y
