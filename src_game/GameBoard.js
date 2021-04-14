@@ -26,6 +26,10 @@ import man_4_back from "./picture/man/man_4_back.gif";
 import man_4_front from "./picture/man/man_4_front.gif";
 import man_4_left from "./picture/man/man_4_left.gif";
 import man_4_right from "./picture/man/man_4_right.gif";
+import gold_border_square from "./picture/border/gold_border_square.gif"
+import silver_border_square from "./picture/border/silver_border_square.gif"
+import bronze_border_square from "./picture/border/bronze_border_square.gif"
+import stone_border_square from "./picture/border/stone_border_square.gif"
 import empty_img from "./picture/empty.gif";
 pressed.start()
 
@@ -138,7 +142,13 @@ class GameBoard extends Component {
     render() {
         let {
             playerPosition,
-            playerFacing
+            playerFacing,
+            areaHeight,
+            areaWidth,
+            boardWidth,
+            boardHeight,
+            startTime,
+            currentTime
         } = this.props
         let {
             board,
@@ -155,6 +165,31 @@ class GameBoard extends Component {
         return(
             <div>
                 {board.map(function(boardRow, i) {
+                    let playerPos = [{x: 0, y: 0}]
+                    let border_square = empty_img
+                    let w_0 = "0", w_1 = "300", w_2 = "0"
+                    let timePass = 60 + startTime - currentTime
+                    let t_0 = "Time: " + timePass, t_1 = "", t_2 = "", t_3 = "", t_4 = "", t_5 = ""
+                    if (i < 4) {
+                        playerPos[0].x = playerPosition[i].x
+                        playerPos[0].y = playerPosition[i].y
+                        w_1 = "100"
+                        w_2 = "200"
+                        w_0 = "80"
+                        t_0 = ""
+                        t_1 = "Name: " + "Player" + i
+                        t_2 = "Position: (" + playerPos[0].x + ", " + playerPos[0].y + ")"
+                        let playerLevel = Math.floor(playerPos[0].x / areaWidth) + Math.floor(playerPos[0].y / areaHeight)
+                        t_3 = "Level: " + playerLevel
+                        let playerStatus = "Unfinished"
+                        if (playerLevel === boardWidth + boardHeight - 2) playerStatus = "Finished"
+                        t_4 = "Status: " + playerStatus
+                        t_5 = "Score: 1000"
+                        if (i === 0) border_square = gold_border_square
+                        if (i === 1) border_square = silver_border_square
+                        if (i === 2) border_square = bronze_border_square
+                        if (i === 3) border_square = stone_border_square
+                    }
                     return (
                         <tr>
                             {boardRow.map(function(area, j) {
@@ -182,7 +217,7 @@ class GameBoard extends Component {
                                             className = "area"
                                             cellSpacing = "0"
                                             id = "table"
-                                            border = "2px"
+                                            border = "3px"
                                             width = "100"
                                             height = "100"
                                             textAlign = "center"
@@ -222,9 +257,55 @@ class GameBoard extends Component {
                                 >
                                 </table>
                             </td>
+                            {playerPos.map(function(p) {
+                                let obj_img = empty_img
+                                if (i < 4) obj_img = playerImg[i][1]
+                                return (
+                                    <td
+                                        style = {{
+                                            backgroundImage: `url(${black_floor})`,
+                                            verticalAlign: "middle",
+                                            textAlign: "center"
+                                        }}>
+                                        <td
+                                            width = {w_1}
+                                            height = "100"
+                                            style = {{
+                                                backgroundImage: `url(${border_square})`,
+                                                color: "white",
+                                                fontSize: "40px"
+                                            }}
+                                        >
+                                            {t_0}
+                                            <img align="center" height="60" width={w_0} src={obj_img}/>
+                                        </td>
+                                        <td
+                                            width = {w_2}
+                                            height = "100"
+                                            bordercolor = "black"
+                                            style = {{
+                                                color: "white",
+                                                fontSize: "12px"
+                                            }}
+                                        >
+                                            <p>
+                                                {t_1}
+                                                <br></br>
+                                                {t_2}
+                                                <br></br>
+                                                {t_3}
+                                                <br></br>
+                                                {t_4}
+                                                <br></br>
+                                                {t_5}
+                                            </p>
+                                        </td>
+                                    </td>
+                                )
+                            })}
                         </tr>
                     );
-                    })}
+                })}
             </div>
         )
     }
