@@ -22,6 +22,9 @@ class Game extends Component {
             areaWidth: 0,
             randomEntrances: [],
             randomPositions: [],
+            playerName: [],
+            preScore: [],
+            playerScore: [],
             playerLevel: [],
             levelCounter: [],
             ranking: [0, 1, 2, 3],
@@ -54,6 +57,9 @@ class Game extends Component {
         let areaWidth = 5
         let areaHeight = 5
         let playerNumber = 4
+        let playerName = ["Jason", "Kenny", "Benny", "Knife"]
+        let preScore = [1000, 900, 800, 700]
+        let playerScore = [1000, 900, 800, 700]
         let playerFacing = []
         let playerLevel = []
         let levelCounter = []
@@ -96,6 +102,9 @@ class Game extends Component {
             areaWidth: areaWidth,
             areaHeight: areaHeight,
             playerNumber: playerNumber,
+            playerName: playerName,
+            preScore: preScore,
+            playerScore: playerScore,
             playerFacing: playerFacing,
             playerPosition: playerPosition,
             prevPlayerPos: prevPlayerPos,
@@ -325,16 +334,20 @@ class Game extends Component {
     render() {
 
         let {
+            ranking,
+            preScore,
+            playerScore,
+            playerLevel,
             playerPosition,
             prevPlayerPos,
             randomEntrances,
             boardWidth,
+            boardHeight,
             areaWidth,
             areaHeight,
             totalMoves,
             gameOver
         } = this.state
-        /*ranking[0] + ranking[1] + ranking[2] + ranking[3]*/
         let status = '*GM Mode* Coordinates: (' + playerPosition[0].x + ', ' + playerPosition[0].y + ') '
         let temp = Math.floor(playerPosition[0].x / areaWidth) + Math.floor(playerPosition[0].y / areaHeight) * boardWidth
         status += 'Entrance: '
@@ -344,9 +357,32 @@ class Game extends Component {
                 status += '(' + randomEntrances[temp][i][0] + ', ' + randomEntrances[temp][i][1] + ') '
             }
         }
+        
         if (gameOver) {
-            gameOver = false
-            alert("You win! Total moves: " + totalMoves)
+            /*gameOver = false
+            alert("You win! Total moves: " + totalMoves)*/
+            let finishLevel = boardWidth + boardHeight - 2
+            if (playerLevel[ranking[0]] === finishLevel) {
+                playerScore[ranking[0]] = preScore[ranking[0]] + 2
+            }
+            if (playerLevel[ranking[1]] === finishLevel) {
+                playerScore[ranking[1]] = preScore[ranking[1]] + 1
+            }
+            else {
+                playerScore[ranking[1]] = preScore[ranking[1]] - 1
+            }
+            if (playerLevel[ranking[2]] === finishLevel) {
+                playerScore[ranking[2]] = preScore[ranking[2]] - 1
+            }
+            else {
+                playerScore[ranking[2]] = preScore[ranking[2]] - 3
+            }
+            if (playerLevel[ranking[3]] === finishLevel) {
+                playerScore[ranking[3]] = preScore[ranking[3]] - 2
+            }
+            else {
+                playerScore[ranking[3]] = preScore[ranking[3]] - 4
+            }
         }
 
         return(<div>
@@ -406,6 +442,15 @@ class Game extends Component {
                             }
                             playerNumber = {
                                 this.state.playerNumber
+                            }
+                            playerName = {
+                                this.state.playerName
+                            }
+                            preScore = {
+                                this.state.preScore
+                            }
+                            playerScore = {
+                                this.state.playerScore
                             }
                             playerFacing = {
                                 this.state.playerFacing
