@@ -20,6 +20,12 @@ const Schema = mongoose.Schema;
 app.use(express.json());
 app.use(Cors());
 
+const userSchema = mongoose.Schema({
+	name: String,
+	email: String,
+	password: String,
+});
+
 const Room = mongoose.model('Room',new Schema({
     roomname: String,
     numofusers: Number
