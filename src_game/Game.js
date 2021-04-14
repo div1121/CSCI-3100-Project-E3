@@ -103,19 +103,19 @@ class Game extends Component {
             prevPlayerPos.push({x: Math.floor(areaWidth / 2), y: Math.floor(areaHeight / 2)})*/
         }
         playerFacing[0] = 0
-        playerFacing[1] = 1
-        playerFacing[2] = 2
-        playerFacing[3] = 3
+        playerFacing[1] = 0
+        playerFacing[2] = 0
+        playerFacing[3] = 0
         let playerPosition = [
             {x: Math.floor(areaWidth / 2), y: Math.floor(areaHeight / 2)}, 
-            {x: Math.floor(areaWidth / 2) + 5, y: Math.floor(areaHeight / 2) + 15}, 
-            {x: Math.floor(areaWidth / 2) + 10, y: Math.floor(areaHeight / 2) + 10}, 
-            {x: Math.floor(areaWidth / 2) + 15, y: Math.floor(areaHeight / 2) + 5}]
+            {x: Math.floor(areaWidth / 2), y: Math.floor(areaHeight / 2)}, 
+            {x: Math.floor(areaWidth / 2), y: Math.floor(areaHeight / 2)}, 
+            {x: Math.floor(areaWidth / 2), y: Math.floor(areaHeight / 2)}]
         let prevPlayerPos = [
             {x: Math.floor(areaWidth / 2), y: Math.floor(areaHeight / 2)}, 
-            {x: Math.floor(areaWidth / 2) + 5, y: Math.floor(areaHeight / 2) + 15}, 
-            {x: Math.floor(areaWidth / 2) + 10, y: Math.floor(areaHeight / 2) + 10}, 
-            {x: Math.floor(areaWidth / 2) + 15, y: Math.floor(areaHeight / 2) + 5}]
+            {x: Math.floor(areaWidth / 2), y: Math.floor(areaHeight / 2)}, 
+            {x: Math.floor(areaWidth / 2), y: Math.floor(areaHeight / 2)}, 
+            {x: Math.floor(areaWidth / 2), y: Math.floor(areaHeight / 2)}]
         let level = 0
         for (let i = 0; i < playerNumber; i++) {
             level = Math.floor(playerPosition[i].x / areaWidth) + Math.floor(playerPosition[i].y / areaHeight)
@@ -150,7 +150,7 @@ class Game extends Component {
         this.setRanking()
         this.setTime()
     }
-    
+
     countTotalMoves() {
         this.setState({
             totalMoves: ++this.state.totalMoves
@@ -159,12 +159,18 @@ class Game extends Component {
 
     setTime() {
         let {
-            currentTime
+            startTime,
+            currentTime,
+            gameOver
         } = this.state
         let nowTime = new Date()
         currentTime = nowTime.getHours() * 3600 + nowTime.getMinutes() * 60 + nowTime.getSeconds()
+        if (currentTime - startTime >= 65) {
+            gameOver = true
+        }
         this.setState({
-            currentTime: currentTime
+            currentTime: currentTime,
+            gameOver: gameOver
         })
     }
 
@@ -210,11 +216,16 @@ class Game extends Component {
         let {
             playerPosition,
             areaHeight,
+            boardWidth,
+            boardHeight,
             playerFacing,
             playerIndex,
+            startTime,
+            currentTime,
+            playerLevel,
             gameOver
         } = this.state
-        if (gameOver === false) {
+        if (playerLevel[playerIndex] < boardWidth + boardHeight - 2 && currentTime - startTime <= 64 && currentTime - startTime > 3 && gameOver === false) {
             playerFacing[playerIndex] = 0
             if (Number(playerPosition[playerIndex].y) % areaHeight - 1 >= 0) this.makeMove(playerPosition[playerIndex].x, playerPosition[playerIndex].y - 1)
         }
@@ -225,11 +236,16 @@ class Game extends Component {
         let {
             playerPosition,
             areaHeight,
+            boardWidth,
+            boardHeight,
             playerFacing,
             playerIndex,
+            startTime,
+            currentTime,
+            playerLevel,
             gameOver
         } = this.state
-        if (gameOver === false) {
+        if (playerLevel[playerIndex] < boardWidth + boardHeight - 2 && currentTime - startTime <= 64 && currentTime - startTime > 3 && gameOver === false) {
             playerFacing[playerIndex] = 1
             if (Number(playerPosition[playerIndex].y) % areaHeight + 1 < areaHeight) this.makeMove(playerPosition[playerIndex].x, playerPosition[playerIndex].y + 1)
         }
@@ -240,11 +256,16 @@ class Game extends Component {
         let {
             playerPosition,
             areaWidth,
+            boardWidth,
+            boardHeight,
             playerFacing,
             playerIndex,
+            startTime,
+            currentTime,
+            playerLevel,
             gameOver
         } = this.state
-        if (gameOver === false) {
+        if (playerLevel[playerIndex] < boardWidth + boardHeight - 2 && currentTime - startTime <= 64 && currentTime - startTime > 3 && gameOver === false) {
             playerFacing[playerIndex] = 3
             if (Number(playerPosition[playerIndex].x) % areaWidth + 1 < areaWidth) this.makeMove(playerPosition[playerIndex].x + 1, playerPosition[playerIndex].y)
         }
@@ -255,11 +276,16 @@ class Game extends Component {
         let {
             playerPosition,
             areaWidth,
+            boardWidth,
+            boardHeight,
             playerFacing,
             playerIndex,
+            startTime,
+            currentTime,
+            playerLevel,
             gameOver
         } = this.state
-        if (gameOver === false) {
+        if (playerLevel[playerIndex] < boardWidth + boardHeight - 2 && currentTime - startTime <= 64 && currentTime - startTime > 3 && gameOver === false) {
             playerFacing[playerIndex] = 2
             if (Number(playerPosition[playerIndex].x) % areaWidth - 1 >= 0) this.makeMove(playerPosition[playerIndex].x - 1, playerPosition[playerIndex].y)
         }
@@ -274,9 +300,12 @@ class Game extends Component {
             boardWidth,
             areaWidth,
             areaHeight,
+            playerNumber,
             playerIndex,
             playerLevel,
             levelCounter,
+            currentTime,
+            startTime,
             gameOver
         } = this.state
         let prevPos = {
@@ -297,7 +326,9 @@ class Game extends Component {
             let ty = randomEntrances[ax + ay * boardWidth][temp][1] * areaHeight + Math.floor(areaHeight / 2)
             playerPosition[playerIndex].x = tx
             playerPosition[playerIndex].y = ty
-            if (Math.floor(tx / areaWidth) === boardWidth - 1 && Math.floor(ty / areaHeight) === boardHeight - 1) gameOver = true
+            if (Math.floor(tx / areaWidth) === boardWidth - 1 && Math.floor(ty / areaHeight) === boardHeight - 1) {
+                if (currentTime - startTime > 5) startTime = currentTime - 59
+            }
         }
         else {
             playerPosition[playerIndex].x = newX
@@ -308,11 +339,19 @@ class Game extends Component {
             playerLevel[playerIndex] = level
             levelCounter[level].push(playerIndex)
         }
+        let b = true
+        for (let i = 0; i < playerNumber; i++) {
+            if (playerLevel[i] < 8) b = false
+        }
+        if (b) {
+            startTime = currentTime - 65
+        }
         this.setState({
             playerPosition,
             prevPlayerPos,
             playerLevel,
             levelCounter,
+            startTime,
             gameOver
         })
         let obj = {roomid: this.state.roomid, pos: this.state.playerPosition};
