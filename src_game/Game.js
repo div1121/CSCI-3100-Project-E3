@@ -2,7 +2,7 @@ import React, {
     Component, useEffect
 } from 'react';
 import GameBoard from './GameBoard'
-import background from "./picture/bakground.jpg";
+import background from "./picture/background.jfif";
 import _ from 'lodash'
 import KeyHandler, {KEYDOWN} from 'react-key-handler';
 
@@ -22,6 +22,9 @@ class Game extends Component {
             areaWidth: 0,
             randomEntrances: [],
             randomPositions: [],
+            playerLevel: [],
+            levelCounter: [],
+            ranking: [0, 1, 2, 3],
             playerNumber: 0,
             playerFacing: [],
             playerPosition: [],
@@ -30,6 +33,7 @@ class Game extends Component {
         }
         this.initializeBoardPlayer = this.initializeBoardPlayer.bind(this)
         this.startGame = this.startGame.bind(this)
+        this.setRanking = this.setRanking.bind(this)
         this.setEntrances = this.setEntrances.bind(this)
         this.countTotalMoves = this.countTotalMoves.bind(this)
         this.setTime = this.setTime.bind(this)
@@ -51,16 +55,20 @@ class Game extends Component {
         let areaHeight = 5
         let playerNumber = 4
         let playerFacing = []
+        let playerLevel = []
+        let levelCounter = []
         let startTime = 0
         let currentTime = 0
         let nowTime = new Date()
         startTime = nowTime.getHours() * 3600 + nowTime.getMinutes() * 60 + nowTime.getSeconds()
         /*let playerPosition = []
         let prevPlayerPos = []*/
+        for (let i = 0; i < boardWidth + boardHeight - 1; i++) levelCounter.push([])
         for (let i = 0; i < playerNumber; i++) {
             playerFacing.push(1)
             /*playerPosition.push({x: Math.floor(areaWidth / 2), y: Math.floor(areaHeight / 2)})
             prevPlayerPos.push({x: Math.floor(areaWidth / 2), y: Math.floor(areaHeight / 2)})*/
+            
         }
         playerFacing[0] = 0
         playerFacing[1] = 1
@@ -76,17 +84,25 @@ class Game extends Component {
             {x: Math.floor(areaWidth / 2) + 5, y: Math.floor(areaHeight / 2) + 15}, 
             {x: Math.floor(areaWidth / 2) + 10, y: Math.floor(areaHeight / 2) + 10}, 
             {x: Math.floor(areaWidth / 2) + 15, y: Math.floor(areaHeight / 2) + 5}]
+        let level = 0
+        for (let i = 0; i < playerNumber; i++) {
+            level = Math.floor(playerPosition[i].x / areaWidth) + Math.floor(playerPosition[i].y / areaHeight)
+            playerLevel.push(level)
+            levelCounter[level].push(i)
+        }
         this.setState({
-            boardHeight,
-            boardWidth,
-            areaWidth,
-            areaHeight,
-            playerNumber,
-            playerFacing,
-            playerPosition,
-            prevPlayerPos,
-            startTime,
-            currentTime,
+            boardHeight: boardHeight,
+            boardWidth: boardWidth,
+            areaWidth: areaWidth,
+            areaHeight: areaHeight,
+            playerNumber: playerNumber,
+            playerFacing: playerFacing,
+            playerPosition: playerPosition,
+            prevPlayerPos: prevPlayerPos,
+            playerLevel: playerLevel,
+            levelCounter: levelCounter,
+            startTime: startTime,
+            currentTime: currentTime,
             showGameBoard: true
         }, () => {
             this.startGame()
@@ -95,6 +111,7 @@ class Game extends Component {
 
     startGame() {
         this.setEntrances()
+        this.setRanking()
     }
 
     setEntrances() {
@@ -152,7 +169,43 @@ class Game extends Component {
 
     countTime() {
         setInterval(this.setTime, 1)
-        
+    }
+
+    setRanking() {
+        let {
+            playerLevel,
+            levelCounter,
+            playerNumber,
+            ranking
+        } = this.state
+        let maxLevel = 0, count = 0, length
+        ranking = []
+        let ranked = []
+        for (let i = 0; i < playerNumber; i++) {
+            if (playerLevel[i] > maxLevel) maxLevel = playerLevel[i]
+            ranked.push(false)
+        }
+        for (let i = maxLevel; i >= 0; i--) {
+            if (count === playerNumber) break
+            length = levelCounter[i].length
+            for (let j = 0; j < length; j++) {
+                if (ranked[levelCounter[i][j]] === false) {
+                    ranked[levelCounter[i][j]] = true
+                    ranking.push(levelCounter[i][j])
+                    count++
+                }
+            }
+        }
+        /*
+        if (maxLevel > 4) {
+            alert(ranking[0])
+            alert(ranking[1])
+            alert(ranking[2])
+            alert(ranking[3])
+        }*/
+        this.setState({
+            ranking
+        })
     }
 
     handleKeyUp(e) {
@@ -213,6 +266,8 @@ class Game extends Component {
             areaWidth,
             areaHeight,
             playerIndex,
+            playerLevel,
+            levelCounter,
             win
         } = this.state
         let prevPos = {
@@ -239,12 +294,20 @@ class Game extends Component {
             playerPosition[playerIndex].x = newX
             playerPosition[playerIndex].y = newY
         }
+        let level = Math.floor(playerPosition[playerIndex].x / areaWidth) + Math.floor(playerPosition[playerIndex].y / areaHeight)
+        if (level > playerLevel[playerIndex]){
+            playerLevel[playerIndex] = level
+            levelCounter[level].push(playerIndex)
+        }
         this.setState({
             playerPosition,
             prevPlayerPos,
+            playerLevel,
+            levelCounter,
             win
         })
         this.countTotalMoves()
+        this.setRanking()
     }
 
     render() {
@@ -257,13 +320,14 @@ class Game extends Component {
             areaWidth,
             areaHeight,
             totalMoves,
+            playerLevel,
             win
         } = this.state
-
+        /*ranking[0] + ranking[1] + ranking[2] + ranking[3]*/
         let status = '*GM Mode* Coordinates: (' + playerPosition[0].x + ', ' + playerPosition[0].y + ') '
         let temp = Math.floor(playerPosition[0].x / areaWidth) + Math.floor(playerPosition[0].y / areaHeight) * boardWidth
         status += 'Entrance: '
-        status += prevPlayerPos[0].x + ' ' + prevPlayerPos[0].y
+        status += ' ' + prevPlayerPos[0].y
         if (randomEntrances[temp]) {
             for (let i = 0; i < 4; i++) {
                 status += '(' + randomEntrances[temp][i][0] + ', ' + randomEntrances[temp][i][1] + ') '
@@ -277,7 +341,8 @@ class Game extends Component {
         return(<div>
             <div style={{
                 backgroundImage: `url(${background})`,
-                height:'800px'
+                height:'100%',
+                color: "white"
                 }}>
                 <div className = "status">
                     {status}
@@ -339,6 +404,12 @@ class Game extends Component {
                             }
                             prevPlayerPos = {
                                 this.state.prevPlayerPos
+                            }
+                            playerLevel = {
+                                this.state.playerLevel
+                            }
+                            ranking = {
+                                this.state.ranking
                             }
                             startTime = {
                                 this.state.startTime
