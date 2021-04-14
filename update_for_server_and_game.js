@@ -1,7 +1,7 @@
 // for move
 //backend
 socket.on('move', (data)=>{
-    io.to(data.roomid).emit('move',data);
+    io.to(data.roomid).emit('move',data.pos);
 });
 
 
