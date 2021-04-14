@@ -66,8 +66,8 @@ app.get('/entrances', (req, res) => {
 }
 
 
-//frontend
-//delete startGame and setEntrances
+//Game.js
+//delete setEntrances in startGame    and setEntrances
 const baseURL = "https://magic-maze-backend.herokuapp.com";
 
 componentDidMount() {
