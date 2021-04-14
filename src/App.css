@@ -3,14 +3,13 @@
 }
 
 .app {
-	display: grid;
-	place-items: center;
+	display: flex;
+	flex-direction: column;
 	height: 100vh;
-	background-color: #dadbd3;
+	background-color: white;
 }
 
 .app_header {
-    padding: 10px 10px 10px 10px;
 	display: flex;
 	background-color: #343a40;
     align-items: center;
@@ -21,10 +20,8 @@
 .app_body {
 	display: flex;
 	background-color: #ededed;
-	margin-top: -50px;
-	height: 90vh;
+	height: 450px;
 	width: 100vw;
-	box-shadow: -1px 4px 20px -6px rgba(0, 0, 0, 0, 75);
 }
 
 .chat {
@@ -78,4 +75,8 @@ button.MenuButton {
 navbarRight {
 	flex: 1;
 	display: flex;
+}
+
+.hidden {
+	visibility: hidden;
 }

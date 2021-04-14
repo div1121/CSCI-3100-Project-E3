@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import ws from './service';
+//const baseURL = "http://localhost:9000";
+const baseURL = "https://magic-maze-backend.herokuapp.com";
 
 //member
 class Playerline extends Component{
@@ -41,7 +43,7 @@ class Gameroom extends Component{
     }
 
     componentDidMount(){
-        fetch('/roommember?'+new URLSearchParams({roomid:this.props.roomid}))
+        fetch(baseURL+'/roommember?'+new URLSearchParams({roomid:this.props.roomid}))
             .then(res=>res.json())
             .then(res=>{
                 let players = this.state.player_list;
@@ -60,7 +62,7 @@ class Gameroom extends Component{
                         t++;
                 }
                 // console.log("How are you")
-                // console.log(res);
+                console.log(res);
                 this.setState({player_list:players, player_id:players_ids,player_num:num, ready_num:t, ready_state:ready});
             });
         ws.on('addroommember', data =>{

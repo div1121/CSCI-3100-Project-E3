@@ -1,6 +1,5 @@
 import React, { Component, useEffect } from 'react';
 import './App.css';
-import { Container, Row, Col } from 'react-bootstrap'
 import { TopNavbar } from './Navbar'
 import Menu from './Menu';
 import Chatroom from './ChatRoom';
@@ -28,15 +27,15 @@ function App() {
 					<>
 						{gameRoomID !== null?
 						<>
-							<Chatroom roomid={gameRoomID} userid={userID} name={username} />
 							<GameRoom roomid={gameRoomID} roomname={gameRoomEnter} playername={username} playerid={userID} setGameroomenter={setGameRoomEnter} setGameroomid={setGameRoomID}/>
+							<Chatroom roomid={gameRoomID} userid={userID} name={username} />
 						</>
 						:mode === "FindingRoom"?
 							<RoomList user_id={userID} user_name={username} setGameroomenter={setGameRoomEnter} setGameroomid={setGameRoomID}/>
 						:mode === "Demo"?
 							<Game />
 						:
-							<Menu setMode={setMode} />
+							<Menu setMode={setMode} userID={userID} setUserID={setUserID} setUsername={setUsername} />
 						}
 					</>
 				}
