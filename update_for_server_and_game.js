@@ -7,18 +7,19 @@ socket.on('move', (data)=>{
 
 //frontend
 import ws from './service';
+componentDidMount(prevProps, prevState) {
+    if (prevState.playerPosition !== this.state.playerPosition) {
+        ws.on('move', (data)=>{
+            this.setState({playPosition: data});
+        })
+    }
+}
 
 //inside makeMove
 let obj = {roomid: this.state.roomid, pos: this.state.playerPosition};
 ws.emit('move',obj);
 
-componentDidUpdate(prevProps, prevState) {
-    if (prevState.playerPosition !== this.state.playerPosition) {
-        ws.on('move', (data)=>{
-            //render all players' positions
-        })
-    }
-}
+
 
 
 
