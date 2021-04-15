@@ -1,30 +1,28 @@
-import React from 'react';
-import { Button, Modal } from 'react-bootstrap';
+import React, { useState } from 'react';
 import axios from './Axios';
-import validator from 'validator';
+import { makeStyles } from '@material-ui/core/styles';
+import Modal from '@material-ui/core/Modal';
+import { Button } from '@material-ui/core';
 
-function ShowProfile({ userID, username }) {
-	const [show, setShow] = React.useState(true);
-	
-	const handleClose = () => setShow(false);
-	const handleShow = () => setShow(true);
+function getModalStyle() {
+	const top = 50;
+	const left = 50;
 
-	return (
-		<div>
-			<Button size="lg" variant='secondary' onClick={handleShow}>
-				Profile
-			</Button>
-			<Modal show={show} onHide={handleClose}>
-				<Modal.Header closeButton>
-					<Modal.Title>Player profile</Modal.Title>
-				</Modal.Header>
-				<Modal.Body>
-					<div>Name: {username}</div>
-				</Modal.Body>
-			</Modal>
-		</div>
-	);
+	return {
+		top: `${top}%`,
+		left: `${left}%`,
+		transform: `translate(-${top}%, -${left}%)`,
+	};
 }
+
+const useStyles = makeStyles((theme) => ({
+	paper: {
+		position: 'absolute',
+		width: 400,
+		backgroundColor: theme.palette.background.paper,
+		padding: theme.spacing(2, 4, 3),
+	},
+}));
 
 function ChangePasswordConfirm({ userID, password, newPassword, reNewPassword, setShow }) {
 	const changePassword = async (e) => {
@@ -35,13 +33,13 @@ function ChangePasswordConfirm({ userID, password, newPassword, reNewPassword, s
 				_id: userID,
 				password: password,
 			}).then(res => {
-				if(res.data.length==0){
+				if(res.data.length===0){
 					alert('Password is wrong');
-				}else if(newPassword.length==0) {
+				}else if(newPassword.length===0) {
 					alert("New password is empty!");
 				}else if(newPassword.length<8) {
 					alert("New password should contain at least 8 letters!");
-				}else if(newPassword!=reNewPassword){
+				}else if(newPassword!==reNewPassword){
 					alert("Re-entered new password is not same to new password!");
 				}else {
 					canUpdate = true;
@@ -52,7 +50,7 @@ function ChangePasswordConfirm({ userID, password, newPassword, reNewPassword, s
 					_id: userID,
 					password: newPassword,
 				}).then(res => {
-					if(res.data.ok==1){
+					if(res.data.ok===1){
 						alert('Password is updated');
 					}
 					setShow(false);
@@ -62,17 +60,16 @@ function ChangePasswordConfirm({ userID, password, newPassword, reNewPassword, s
 			alert('Internal Error');
 		}
 	};
-	return <Button variant="primary" onClick={changePassword}>Confirm</Button>;
+	return <Button variant="contained" onClick={changePassword}>Confirm</Button>;
 }
 
 function ChangePasswordButton({ userID }) {
-	const [show, setShow] = React.useState(false);
-	const [password, setPassword] = React.useState("");
-	const [newPassword, setNewPassword] = React.useState("");
-	const [reNewPassword, setReNewPassword] = React.useState("");
-	
-	const handleClose = () => setShow(false);
-	const handleShow = () => setShow(true);
+	const classes = useStyles();
+	const [modalStyle] = useState(getModalStyle);
+	const [show, setShow] = useState(false);
+	const [password, setPassword] = useState("");
+	const [newPassword, setNewPassword] = useState("");
+	const [reNewPassword, setReNewPassword] = useState("");
 
 	React.useEffect(() => {
 		setPassword('');
@@ -82,76 +79,87 @@ function ChangePasswordButton({ userID }) {
 	
 	return (
 		<div>
-			<Button size="md" variant='secondary' onClick={handleShow}>
+			<Button variant="contained" color="secondary" onClick={() => setShow(true)}>
 				Change password
 			</Button>
-			<Modal show={show} onHide={handleClose}>
-				<Modal.Header closeButton>
-					<Modal.Title>Change password</Modal.Title>
-				</Modal.Header>
-				<Modal.Body>
-					<form>
-						<div>
-							<input
-								type = 'password'
-								value = {password}
-								placeholder = 'Current password'
-								onChange = {(e) => setPassword(e.target.value)}
-								className = 'form_input'
-							/>
+			<Modal
+				open={show}
+				onClose={() => setShow(false)}
+			>
+				<div style={modalStyle} className={classes.paper}>
+					<div className="form">
+						<h1>Change Password</h1>
+						<input
+							type = 'password'
+							value = {password}
+							placeholder = 'Current password'
+							onChange = {(e) => setPassword(e.target.value)}
+							className = 'formInput'
+						/>
+						<input
+							type = 'password'
+							value = {newPassword}
+							placeholder = 'New password'
+							onChange = {(e) => setNewPassword(e.target.value)}
+							className = 'formInput'
+						/>
+						<input
+							type = 'password'
+							value = {reNewPassword}
+							placeholder = 'Re-enter new password'
+							onChange = {(e) => setReNewPassword(e.target.value)}
+							className='formInput'
+						/>
+						<div className="formFooter">
+							<ChangePasswordConfirm userID={userID} password={password} newPassword={newPassword} reNewPassword={reNewPassword} setShow={setShow}/>
+							<Button variant="contained" onClick={() => setShow(false)}>Cancel</Button>
 						</div>
-						<div>
-							<input
-								type = 'password'
-								value = {newPassword}
-								placeholder = 'New password'
-								onChange = {(e) => setNewPassword(e.target.value)}
-								className = 'form_input'
-							/>
-						</div>
-						<div>
-							<input
-								type = 'password'
-								value = {reNewPassword}
-								placeholder = 'Re-enter new password'
-								onChange = {(e) => setReNewPassword(e.target.value)}
-								className='form_input'
-							/>
-						</div>
-					</form>
-				</Modal.Body>
-				<Modal.Footer>
-					<ChangePasswordConfirm userID={userID} password={password} newPassword={newPassword} reNewPassword={reNewPassword} setShow={setShow}/>
-				</Modal.Footer>
+					</div>
+				</div>
 			</Modal>
 		</div>
 	);
 }
 
 function ProfileButton({ userID, username, setUsername }) {
-	const [show, setShow] = React.useState(false);
-	
-	const handleClose = () => setShow(false);
-	const handleShow = () => setShow(true);
+	const classes = useStyles();
+	const [modalStyle] = useState(getModalStyle);
+	const [show, setShow] = useState(false);
+	const [score, setScore] = useState(1000);
 
+	const showProfile = async () => {
+		try {
+			await axios.post("/loginAccount", {
+				_id: userID,
+			}).then(res => {
+				setScore(res.data[0].score);
+			});
+			setShow(false);
+		} catch (error) {
+			alert('Connection Error');
+		}
+	}
+	
 	return (
 		<div>
-			<Button size="lg" variant='secondary' onClick={handleShow}>
+			<Button variant="contained" onClick={() => setShow(true)}>
 				Profile
 			</Button>
-			<Modal show={show} onHide={handleClose}>
-				<Modal.Header closeButton>
-					<Modal.Title>Player profile</Modal.Title>
-				</Modal.Header>
-				<Modal.Body>
-					<div>Name: {username}</div>
-					<div>Symbol: #</div>
-					<div>Game record: </div>
-				</Modal.Body>
-				<Modal.Footer>
-					<ChangePasswordButton userID={userID} />
-					<Button variant="primary">Save changes</Button>
-				</Modal.Footer>
+			<Modal
+				open={show}
+				onClose={() => setShow(false)}
+			>
+				<div style={modalStyle} className={classes.paper}>
+					<div className="form">
+						<h1>Player profile</h1>
+						<h3>Name: {username}</h3>
+						<h3>Score: {score}</h3>
+						<div className="formFooter">
+							<ChangePasswordButton userID={userID} />
+							<Button variant="primary" onClick={showProfile}>Back</Button>
+						</div>
+					</div>
+				</div>
 			</Modal>
 		</div>
 	);
