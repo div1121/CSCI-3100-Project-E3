@@ -7,8 +7,8 @@ import _ from 'lodash'
 import KeyHandler, {KEYDOWN} from 'react-key-handler';
 import ws from './service';
 import axios from './Axios';
-//const baseURL = "http://localhost:9000";
-const baseURL = "https://magic-maze-backend.herokuapp.com";
+import {PATH_TO_BACKEND} from './baseURL';
+const baseURL = PATH_TO_BACKEND;
 
 class Game extends Component {
 

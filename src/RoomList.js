@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import ws from './service';
-//const baseURL = "http://localhost:9000";
-const baseURL = "https://magic-maze-backend.herokuapp.com";
+import {PATH_TO_BACKEND} from './baseURL';
+const baseURL = PATH_TO_BACKEND;
 
 class Roomline extends Component{
     render(){
@@ -30,7 +30,6 @@ class RoomList extends React.Component {
         this.handleChange = this.handleChange.bind(this);
         this.handleCreateRoom = this.handleCreateRoom.bind(this);
         this.handleEnterRoom = this.handleEnterRoom.bind(this);
-        this.handleRank = this.handleRank.bind(this);
     }
 
     componentDidMount(){
@@ -80,11 +79,6 @@ class RoomList extends React.Component {
         ws.on('failjoin',(data)=>{
             alert("Fail to join the room: " + data.roomname);
         })
-    }
-
-    handleRank(){
-        this.setState({loading: true});
-        ws.emit('ranking',{userid: this.props.user_id, name: this.props.user_name});
     }
 
     handleChange(event) {
@@ -138,7 +132,6 @@ class RoomList extends React.Component {
                         </fieldset>
                     </form>
                 }
-                <button onClick={this.handleRank}>Rank</button>
             </div>
         );
     }

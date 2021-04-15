@@ -1,8 +1,8 @@
 import axios from 'axios';
+import {PATH_TO_BACKEND} from './baseURL';
 
 const instance = axios.create({
-	//baseURL: "http://localhost:9000",
-	baseURL: "https://magic-maze-backend.herokuapp.com",
+	baseURL: PATH_TO_BACKEND,
 })
 
 export default instance;

@@ -5,8 +5,6 @@ import GameBoard from './GameBoard'
 import background from "./picture/background.jfif";
 import _ from 'lodash'
 import KeyHandler, {KEYDOWN} from 'react-key-handler';
-//const baseURL = "http://localhost:9000";
-const baseURL = "https://magic-maze-backend.herokuapp.com";
 
 class Game extends Component {
 
