@@ -75,10 +75,6 @@ class Game extends Component {
             playerPosition.push({x: Math.floor(areaWidth / 2), y: Math.floor(areaHeight / 2)})
             prevPlayerPos.push({x: Math.floor(areaWidth / 2), y: Math.floor(areaHeight / 2)})
         }
-        //
-        playerPosition[0].x += 15
-        playerPosition[0].y += 20
-        //
         let level = 0
         for (let i = 0; i < playerNumber; i++) {
             level = Math.floor(playerPosition[i].x / areaWidth) + Math.floor(playerPosition[i].y / areaHeight)
