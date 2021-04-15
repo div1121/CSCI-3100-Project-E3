@@ -52,16 +52,20 @@ class SendChat extends React.Component {
         for (var i=0;i<history.length;i++){
             let name = history[i].name;
             let message = history[i].message;
-            chatlist.push(<div>{name}: {message}</div>);
+            chatlist.push(<div className="chat"><h4 className="chatName">{name}</h4><h4>:</h4><span>{message}</span></div>);
         }
       return (
-          <div className="chat">
-              <h1>Chat Room</h1>
-              {chatlist}
+          <div className="chatRoom">
+              <h1>Chat Box</h1>
+			  <div className="chatList">
+				{chatlist}
+			  </div>
             <form onSubmit={this.handleSubmit}>
-                <label>Input Text</label><br></br>
-                <textarea name="value" type="text" value={this.state.value} placeholder="Send a message" onChange={this.handleChange} />
-                <input type="submit" value="Submit" />
+			  <fieldset>
+                <legend>Input Text</legend>
+                <input name="value" type="text" value={this.state.value} placeholder="Send a message" onChange={this.handleChange} />
+                <button type="submit" value="Submit">Send</button>
+			  </fieldset>
             </form>
           </div>
       );
