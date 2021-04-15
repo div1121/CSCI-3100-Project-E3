@@ -60,7 +60,7 @@ class Game extends Component {
         let boardHeight = 5
         let areaWidth = 5
         let areaHeight = 5
-        let playerNumber = 1
+        let playerNumber = 2
         let playerName = ["Robot_0", "Robot_1", "Robot_2", "Robot_3"]
         if (this.props.username!=null){
             playerName[0] = this.props.username;
@@ -325,9 +325,6 @@ class Game extends Component {
             let ty = randomEntrances[ax + ay * boardWidth][temp][1] * areaHeight + Math.floor(areaHeight / 2)
             playerPosition[playerIndex].x = tx
             playerPosition[playerIndex].y = ty
-            if (Math.floor(tx / areaWidth) === boardWidth - 1 && Math.floor(ty / areaHeight) === boardHeight - 1) {
-                if (timePass < gameTime - 1) startTime = currentTime - (gameTime * 1000 - 1000)
-            }
         }
         else {
             playerPosition[playerIndex].x = newX
@@ -341,6 +338,7 @@ class Game extends Component {
         gameOver = true
         for (let i = 0; i < playerNumber; i++) {
             if (playerLevel[i] < boardHeight + boardWidth - 2) gameOver = false
+            else if (timePass < gameTime - 1) startTime = currentTime - (gameTime * 1000 - 1000)
         }
         if (gameOver) startTime = currentTime - (gameTime * 1000 + 5000)
         this.setState({
