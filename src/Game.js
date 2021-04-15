@@ -70,17 +70,14 @@ class Game extends Component {
         let playerFacing = []
         let playerLevel = []
         let levelCounter = []
-        let startTime = 0
         let currentTime = 0
-        let nowTime = new Date()
-        startTime = nowTime.getHours() * 3600000 + nowTime.getMinutes() * 60000 + nowTime.getSeconds() * 1000 + nowTime.getMilliseconds()
-        //alert("start time: " + startTime)
         fetch(baseURL + '/roommember?' + new URLSearchParams({roomid:this.props.roomid}))
             .then(res => res.json())
             .then(res => {
                 playerID = []
                 playerName = []
                 playerNumber = res.length
+                this.setState({playerNumber: playerNumber})
                 for (let i = 0; i < res.length; i++) {
                     if (res[i].userid === this.props.userid) playerIndex = i
                     playerID.push(res[i].userid);
@@ -88,30 +85,18 @@ class Game extends Component {
                 }
                 preScore = []
                 playerScore = []
-				axios.post("/findAccount", {
-					_id: playerID[0],
-				}).then(res => {
-                    preScore.push(res.data[0].score)
-                    playerScore.push(res.data[0].score)
-					axios.post("/findAccount", {
-						_id: playerID[1],
-					}).then(res => {
-						preScore.push(res.data[0].score)
-						playerScore.push(res.data[0].score)
-						axios.post("/findAccount", {
-							_id: playerID[2],
-						}).then(res => {
-							preScore.push(res.data[0].score)
-							playerScore.push(res.data[0].score)
-							axios.post("/findAccount", {
-								_id: playerID[3],
-							}).then(res => {
-								preScore.push(res.data[0].score)
-								playerScore.push(res.data[0].score)
-							});
-						});
-					});
-				});
+                for (let i = 0; i < playerNumber; i++) {
+                    axios.post("/findAccount", {
+                        _id: playerID[i],
+                    }).then(res => {
+                        preScore.push(res.data[0].score)
+                        playerScore.push(res.data[0].score)
+                        this.setState({
+                            preScore: preScore,
+                            playerScore: playerScore
+                        })
+                    })
+                }
                 if (playerIndex === 0) {
                     ws.emit('entrances', {roomid: this.props.roomid, boardWidth: boardWidth, boardHeight: boardHeight});
                 }
@@ -136,17 +121,15 @@ class Game extends Component {
                         areaWidth: areaWidth,
                         areaHeight: areaHeight,
                         playerIndex: playerIndex,
-                        playerNumber: playerNumber,
                         playerName: playerName,
-                        preScore: preScore,
                         playerID: playerID,
+                        preScore: preScore,
                         playerScore: playerScore,
                         playerFacing: playerFacing,
                         playerPosition: playerPosition,
                         prevPlayerPos: prevPlayerPos,
                         playerLevel: playerLevel,
                         levelCounter: levelCounter,
-                        startTime: startTime,
                         currentTime: currentTime,
                         showGameBoard: true
                     }, () => {
@@ -162,19 +145,24 @@ class Game extends Component {
 
     setTime() {
         let {
-            gameTime,
+            gameStart,
             startTime,
+            gameTime,
             gameOver
         } = this.state
-        let nowTime = new Date()
-        let currentTime = nowTime.getHours() * 3600000 + nowTime.getMinutes() * 60000 + nowTime.getSeconds() * 1000 + nowTime.getMilliseconds()
-        if (startTime > 0) {
+        if (gameStart) {
+            let nowTime = new Date()
+            let currentTime = nowTime.getHours() * 3600000 + nowTime.getMinutes() * 60000 + nowTime.getSeconds() * 1000 + nowTime.getMilliseconds()
+            if (startTime === 0) {
+                startTime = currentTime
+            }
             let timePass = Math.floor((currentTime - startTime) / 1000)
             if (timePass >= gameTime + 5) {
                 gameOver = true
             }
             this.setState({
                 currentTime: currentTime,
+                startTime,
                 timePass: timePass,
                 gameOver: gameOver
             })
@@ -209,7 +197,6 @@ class Game extends Component {
         this.setState({
             ranking
         })
-        //ws.emit("setrank",{ranking:ranking});
     }
 
     handleKeyUp(e) {
@@ -330,7 +317,7 @@ class Game extends Component {
             playerPosition[playerIndex].x = tx
             playerPosition[playerIndex].y = ty
             if (Math.floor(tx / areaWidth) === boardWidth - 1 && Math.floor(ty / areaHeight) === boardHeight - 1) {
-                if (timePass > 5) startTime = currentTime - (gameTime * 1000 - 1000)
+                if (timePass < gameTime - 1) startTime = currentTime - (gameTime * 1000 - 1000)
             }
         }
         else {
@@ -364,7 +351,6 @@ class Game extends Component {
         let {
             gameStart,
             gameTime,
-            gameOver,
             boardWidth,
             boardHeight,
             startTime,
@@ -463,6 +449,7 @@ class Game extends Component {
             }
 
             status = "Number of players:" + playerNumber
+            //status = "Current Time: " + currentTime
             return(<div>
                 <div style={{
                     backgroundImage: `url(${background})`,
@@ -568,26 +555,25 @@ class Game extends Component {
         }
         else {
             let loaded = 0
+            let haha = ""
+            if (playerNumber > 0) loaded++
             if (randomEntrances.length > 0) loaded++
-            if (playerID.length > 0) loaded++
-            if (playerName.length > 0) loaded++
-            if (preScore.length > 0) loaded++
-            if (playerScore.length > 0) loaded++
-            if (playerLevel.length > 0) loaded++
+            if (playerID.length === playerNumber) loaded++
+            if (playerName.length === playerNumber) loaded++
+            if (preScore.length === playerNumber) loaded++
+            if (playerScore.length === playerNumber) loaded++
+            if (playerLevel.length === playerNumber) loaded++
             if (levelCounter.length > 0) loaded++
             if (ranking.length > 0) loaded++
-            if (playerNumber > 0) loaded++
-            if (playerFacing.length > 0) loaded++
-            if (playerPosition.length > 0) loaded++
-            if (prevPlayerPos.length > 0) loaded++
-            if (startTime > 0) loaded++
-            if (currentTime > 0) loaded++
-            if (loaded === 14) {
+            if (playerFacing.length === playerNumber) loaded++
+            if (playerPosition.length === playerNumber) loaded++
+            if (prevPlayerPos.length === playerNumber) loaded++
+            if (loaded === 12) {
                 this.setState({
                     gameStart: true
                 })
             }
-            let loadedPercent = Math.floor(100 * loaded / 14)
+            let loadedPercent = Math.floor(100 * loaded / 12)
             return(
                 <div
                     style = {
@@ -597,7 +583,7 @@ class Game extends Component {
                             verticalAlign: "center"
                         }
                     }>
-                Loading... {loadedPercent}%
+                Loading... {loadedPercent}% {haha}
                 </div>
             )
         }
