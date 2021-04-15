@@ -1,8 +1,8 @@
-  
 import React, {
     Component, useEffect
 } from 'react';
 import GameBoard from './GameBoard'
+import background from "./picture/background.jfif";
 import _ from 'lodash'
 import KeyHandler, {KEYDOWN} from 'react-key-handler';
 
@@ -318,7 +318,7 @@ class Game extends Component {
             else if (x === areaWidth - 1 && y === areaHeight - 1) temp = 2
             else temp = 3
             let ax = Math.floor(newX / areaWidth), ay = Math.floor(newY / areaHeight)
-            let tx = randomEntrances[ax + ay * boardWidth][temp][playerIndex] * areaWidth + Math.floor(areaWidth / 2)
+            let tx = randomEntrances[ax + ay * boardWidth][temp][0] * areaWidth + Math.floor(areaWidth / 2)
             let ty = randomEntrances[ax + ay * boardWidth][temp][1] * areaHeight + Math.floor(areaHeight / 2)
             playerPosition[playerIndex].x = tx
             playerPosition[playerIndex].y = ty
@@ -408,8 +408,13 @@ class Game extends Component {
         }
 
         return(
-            <div className="game">
-				<div className="hidden">invisible</div>
+            <div style={{
+                backgroundImage: `url(${background})`,
+                height:'100%',
+                width:'1280px',
+                color: "white"/*,
+                textAlign: "center"*/
+                }}>
                 <div className = "status">
                     {status}
                 </div>
@@ -504,7 +509,6 @@ class Game extends Component {
                             }
                             />)
                 }
-				<div className="hidden">invisible</div>
             </div>
         )
     }

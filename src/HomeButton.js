@@ -1,11 +1,11 @@
 import React from 'react';
-import { Button } from '@material-ui/core';
+import { Button } from 'react-bootstrap';
 
 function HomeButton({ setMode }) {
 	const home = () => {
 		setMode("Home");
 	}
-	return <Button variant="contained" color="default" onClick={home}>Home</Button>
+	return <button size="lg" variant="primary" onClick={home}>Home</button>
 }
 
 export default HomeButton;

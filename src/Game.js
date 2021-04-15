@@ -56,7 +56,7 @@ class Game extends Component {
     }
 
     initializeBoardPlayer() {
-        let gameTime = 30
+        let gameTime = 1000
         let boardWidth = 5
         let boardHeight = 5
         let areaWidth = 5
@@ -116,11 +116,10 @@ class Game extends Component {
 						});
 					});
 				});
-                if (this.state.playerIndex === 0) {
-                    ws.emit('entrances', {roomid: this.props.roomid})
+                if (playerIndex === 0) {
+                    ws.emit('entrances', {roomid: this.props.roomid, boardWidth: boardWidth, boardHeight: boardHeight});
                 }
-                ws.on('entrances', (data) => {
-                    randomEntrances = data
+                    // randomEntrances = data
                     //alert(randomEntrances.length)
                     let playerPosition = []
                     let prevPlayerPos = []
@@ -142,7 +141,6 @@ class Game extends Component {
                         boardWidth: boardWidth,
                         areaWidth: areaWidth,
                         areaHeight: areaHeight,
-                        randomEntrances: randomEntrances,
                         playerIndex: playerIndex,
                         playerNumber: playerNumber,
                         playerName: playerName,
@@ -161,7 +159,6 @@ class Game extends Component {
                         this.startGame()
                     })
                 })
-            })
     }
 
     startGame() {
@@ -339,7 +336,7 @@ class Game extends Component {
             else if (x === areaWidth - 1 && y === areaHeight - 1) temp = 2
             else temp = 3
             let ax = Math.floor(newX / areaWidth), ay = Math.floor(newY / areaHeight)
-            let tx = randomEntrances[ax + ay * boardWidth][temp][playerIndex] * areaWidth + Math.floor(areaWidth / 2)
+            let tx = randomEntrances[ax + ay * boardWidth][temp][0] * areaWidth + Math.floor(areaWidth / 2)
             let ty = randomEntrances[ax + ay * boardWidth][temp][1] * areaHeight + Math.floor(areaHeight / 2)
             playerPosition[playerIndex].x = tx
             playerPosition[playerIndex].y = ty
@@ -371,19 +368,35 @@ class Game extends Component {
             startTime,
             gameOver
         })
-        let obj = {roomid: this.state.roomid, pos: this.state.playerPosition};
+        let obj = {roomid: this.props.roomid, facing:this.state.playerFacing[this.state.playerIndex], level:this.state.playerLevel[this.state.playerIndex], prevpos:this.state.prevPlayerPos[this.state.playerIndex], pos: this.state.playerPosition[this.state.playerIndex], playerindex: this.state.playerIndex};
+        console.log(obj);
         ws.emit('move',obj);
         this.countTotalMoves()
         this.setRanking()
     }
 
     componentDidMount() {
-        this.interval = setInterval(this.setTime, 1000);
+        console.log(this.props.roomid);
         ws.on('move', (data)=>{
-	        let pos = this.state.playerPosition;
-            pos.push(data);
-            this.setState({playerPosition:pos});
+            //console.log(data.playerindex);
+            //console.log(data.pos);
+            let pos = this.state.playerPosition;
+            let prevpos = this.state.prevPlayerPos;
+            let level = this.state.playerLevel;
+            let face = this.state.playerFacing;
+            pos[data.playerindex] = data.pos;
+            prevpos[data.playerindex] = data.prevpos;
+            level[data.playerindex] = data.level;
+            face[data.playerindex] = data.facing;
+            this.setState({playerPosition:pos,prevPlayerPos:prevpos,playerLevel:level,playerFacing:face});
+            this.setRanking();
         })
+        ws.on('entrances',(data)=>{
+            // console.log("Entrance Get");
+            // console.log(data);
+            this.setState({randomEntrances: data});
+        });
+        this.interval = setInterval(this.setTime, 1000);
         /*
         fetch(baseURL+'/entrances?'+new URLSearchParams({roomid:this.props.roomid}))
             .then(res=>res.json())
@@ -391,12 +404,11 @@ class Game extends Component {
                 this.setState({randomEntrances:res})
             });
          */
+        /*
         if (this.state.playerIndex==0) {
             ws.emit('entrances', {roomid: this.props.roomid});
         }
-        ws.on('entrances',(data)=>{
-            this.setState({randomEntrances: data});
-        });
+        */
     }
     
     render() {
@@ -404,16 +416,34 @@ class Game extends Component {
         let {
             ranking,
             preScore,
-            playerNumber,
-            playerID,
             playerScore,
             playerLevel,
+            playerPosition,
+            randomEntrances,
             boardWidth,
             boardHeight,
-            gameOver
+            areaWidth,
+            areaHeight,
+            gameOver,
+            playerNumber,
+            playerID
         } = this.state
 		let status = playerNumber
-        
+
+        /*
+        let status = '*Demo only* '
+        let temp = Math.floor(playerPosition[0].x / areaWidth) + Math.floor(playerPosition[0].y / areaHeight) * boardWidth
+        if (randomEntrances[temp]) {
+            for (let i = 0; i < 4; i++) {
+                if (i === 0) status += "Top-left Entrance: "
+                if (i === 1) status += "Top-right Entrance: "
+                if (i === 2) status += "Bottom-right Entrance: "
+                if (i === 3) status += "Bottom-left Entrance: "
+                status += '(' + randomEntrances[temp][i][0] + ', ' + randomEntrances[temp][i][1] + ') '
+            }
+        }
+        */
+
         if (gameOver) {
             let finishLevel = boardWidth + boardHeight - 2
             if (playerLevel[ranking[0]] === finishLevel) {

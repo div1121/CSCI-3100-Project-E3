@@ -284,15 +284,16 @@ io.on('connection', (socket) =>{
         }
     });
     socket.on('move', (data)=>{
-        io.to(data.roomid).emit('move',data.pos);
+        io.to(data.roomid).emit('move',data);
 	});
     socket.on('startgame', async (data) => {
         io.to(data.roomid).emit('startgame');
     });
 	socket.on('entrances', (data) => {
+
 		const id = data.roomid;
 		
-		let randomEntrances=[], boardHeight=0, boardWidth=0,randomValues;
+		let randomEntrances=[], boardHeight=data.boardHeight, boardWidth=data.boardWidth,randomValues;
 		for (let i = 0; i < boardHeight; i++) {
 			for (let j = 0; j < boardWidth; j++) {
 				randomEntrances.push([])

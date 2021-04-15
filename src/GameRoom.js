@@ -21,7 +21,7 @@ class Playerline extends Component{
                     </td>
                 }
                 {
-                    this.props.position && this.props.ready_num===4 &&
+                    this.props.position && this.props.ready_num===this.props.totalplayer &&
                     <td>
                         <button onClick={this.props.startgame}>Start</button>
                     </td>
@@ -152,6 +152,7 @@ class Gameroom extends Component{
                                      handleready={list[i]}
                                      position={i===0 && list[0]!==null}
                                      ready_num={this.state.ready_num}
+                                     totalplayer={this.state.player_num}
 									 setMode={this.props.setMode}
 									 roomid={this.state.roomid}
 									 startgame={this.startgame}/>);
