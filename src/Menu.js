@@ -1,49 +1,40 @@
 import React, { useState } from 'react';
 import { Spinner } from 'react-bootstrap';
-import { LoginButton } from './Login';
 
-function Match({ userID }) {
+function Match() {
 	const [loading, setLoading] = useState(false);
 	const matching = () => {
-		if(userID===null){
-			alert('Login first!');
-		}else {
-			setLoading(!loading);
-		}
+		setLoading(!loading);
 	}
 	return <button className="MenuButton" onClick={matching}>Matching {loading?<Spinner animation="border" role="status" />:<></>}</button>
 }
 
-function CustomRoom({ setMode, userID }) {
+function CustomRoom({ setMode }) {
 	const customRoom = () => {
-		if(userID===null){
-			alert('Login first!');
-		}else {
-			setMode("FindingRoom");
-		}
+		setMode("CustomRoom");
 	}
 	return <button className="MenuButton" onClick={customRoom}>Custom room</button>
 }
 
-function Demo({ setMode, userID }) {
+function Demo({ setMode }) {
 	const demo = () => {
-		setMode("Game");
+		setMode("Demo");
 	}
 	return <button className="MenuButton" onClick={demo}>Demo</button>
 }
 
-function Menu({ setMode, userID }) {
+function Menu({ setMode }) {
 	return(
 		<div className='menu'>
 			<h1>Menu</h1>
 			<div>
-				<Match userID={userID}/>
+				<Match />
 			</div>
 			<div>
-				<CustomRoom setMode={setMode} userID={userID}/>
+				<CustomRoom setMode={setMode}/>
 			</div>
 			<div>
-				<Demo setMode={setMode} userID={userID}/>
+				<Demo setMode={setMode}/>
 			</div>
 		</div>
 	);
