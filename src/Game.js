@@ -1,5 +1,5 @@
 import React, {
-    Component, useEffect
+    Component
 } from 'react';
 import GameBoard from './GameBoard'
 import background from "./picture/background.jfif";
@@ -15,12 +15,14 @@ class Game extends Component {
     constructor(props) {
         super(props)
         this.state = {
+            showGameBoard: false,
+            gameStart: false,
             gameOver: false,
             gameTime: 0,
             playerIndex: 0,
             startTime: 0,
             currentTime: 0,
-            showGameBoard: false,
+            timePass: 0,
             boardHeight: 0,
             boardWidth: 0,
             areaHeight: 0,
@@ -36,13 +38,11 @@ class Game extends Component {
             playerNumber: 0,
             playerFacing: [],
             playerPosition: [],
-            prevPlayerPos: [],
-            totalMoves: 0
+            prevPlayerPos: []
         }
         this.initializeBoardPlayer = this.initializeBoardPlayer.bind(this)
         this.startGame = this.startGame.bind(this)
         this.setRanking = this.setRanking.bind(this)
-        this.countTotalMoves = this.countTotalMoves.bind(this)
         this.setTime = this.setTime.bind(this)
         this.handleKeyUp = this.handleKeyUp.bind(this)
         this.handleKeyDown = this.handleKeyDown.bind(this)
@@ -62,19 +62,19 @@ class Game extends Component {
         let areaWidth = 5
         let areaHeight = 5
         let playerIndex = -1
-        let randomEntrances = []
         let playerID = []
         let playerNumber = 0
-        let playerName = ["Jason", "Kenny", "Benny", "Knife"]
-        let preScore = [1000, 900, 800, 700]
-        let playerScore = [1000, 900, 800, 700]
+        let playerName = ["Robot_0", "Robot_1", "Robot_2", "Robot_3"]
+        let preScore = [-1, -1, -1, -1]
+        let playerScore = [-1, -1, -1, -1]
         let playerFacing = []
         let playerLevel = []
         let levelCounter = []
         let startTime = 0
         let currentTime = 0
         let nowTime = new Date()
-        startTime = nowTime.getHours() * 3600 + nowTime.getMinutes() * 60 + nowTime.getSeconds()
+        startTime = nowTime.getHours() * 3600000 + nowTime.getMinutes() * 60000 + nowTime.getSeconds() * 1000 + nowTime.getMilliseconds()
+        //alert("start time: " + startTime)
         fetch(baseURL + '/roommember?' + new URLSearchParams({roomid:this.props.roomid}))
             .then(res => res.json())
             .then(res => {
@@ -93,25 +93,21 @@ class Game extends Component {
 				}).then(res => {
                     preScore.push(res.data[0].score)
                     playerScore.push(res.data[0].score)
-                    //alert(res[0].score)
 					axios.post("/findAccount", {
 						_id: playerID[1],
 					}).then(res => {
 						preScore.push(res.data[0].score)
 						playerScore.push(res.data[0].score)
-						//alert(res[0].score)
 						axios.post("/findAccount", {
 							_id: playerID[2],
 						}).then(res => {
 							preScore.push(res.data[0].score)
 							playerScore.push(res.data[0].score)
-							//alert(res[0].score)
 							axios.post("/findAccount", {
 								_id: playerID[3],
 							}).then(res => {
 								preScore.push(res.data[0].score)
 								playerScore.push(res.data[0].score)
-								//alert(res[0].score)
 							});
 						});
 					});
@@ -119,8 +115,6 @@ class Game extends Component {
                 if (playerIndex === 0) {
                     ws.emit('entrances', {roomid: this.props.roomid, boardWidth: boardWidth, boardHeight: boardHeight});
                 }
-                    // randomEntrances = data
-                    //alert(randomEntrances.length)
                     let playerPosition = []
                     let prevPlayerPos = []
                     for (let i = 0; i < boardWidth + boardHeight - 1; i++) levelCounter.push([])
@@ -166,28 +160,25 @@ class Game extends Component {
         this.setTime()
     }
 
-    countTotalMoves() {
-        this.setState({
-            totalMoves: ++this.state.totalMoves
-        })
-    }
-
     setTime() {
         let {
             gameTime,
             startTime,
-            currentTime,
             gameOver
         } = this.state
         let nowTime = new Date()
-        currentTime = nowTime.getHours() * 3600 + nowTime.getMinutes() * 60 + nowTime.getSeconds()
-        if (currentTime - startTime >= (gameTime + 5)) {
-            gameOver = true
+        let currentTime = nowTime.getHours() * 3600000 + nowTime.getMinutes() * 60000 + nowTime.getSeconds() * 1000 + nowTime.getMilliseconds()
+        if (startTime > 0) {
+            let timePass = Math.floor((currentTime - startTime) / 1000)
+            if (timePass >= gameTime + 5) {
+                gameOver = true
+            }
+            this.setState({
+                currentTime: currentTime,
+                timePass: timePass,
+                gameOver: gameOver
+            })
         }
-        this.setState({
-            currentTime: currentTime,
-            gameOver: gameOver
-        })
     }
 
     setRanking() {
@@ -230,12 +221,11 @@ class Game extends Component {
             boardHeight,
             playerFacing,
             playerIndex,
-            startTime,
-            currentTime,
+            timePass,
             playerLevel,
             gameOver
         } = this.state
-        if (playerLevel[playerIndex] < boardWidth + boardHeight - 2 && currentTime - startTime <= (gameTime + 4) && currentTime - startTime > 3 && gameOver === false) {
+        if (playerLevel[playerIndex] < boardWidth + boardHeight - 2 && timePass <= gameTime + 4 && timePass > 3 && gameOver === false) {
             playerFacing[playerIndex] = 0
             if (Number(playerPosition[playerIndex].y) % areaHeight - 1 >= 0) this.makeMove(playerPosition[playerIndex].x, playerPosition[playerIndex].y - 1)
         }
@@ -251,12 +241,11 @@ class Game extends Component {
             boardHeight,
             playerFacing,
             playerIndex,
-            startTime,
-            currentTime,
+            timePass,
             playerLevel,
             gameOver
         } = this.state
-        if (playerLevel[playerIndex] < boardWidth + boardHeight - 2 && currentTime - startTime <= (gameTime + 4) && currentTime - startTime > 3 && gameOver === false) {
+        if (playerLevel[playerIndex] < boardWidth + boardHeight - 2 && timePass <= gameTime + 4 && timePass > 3 && gameOver === false) {
             playerFacing[playerIndex] = 1
             if (Number(playerPosition[playerIndex].y) % areaHeight + 1 < areaHeight) this.makeMove(playerPosition[playerIndex].x, playerPosition[playerIndex].y + 1)
         }
@@ -272,12 +261,11 @@ class Game extends Component {
             boardHeight,
             playerFacing,
             playerIndex,
-            startTime,
-            currentTime,
+            timePass,
             playerLevel,
             gameOver
         } = this.state
-        if (playerLevel[playerIndex] < boardWidth + boardHeight - 2 && currentTime - startTime <= (gameTime + 4) && currentTime - startTime > 3 && gameOver === false) {
+        if (playerLevel[playerIndex] < boardWidth + boardHeight - 2 && timePass <= gameTime + 4 && timePass > 3 && gameOver === false) {
             playerFacing[playerIndex] = 3
             if (Number(playerPosition[playerIndex].x) % areaWidth + 1 < areaWidth) this.makeMove(playerPosition[playerIndex].x + 1, playerPosition[playerIndex].y)
         }
@@ -293,12 +281,11 @@ class Game extends Component {
             boardHeight,
             playerFacing,
             playerIndex,
-            startTime,
-            currentTime,
+            timePass,
             playerLevel,
             gameOver
         } = this.state
-        if (playerLevel[playerIndex] < boardWidth + boardHeight - 2 && currentTime - startTime <= (gameTime + 4) && currentTime - startTime > 3 && gameOver === false) {
+        if (playerLevel[playerIndex] < boardWidth + boardHeight - 2 && timePass <= gameTime + 4 && timePass > 3 && gameOver === false) {
             playerFacing[playerIndex] = 2
             if (Number(playerPosition[playerIndex].x) % areaWidth - 1 >= 0) this.makeMove(playerPosition[playerIndex].x - 1, playerPosition[playerIndex].y)
         }
@@ -318,8 +305,9 @@ class Game extends Component {
             playerIndex,
             playerLevel,
             levelCounter,
-            currentTime,
             startTime,
+            currentTime,
+            timePass,
             gameOver
         } = this.state
         let prevPos = {
@@ -341,7 +329,7 @@ class Game extends Component {
             playerPosition[playerIndex].x = tx
             playerPosition[playerIndex].y = ty
             if (Math.floor(tx / areaWidth) === boardWidth - 1 && Math.floor(ty / areaHeight) === boardHeight - 1) {
-                if (currentTime - startTime > 5) startTime = currentTime - (gameTime - 1)
+                if (timePass > 5) startTime = currentTime - (gameTime * 1000 - 1000)
             }
         }
         else {
@@ -353,13 +341,11 @@ class Game extends Component {
             playerLevel[playerIndex] = level
             levelCounter[level].push(playerIndex)
         }
-        let b = true
+        gameOver = true
         for (let i = 0; i < playerNumber; i++) {
-            if (playerLevel[i] < 8) b = false
+            if (playerLevel[i] < boardHeight + boardWidth - 2) gameOver = false
         }
-        if (b) {
-            startTime = currentTime - (gameTime + 5)
-        }
+        if (gameOver) startTime = currentTime - (gameTime * 1000 + 5000)
         this.setState({
             playerPosition,
             prevPlayerPos,
@@ -369,17 +355,13 @@ class Game extends Component {
             gameOver
         })
         let obj = {roomid: this.props.roomid, facing:this.state.playerFacing[this.state.playerIndex], level:this.state.playerLevel[this.state.playerIndex], prevpos:this.state.prevPlayerPos[this.state.playerIndex], pos: this.state.playerPosition[this.state.playerIndex], playerindex: this.state.playerIndex};
-        console.log(obj);
-        ws.emit('move',obj);
-        this.countTotalMoves()
+        ws.emit('move', obj);
         this.setRanking()
     }
 
     componentDidMount() {
         console.log(this.props.roomid);
         ws.on('move', (data)=>{
-            //console.log(data.playerindex);
-            //console.log(data.pos);
             let pos = this.state.playerPosition;
             let prevpos = this.state.prevPlayerPos;
             let level = this.state.playerLevel;
@@ -392,194 +374,209 @@ class Game extends Component {
             this.setRanking();
         })
         ws.on('entrances',(data)=>{
-            // console.log("Entrance Get");
-            // console.log(data);
             this.setState({randomEntrances: data});
         });
-        this.interval = setInterval(this.setTime, 1000);
-        /*
-        fetch(baseURL+'/entrances?'+new URLSearchParams({roomid:this.props.roomid}))
-            .then(res=>res.json())
-            .then(res=>{
-                this.setState({randomEntrances:res})
-            });
-         */
-        /*
-        if (this.state.playerIndex==0) {
-            ws.emit('entrances', {roomid: this.props.roomid});
-        }
-        */
+        this.interval = setInterval(this.setTime, 10);
     }
     
     render() {
 
         let {
-            ranking,
+            gameStart,
+            gameOver,
+            boardWidth,
+            boardHeight,
+            startTime,
+            currentTime,
+            randomEntrances,
+            playerID,
+            playerName,
             preScore,
             playerScore,
             playerLevel,
-            playerPosition,
-            randomEntrances,
-            boardWidth,
-            boardHeight,
-            areaWidth,
-            areaHeight,
-            gameOver,
+            levelCounter,
+            ranking,
             playerNumber,
-            playerID
+            playerFacing,
+            playerPosition,
+            prevPlayerPos,
         } = this.state
-		let status = playerNumber
+        
+        // Display info
+		let status = ""
 
-        /*
-        let status = '*Demo only* '
-        let temp = Math.floor(playerPosition[0].x / areaWidth) + Math.floor(playerPosition[0].y / areaHeight) * boardWidth
-        if (randomEntrances[temp]) {
-            for (let i = 0; i < 4; i++) {
-                if (i === 0) status += "Top-left Entrance: "
-                if (i === 1) status += "Top-right Entrance: "
-                if (i === 2) status += "Bottom-right Entrance: "
-                if (i === 3) status += "Bottom-left Entrance: "
-                status += '(' + randomEntrances[temp][i][0] + ', ' + randomEntrances[temp][i][1] + ') '
+        if (gameStart) {
+            if (gameOver) {
+                let finishLevel = boardWidth + boardHeight - 2
+                if (playerLevel[ranking[0]] === finishLevel) {
+                    playerScore[ranking[0]] = preScore[ranking[0]] + 2
+                }
+                if (playerLevel[ranking[1]] === finishLevel) {
+                    playerScore[ranking[1]] = preScore[ranking[1]] + 1
+                }
+                else {
+                    playerScore[ranking[1]] = preScore[ranking[1]] - 1
+                }
+                if (playerLevel[ranking[2]] === finishLevel) {
+                    playerScore[ranking[2]] = preScore[ranking[2]] - 1
+                }
+                else {
+                    playerScore[ranking[2]] = preScore[ranking[2]] - 3
+                }
+                if (playerLevel[ranking[3]] === finishLevel) {
+                    playerScore[ranking[3]] = preScore[ranking[3]] - 2
+                }
+                else {
+                    playerScore[ranking[3]] = preScore[ranking[3]] - 4
+                }
+                for (let i = 0; i < playerNumber; i++) {
+                    fetch(baseURL + '/updateAccount?' + new URLSearchParams({
+                        _id: playerID[i],
+                        score: playerScore[i],
+                    }))
+                }
             }
-        }
-        */
 
-        if (gameOver) {
-            let finishLevel = boardWidth + boardHeight - 2
-            if (playerLevel[ranking[0]] === finishLevel) {
-                playerScore[ranking[0]] = preScore[ranking[0]] + 2
-            }
-            if (playerLevel[ranking[1]] === finishLevel) {
-                playerScore[ranking[1]] = preScore[ranking[1]] + 1
-            }
-            else {
-                playerScore[ranking[1]] = preScore[ranking[1]] - 1
-            }
-            if (playerLevel[ranking[2]] === finishLevel) {
-                playerScore[ranking[2]] = preScore[ranking[2]] - 1
-            }
-            else {
-                playerScore[ranking[2]] = preScore[ranking[2]] - 3
-            }
-            if (playerLevel[ranking[3]] === finishLevel) {
-                playerScore[ranking[3]] = preScore[ranking[3]] - 2
-            }
-            else {
-                playerScore[ranking[3]] = preScore[ranking[3]] - 4
-            }
-            for (let i = 0; i < playerNumber; i++) {
-                fetch(baseURL + '/updateAccount?' + new URLSearchParams({
-                    _id: playerID[i],
-                    score: playerScore[i],
-                }))
-            }
-        }
+            status = "Number of players:" + playerNumber
+            return(<div>
+                <div style={{
+                    backgroundImage: `url(${background})`,
+                    color: "white"
+                    }}>
+                    <div className = "status">
+                        {status}
+                    </div>
+                    <KeyHandler
+                        keyEventName = {KEYDOWN}
+                        keyValue = "ArrowUp"
+                        onKeyHandle = {
+                            this.handleKeyUp
+                        }
+                    />
+                    <KeyHandler
+                        keyEventName = {KEYDOWN}
+                        keyValue = "ArrowDown"
+                        onKeyHandle = {
+                            this.handleKeyDown
+                        }
+                    />
+                    <KeyHandler
+                        keyEventName = {KEYDOWN}
+                        keyValue = "ArrowRight"
+                        onKeyHandle = {
+                            this.handleKeyRight
+                        }
+                    />
+                    <KeyHandler
+                        keyEventName = {KEYDOWN}
+                        keyValue = "ArrowLeft"
+                        onKeyHandle = {
+                            this.handleKeyLeft
+                        }
+                    />
 
-
-        return(<div>
-            <div style={{
-                backgroundImage: `url(${background})`,
-                height:'720px',
-                color: "white"
-                }}>
-                <div className = "status">
-                    Number of players: {status}
+                    {
+                        this.state.showGameBoard &&
+                            ( <GameBoard
+                                gameTime = {
+                                    this.state.gameTime
+                                }
+                                boardWidth = {
+                                    this.state.boardWidth
+                                }
+                                boardHeight = {
+                                    this.state.boardHeight
+                                }
+                                areaWidth = {
+                                    this.state.areaWidth
+                                }
+                                areaHeight = {
+                                    this.state.areaHeight
+                                }
+                                playerIndex = {
+                                    this.state.playerIndex
+                                }
+                                playerNumber = {
+                                    this.state.playerNumber
+                                }
+                                playerName = {
+                                    this.state.playerName
+                                }
+                                preScore = {
+                                    this.state.preScore
+                                }
+                                playerScore = {
+                                    this.state.playerScore
+                                }
+                                playerFacing = {
+                                    this.state.playerFacing
+                                }
+                                playerPosition = {
+                                    this.state.playerPosition
+                                }
+                                prevPlayerPos = {
+                                    this.state.prevPlayerPos
+                                }
+                                playerLevel = {
+                                    this.state.playerLevel
+                                }
+                                ranking = {
+                                    this.state.ranking
+                                }
+                                startTime = {
+                                    this.state.startTime
+                                }
+                                currentTime = {
+                                    this.state.currentTime
+                                }
+                                totalMoves = {
+                                    this.state.totalMoves
+                                }
+                                gameOver = {
+                                    this.state.gameOver
+                                }
+                                />)
+                        }
+                    </div>
                 </div>
-                <KeyHandler
-                    keyEventName = {KEYDOWN}
-                    keyValue = "ArrowUp"
-                    onKeyHandle = {
-                        this.handleKeyUp
-                    }
-                />
-                <KeyHandler
-                    keyEventName = {KEYDOWN}
-                    keyValue = "ArrowDown"
-                    onKeyHandle = {
-                        this.handleKeyDown
-                    }
-                />
-                <KeyHandler
-                    keyEventName = {KEYDOWN}
-                    keyValue = "ArrowRight"
-                    onKeyHandle = {
-                        this.handleKeyRight
-                    }
-                />
-                <KeyHandler
-                    keyEventName = {KEYDOWN}
-                    keyValue = "ArrowLeft"
-                    onKeyHandle = {
-                        this.handleKeyLeft
-                    }
-                />
-
-                {
-                    this.state.showGameBoard &&
-                        ( <GameBoard
-                            gameTime = {
-                                this.state.gameTime
-                            }
-                            boardWidth = {
-                                this.state.boardWidth
-                            }
-                            boardHeight = {
-                                this.state.boardHeight
-                            }
-                            areaWidth = {
-                                this.state.areaWidth
-                            }
-                            areaHeight = {
-                                this.state.areaHeight
-                            }
-                            playerIndex = {
-                                this.state.playerIndex
-                            }
-                            playerNumber = {
-                                this.state.playerNumber
-                            }
-                            playerName = {
-                                this.state.playerName
-                            }
-                            preScore = {
-                                this.state.preScore
-                            }
-                            playerScore = {
-                                this.state.playerScore
-                            }
-                            playerFacing = {
-                                this.state.playerFacing
-                            }
-                            playerPosition = {
-                                this.state.playerPosition
-                            }
-                            prevPlayerPos = {
-                                this.state.prevPlayerPos
-                            }
-                            playerLevel = {
-                                this.state.playerLevel
-                            }
-                            ranking = {
-                                this.state.ranking
-                            }
-                            startTime = {
-                                this.state.startTime
-                            }
-                            currentTime = {
-                                this.state.currentTime
-                            }
-                            totalMoves = {
-                                this.state.totalMoves
-                            }
-                            gameOver = {
-                                this.state.gameOver
-                            }
-                            />)
-                    }
+            )
+        }
+        else {
+            let loaded = 0
+            if (randomEntrances.length > 0) loaded++
+            if (playerID.length > 0) loaded++
+            if (playerName.length > 0) loaded++
+            if (preScore.length > 0) loaded++
+            if (playerScore.length > 0) loaded++
+            if (playerLevel.length > 0) loaded++
+            if (levelCounter.length > 0) loaded++
+            if (ranking.length > 0) loaded++
+            if (playerNumber > 0) loaded++
+            if (playerFacing.length > 0) loaded++
+            if (playerPosition.length > 0) loaded++
+            if (prevPlayerPos.length > 0) loaded++
+            if (startTime > 0) loaded++
+            if (currentTime > 0) loaded++
+            if (loaded === 14) {
+                this.setState({
+                    gameStart: true
+                })
+            }
+            let loadedPercent = Math.floor(100 * loaded / 14)
+            return(
+                <div
+                    style = {
+                        {
+                            backgroundImage: `url(${background})`,
+                            textAlign: "center",
+                            verticalAlign: "center"
+                        }
+                    }>
+                Loading... {loadedPercent}%
                 </div>
-            </div>
             )
         }
     }
+}
 
     export default Game;
