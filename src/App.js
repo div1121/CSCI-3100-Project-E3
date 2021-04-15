@@ -23,7 +23,7 @@ function App() {
 			:
 			<>
 				<div className="appHeader">
-					<TopNavbar setMode={setMode} userID={userID} username={username} setUserID={setUserID} setUsername={setUsername}/>
+					<TopNavbar setMode={setMode} userID={userID} username={username} setUserID={setUserID} setUsername={setUsername} gameRoomEnter={gameRoomEnter} gameRoomID={gameRoomID} setGameRoomEnter={setGameRoomEnter} setGameRoomID={setGameRoomID}/>
 				</div>
 				<div className="appBody">
 					{mode==="Home"?
