@@ -66,6 +66,11 @@
 	margin-left: 10px;
 }
 
+.topNavbarRight > Button:hover{
+	background-color:#D3D3D3;
+	box-shadow: 0 12px 16px 0 rgba(0,0,0,0.24), 0 17px 50px 0 rgba(0,0,0,0.19);
+}
+
 .homepage {
 	display: flex;
 	background-color: #ededed;
@@ -182,14 +187,26 @@
 	text-align: center;
 }
 
+.room:hover {
+	background-color:#D3D3D3;
+}
+
 .room > .roomname {
 	width: 65%;
 	font-size: 20px;
 }
 
 .room > button {
-	width: 60px;
-	font-size: 20px;
+	background-color: #404040;
+	border: none;
+	color: white;
+	padding: 5px;
+	text-align: center;
+	text-decoration: none;
+	display: inline-block;
+	font-size: 16px;
+	margin: 2px 2px;
+	border-radius: 50%;
 }
 
 
