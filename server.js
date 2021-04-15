@@ -130,6 +130,19 @@ app.post('/updateAccount', (req, res) => {
 	})
 })
 
+app.post('/updateScore', (req, res) => {
+	const id = req.body._id;
+	const password = req.body.score;
+	
+	User.update({ "_id": id }, { "score": score }, {}, (err, data) => {
+		if (err) {
+			res.status(500).send(err);
+		} else {
+			res.status(201).send(data);
+		}
+	})
+})
+
 app.get('/messages', (req, res) => {
     const id = req.query.roomid;
     //console.log(id);
