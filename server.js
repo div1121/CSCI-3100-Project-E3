@@ -284,7 +284,7 @@ io.on('connection', (socket) =>{
         }
     });
     socket.on('move', (data)=>{
-        io.to(data.roomid).emit('move',data);
+        socket.broadcast.to(data.roomid).emit('move',data);
 	});
     socket.on('startgame', async (data) => {
         io.to(data.roomid).emit('startgame');
