@@ -15,7 +15,7 @@ class Roomline extends Component{
 				<div className="roomname">
                     {this.props.roomname}
                 </div>
-                <button onClick={this.props.handleadd}>Join</button>
+                {!this.props.loading && <button onClick={this.props.handleadd}>Join</button>}
             </div>
         )
     }
