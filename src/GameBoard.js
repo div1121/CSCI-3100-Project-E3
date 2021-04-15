@@ -182,7 +182,7 @@ class GameBoard extends Component {
                     let border_square = border_long_2
                     let border_long = empty_img
                     let w_0 = "0", w_1 = "300", w_2 = "0"
-                    let timePass = (gameTime + 4) + startTime - currentTime
+                    let timePass = Math.floor(((gameTime * 1000 + 5000) + startTime - currentTime) / 1000)
                     let t_0 = "Time: " + timePass, t_1 = "", t_2 = "", t_3 = "", t_4 = "", t_5 = "", t_6 = ""
                     let colour_0 = "white", colour_1 = "white"
                     if (i < playerNumber) {
