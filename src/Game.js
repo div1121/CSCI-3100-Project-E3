@@ -446,7 +446,7 @@ class Game extends Component {
                         score: playerScore[i],
 					})
                 }
-				scoreUpdate = true
+				this.props.setMode("GameEnd")
             }
 
             status = "Number of players:" + playerNumber
