@@ -1,5 +1,8 @@
 import React, { Component } from 'react';
 import ws from './service';
+import alertify from 'alertifyjs';
+import 'alertifyjs/build/css/alertify.css';
+import './Alert.css'
 import {PATH_TO_BACKEND} from './baseURL';
 const baseURL = PATH_TO_BACKEND;
 
@@ -77,7 +80,7 @@ class RoomList extends React.Component {
         });
 
         ws.on('failjoin',(data)=>{
-            alert("Fail to join the room: " + data.roomname);
+            alertify.message("Fail to join the room: "+ data.roomname);
         })
     }
 

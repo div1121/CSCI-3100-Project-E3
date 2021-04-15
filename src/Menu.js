@@ -1,12 +1,15 @@
 import React, { useState, useEffect } from 'react';	
 import CircularProgress from '@material-ui/core/CircularProgress';
 import ws from './service';
+import alertify from 'alertifyjs';
+import 'alertifyjs/build/css/alertify.css';
+import './Alert.css'
 
 function Match({ setMode, userID, username, setGameRoomEnter, setGameRoomID }){
 	const [loading, setLoading] = useState(false);
 	const matching = () => {
 		if(userID===null){
-			alert('Login first!');
+			alertify.error('Login first!');
 		}else {
 			setLoading(!loading);
 			ws.emit('ranking',{userid: userID, name: username});
@@ -15,7 +18,7 @@ function Match({ setMode, userID, username, setGameRoomEnter, setGameRoomID }){
 	useEffect(() => {
 		ws.on('getroominfo',(data)=>{
 			setMode("FindingRoom");
-			console.log("OK");
+			//console.log("OK");
 			setLoading(!loading);
 			setGameRoomEnter(data.roomname);
 			setGameRoomID(data.roomid);
@@ -35,7 +38,7 @@ function Match({ setMode, userID, username, setGameRoomEnter, setGameRoomID }){
 function CustomRoom({ setMode, userID }) {
 	const customRoom = () => {
 		if(userID===null){
-			alert('Login first!');
+			alertify.error('Login first!');
 		}else {
 			setMode("FindingRoom");
 		}
