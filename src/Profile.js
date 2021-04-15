@@ -3,6 +3,9 @@ import axios from './Axios';
 import { makeStyles } from '@material-ui/core/styles';
 import Modal from '@material-ui/core/Modal';
 import { Button } from '@material-ui/core';
+import alertify from 'alertifyjs';
+import 'alertifyjs/build/css/alertify.css';
+import './Alert.css'
 
 function getModalStyle() {
 	const top = 50;
@@ -34,13 +37,13 @@ function ChangePasswordConfirm({ userID, password, newPassword, reNewPassword, s
 				password: password,
 			}).then(res => {
 				if(res.data.length===0){
-					alert('Password is wrong');
+					alertify.error('Password is wrong');
 				}else if(newPassword.length===0) {
-					alert("New password is empty!");
+					alertify.error("New password is empty!");
 				}else if(newPassword.length<8) {
-					alert("New password should contain at least 8 letters!");
+					alertify.error("New password should contain at least 8 letters!");
 				}else if(newPassword!==reNewPassword){
-					alert("Re-entered new password is not same to new password!");
+					alertify.error("Re-entered new password is not same to new password!");
 				}else {
 					canUpdate = true;
 				}
@@ -51,13 +54,13 @@ function ChangePasswordConfirm({ userID, password, newPassword, reNewPassword, s
 					password: newPassword,
 				}).then(res => {
 					if(res.data.ok===1){
-						alert('Password is updated');
+						alertify.success('Password is updated');
 					}
 					setShow(false);
 				});
 			}
 		} catch (error) {
-			alert('Internal Error');
+			alertify.error('Internal Error');
 		}
 	};
 	return <Button variant="contained" type="submit" onClick={changePassword}>Confirm</Button>;
@@ -136,7 +139,7 @@ function ProfileButton({ userID, username, setUsername }) {
 				setShow(true);
 			});
 		} catch (error) {
-			alert('Connection Error');
+			alertify.error('Connection Error');
 		}
 	}
 	

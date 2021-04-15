@@ -4,6 +4,9 @@ import validator from 'validator';
 import { makeStyles } from '@material-ui/core/styles';
 import Modal from '@material-ui/core/Modal';
 import { Button } from '@material-ui/core';
+import alertify from 'alertifyjs';
+import 'alertifyjs/build/css/alertify.css';
+import './Alert.css'
 
 function getModalStyle() {
 	const top = 50;
@@ -30,17 +33,17 @@ function Register({ setUserID, setUsername, name, email, password, rePassword })
 		e.preventDefault();
 		var canRegister = false;
 		if(name.length===0) {
-			alert("Name is empty!");
+			alertify.error("Name is empty!");
 		}else if(email.length===0) {
-			alert("Email is empty!");
+			alertify.error("Email is empty!");
 		}else if(validator.isEmail(email)===false) {
-			alert("Email does not exist!");
+			alertify.error("Email does not exist!");
 		}else if(password.length===0) {
-			alert("Password is empty!");
+			alertify.error("Password is empty!");
 		}else if(password.length<8) {
-			alert("Password should contain at least 8 letters!");
+			alertify.error("Password should contain at least 8 letters!");
 		}else if(password!==rePassword){
-			alert("Re-entered password is not same to new password!");
+			alertify.error("Re-entered password is not same to new password!");
 		}else try {
 			await axios.post("/findAccount", {
 				email: email,
@@ -48,7 +51,7 @@ function Register({ setUserID, setUsername, name, email, password, rePassword })
 				if(res.data.length===0){
 					canRegister = true;
 				} else {
-					alert("This email has been used for registration. You may register with another email or login.");
+					alertify.error("This email has been used for registration. You may register with another email or login.");
 				}
 			});
 			if(canRegister){
@@ -62,11 +65,11 @@ function Register({ setUserID, setUsername, name, email, password, rePassword })
 					setUsername(res.data.name);
 					sessionStorage.setItem('userID', res.data._id);
 					sessionStorage.setItem('username', res.data.name);
-					alert('Register successfully');
+					alertify.success('Register successfully');
 				});
 			}
 		} catch (error) {
-			alert('Internal error');
+			alertify.error('Internal error');
 		}
 	};
 	return <Button variant="contained" type = "submit" color="primary" onClick={register}>Register</Button>;
@@ -81,17 +84,17 @@ function LoginWithEmail({ setUserID, setUsername, email, password}) {
 				password: password,
 			}).then(res => {
 				if(res.data.length===0){
-					alert('Invalid email or password');
+					alertify.error('Invalid email or password');
 				} else {
 					setUserID(res.data[0]._id);
 					setUsername(res.data[0].name);
 					sessionStorage.setItem('userID', res.data[0]._id);
 					sessionStorage.setItem('username', res.data[0].name);
-					alert('Login successfully');
+					alertify.success('Login successfully');
 				}
 			});
 		} catch (error) {
-			alert('Internal Error');
+			alertify.error('Internal Error');
 		}
 	};
 	return <Button variant="contained" type = "submit" onClick={loginWithEmail}>Login</Button>;
@@ -103,9 +106,9 @@ function LogoutButton({ setUserID, setUsername }) {
 			setUserID(null);
 			setUsername(null);
 			sessionStorage.clear();
-			alert('Logout successfully');
+			alertify.success('Logout successfully');
 		} catch (error) {
-			alert('Failed to connect');
+			alertify.error('Failed to connect');
 		}
 	};
 	return <Button variant="contained" onClick={logout}>Logout</Button>;
