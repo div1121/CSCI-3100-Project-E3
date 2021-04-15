@@ -84,14 +84,16 @@ class Game extends Component {
                     playerID.push(res[i].userid);
                     playerName.push(res[i].name);
                 }
-                preScore = []
-                playerScore = []
+                
                 for (let i = 0; i < playerNumber; i++) {
                     axios.post("/findAccount", {
                         _id: playerID[i],
                     }).then(res => {
+                        /*
                         preScore.push(res.data[0].score)
-                        playerScore.push(res.data[0].score)
+                        playerScore.push(res.data[0].score)*/
+                        preScore[i] = res.data[0].score
+                        playerScore[i] = res.data[0].score
                         this.setState({
                             preScore: preScore,
                             playerScore: playerScore
@@ -563,8 +565,8 @@ class Game extends Component {
             if (randomEntrances.length > 0) loaded++
             if (playerID.length === playerNumber) loaded++
             if (playerName.length === playerNumber) loaded++
-            if (preScore.length === playerNumber) loaded++
-            if (playerScore.length === playerNumber) loaded++
+            if (preScore[0] !== -1) loaded++
+            if (playerScore[0] !== -1) loaded++
             if (playerLevel.length === playerNumber) loaded++
             if (levelCounter.length > 0) loaded++
             if (ranking.length > 0) loaded++
