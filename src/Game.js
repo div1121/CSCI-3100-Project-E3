@@ -361,6 +361,17 @@ class Game extends Component {
     }
 
     componentDidMount() {
+        let {
+            gameStart,
+            gameTime,
+            gameOver,
+            boardWidth,
+            boardHeight,
+            startTime,
+            currentTime,
+            playerLevel,
+            playerNumber
+        } = this.state
         console.log(this.props.roomid);
         ws.on('move', (data)=>{
             let pos = this.state.playerPosition;
@@ -371,7 +382,20 @@ class Game extends Component {
             prevpos[data.playerindex] = data.prevpos;
             level[data.playerindex] = data.level;
             face[data.playerindex] = data.facing;
-            this.setState({playerPosition:pos,prevPlayerPos:prevpos,playerLevel:level,playerFacing:face,levelCounter:data.levelcounter});
+            this.setState({
+                playerPosition: pos,
+                prevPlayerPos: prevpos,
+                playerLevel: level,
+                playerFacing: face,
+                levelCounter:data.levelcounter});
+            if (gameStart) {
+                let gameOver = true
+                for (let i = 0; i < playerNumber; i++) {
+                    if (playerLevel[i] < boardHeight + boardWidth - 2) gameOver = false
+                }
+                if (gameOver) startTime = currentTime - (gameTime * 1000 + 5000)
+                this.setState({gameOver: gameOver});
+            }
             this.setRanking();
         })
         ws.on('entrances',(data)=>{
@@ -580,4 +604,4 @@ class Game extends Component {
     }
 }
 
-    export default Game;
+export default Game;
