@@ -209,6 +209,7 @@ class Game extends Component {
         this.setState({
             ranking
         })
+        //ws.emit("setrank",{ranking:ranking});
     }
 
     handleKeyUp(e) {
@@ -354,7 +355,7 @@ class Game extends Component {
             startTime,
             gameOver
         })
-        let obj = {roomid: this.props.roomid, facing:this.state.playerFacing[this.state.playerIndex], level:this.state.playerLevel[this.state.playerIndex], prevpos:this.state.prevPlayerPos[this.state.playerIndex], pos: this.state.playerPosition[this.state.playerIndex], playerindex: this.state.playerIndex};
+        let obj = {roomid: this.props.roomid, facing:this.state.playerFacing[this.state.playerIndex], level:this.state.playerLevel[this.state.playerIndex], prevpos:this.state.prevPlayerPos[this.state.playerIndex], pos: this.state.playerPosition[this.state.playerIndex], playerindex: this.state.playerIndex, levelcounter: this.state.levelCounter};
         ws.emit('move', obj);
         this.setRanking()
     }
@@ -370,7 +371,7 @@ class Game extends Component {
             prevpos[data.playerindex] = data.prevpos;
             level[data.playerindex] = data.level;
             face[data.playerindex] = data.facing;
-            this.setState({playerPosition:pos,prevPlayerPos:prevpos,playerLevel:level,playerFacing:face});
+            this.setState({playerPosition:pos,prevPlayerPos:prevpos,playerLevel:level,playerFacing:face,levelCounter:data.levelcounter});
             this.setRanking();
         })
         ws.on('entrances',(data)=>{
