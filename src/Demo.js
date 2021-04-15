@@ -60,7 +60,7 @@ class Game extends Component {
         let boardHeight = 5
         let areaWidth = 5
         let areaHeight = 5
-        let playerNumber = 2
+        let playerNumber = 1
         let playerName = ["Robot_0", "Robot_1", "Robot_2", "Robot_3"]
         if (this.props.username!=null){
             playerName[0] = this.props.username;
