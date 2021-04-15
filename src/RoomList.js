@@ -17,6 +17,7 @@ class Roomline extends Component{
                         {this.props.numofusers}/4
                     </td>
                     {
+                        !this.props.loading &&
                         <td>
                             <button onClick={this.props.handleadd}>Add</button>
                         </td>
