@@ -10,6 +10,7 @@
 }
 
 .appHeader {
+	margin-right: 5px;
 	display: flex;
 	background-color: #343a40;
     align-items: center;
@@ -39,19 +40,18 @@
 
 .news {
 	width:50%;
-	margin-left: 10px;
-	margin-top: 20px;
-	margin-bottom: 50px;
+	padding: 20px 30px 50px 30px;
 	display: flex;
     align-items: left;
 	flex-direction: column;
+	border-right: dashed;
 }
 
 .news > .newsPiece {
 	margin-top: 20px;
 	padding: 10px 10px 10px 10px;
 	background-color: white;
-	border-radius: 20px;
+	border-radius: 10px;
 }
 
 .menu {
@@ -68,7 +68,7 @@
 	font-size: 30px;
 	font-family: serif;
 	height: 100px;
-	width: 300px;
+	width: 60%;
 	margin-bottom: 10px;
 	border-radius: 20px;
 }
@@ -127,12 +127,20 @@
 	margin-bottom: 5px;
 }
 
+.form > h1 {
+	margin-bottom: 15px;
+	padding-bottom: 15px;
+	text-align: center;
+	width: 100%;
+	border-bottom: solid;
+}
+
 .form > h3 {
-	margin-top: 15px;
 	margin-bottom: 15px;
 }
 
 .form > .formFooter {
+	margin-top: 15px;
 	margin-right: 10px;
 	width: 100%;
 	align-items: center;
@@ -148,15 +156,22 @@
 	margin-right: 10px;
 }
 
-.game {
-	height: 100%;
-}
-
 navbarRight {
 	flex: 1;
 	display: flex;
 }
 
+.game {
+    background-image: url("./picture/background.jfif");
+    height: 100%;
+    width: 1280px ;
+	display: flex;
+	flex-direction: column;
+    color: white;
+	align-items: center;
+	justify-content: space-between;
+}
+
 .hidden {
-	visibility: hidden;
+	visibility: hidden !important;
 }
