@@ -56,7 +56,7 @@ class Game extends Component {
     }
 
     initializeBoardPlayer() {
-        let gameTime = 1000
+        let gameTime = 30
         let boardWidth = 5
         let boardHeight = 5
         let areaWidth = 5
