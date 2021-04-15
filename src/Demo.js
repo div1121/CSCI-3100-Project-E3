@@ -4,6 +4,9 @@ import React, {
 import GameBoard from './GameBoard'
 import _ from 'lodash'
 import KeyHandler, {KEYDOWN} from 'react-key-handler';
+import alertify from 'alertifyjs';
+import 'alertifyjs/build/css/alertify.css';
+import './Alert.css';
 
 class Game extends Component {
 
@@ -32,7 +35,8 @@ class Game extends Component {
             playerNumber: 0,
             playerFacing: [],
             playerPosition: [],
-            prevPlayerPos: []
+            prevPlayerPos: [],
+            renderConfirm: true
         }
         this.initializeBoardPlayer = this.initializeBoardPlayer.bind(this)
         this.startGame = this.startGame.bind(this)
@@ -58,6 +62,9 @@ class Game extends Component {
         let areaHeight = 5
         let playerNumber = 1
         let playerName = ["Robot_0", "Robot_1", "Robot_2", "Robot_3"]
+        if (this.props.username!=null){
+            playerName[0] = this.props.username;
+        }
         let preScore = [1000, 1000, 1000, 1000]
         let playerScore = [1000, 1000, 1000, 1000]
         let playerPosition = []
@@ -397,6 +404,23 @@ class Game extends Component {
             }
             else {
                 playerScore[ranking[3]] = preScore[ranking[3]] - 4
+            }
+            if (this.state.renderConfirm) {
+                this.setState({renderConfirm:false});
+                var smart = this;
+                alertify.confirm("Game Over!","Retry or Leave",
+                    function () {
+                        smart.setState({
+                            showGameBoard: false,
+                            gameOver: false,
+                            renderConfirm:true});
+                        smart.initializeBoardPlayer();
+                        smart.startGame();
+                    },
+                    function () {
+                        smart.props.setMode('Home');
+                    }
+                ).set('labels', {ok:'Retry', cancel:'Leave'});
             }
         }
 

@@ -46,7 +46,7 @@ function App() {
 							<RoomList user_id={userID} user_name={username} setGameroomenter={setGameRoomEnter} setGameroomid={setGameRoomID}/>
 						</div>
 					:mode === "Demo"?
-						<Demo username={username}/>
+						<Demo username={username} setMode={setMode}/>
 					:
 						<div className="homepage">
 							<News />
