@@ -1,8 +1,8 @@
+  
 import React, {
     Component, useEffect
 } from 'react';
 import GameBoard from './GameBoard'
-import background from "./picture/background.jfif";
 import _ from 'lodash'
 import KeyHandler, {KEYDOWN} from 'react-key-handler';
 
@@ -408,13 +408,8 @@ class Game extends Component {
         }
 
         return(
-            <div style={{
-                backgroundImage: `url(${background})`,
-                height:'100%',
-                width:'1280px',
-                color: "white"/*,
-                textAlign: "center"*/
-                }}>
+            <div className="game">
+				<div className="hidden">invisible</div>
                 <div className = "status">
                     {status}
                 </div>
@@ -509,6 +504,7 @@ class Game extends Component {
                             }
                             />)
                 }
+				<div className="hidden">invisible</div>
             </div>
         )
     }
