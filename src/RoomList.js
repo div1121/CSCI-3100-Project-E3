@@ -9,20 +9,14 @@ const baseURL = PATH_TO_BACKEND;
 class Roomline extends Component{
     render(){
         // invite button display (to be implemented)
-        return (<tr>
-                    <td>
-                        {this.props.roomname}
-                    </td>
-                    <td>
-                        {this.props.numofusers}/4
-                    </td>
-                    {
-                        !this.props.loading &&
-                        <td>
-                            <button onClick={this.props.handleadd}>Add</button>
-                        </td>
-                    }
-            </tr>
+        return (
+			<div className="room">
+                <span>{this.props.numofusers}/4</span>
+				<div className="roomname">
+                    {this.props.roomname}
+                </div>
+                <button onClick={this.props.handleadd}>Join</button>
+            </div>
         )
     }
 }
@@ -81,7 +75,7 @@ class RoomList extends React.Component {
         });
 
         ws.on('failjoin',(data)=>{
-            alertify.message("Fail to join the room: "+ data.roomname);
+	        alertify.message("Fail to join the room: "+ data.roomname);
         })
     }
 
@@ -96,7 +90,7 @@ class RoomList extends React.Component {
     }
 
     handleCreateRoom(event) {
-        let obj = {roomname: this.state.input_room_name, userid: this.props.user_id, name: this.props.user_name};
+        let obj = {roomname: this.state.input_room_name===""?this.props.user_name+"'s room":this.state.input_room_name, userid: this.props.user_id, name: this.props.user_name};
         ws.emit('createroom',obj);
         this.setState({ input_room_name: '', loading:true});
         event.preventDefault();
@@ -116,26 +110,32 @@ class RoomList extends React.Component {
             <Roomline roomname={room.roomname} numofusers={room.numofusers} handleadd={()=>this.handleEnterRoom(room._id,room.roomname)} loading={this.state.loading}></Roomline>
         );
         return (
-            <div className="menu">
+            <div className="roomListContainer">
                 <h1>Room List</h1>
-                <table>
-                    {displaylist}
-                </table>
-                {
-                    <form onSubmit={this.handleCreateRoom}>
-                        <fieldset>
-                            <legend>Create Room:</legend>
-                            <label>Room Name</label>
-                            <input name="input_room_name"
-                                   type="text"
-                                   value={this.state.input_room_name}
-                                   onChange={this.handleChange}
-                                    />
-                                   <br></br>
-                            <input type="submit" value="Submit" />
-                        </fieldset>
-                    </form>
-                }
+				<div className="roomList">
+					<div className="room">
+						<span><h4>Player No.</h4></span>
+						<div className="roomname">
+							<h4>Room name</h4>
+						</div>
+						<button className="hidden"/>
+					</div>
+					{displaylist}
+				</div>
+				<form onSubmit={this.handleCreateRoom}>
+					<fieldset>
+						<legend>Create Room: </legend>
+						<span>Room Name: </span>
+						<input
+							name="input_room_name"
+							type="text"
+							placeholder={this.props.user_name+"'s room"}
+							value={this.state.input_room_name}
+							onChange={this.handleChange}
+						/>
+						<button type="submit" value="Submit">Open</button>
+					</fieldset>
+				</form>
             </div>
         );
     }

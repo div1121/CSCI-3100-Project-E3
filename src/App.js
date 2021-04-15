@@ -23,7 +23,7 @@ function App() {
 			:
 			<>
 				<div className="appHeader">
-					<TopNavbar setMode={setMode} userID={userID} username={username} setUserID={setUserID} setUsername={setUsername} gameRoomEnter={gameRoomEnter} gameRoomID={gameRoomID} setGameRoomEnter={setGameRoomEnter} setGameRoomID={setGameRoomID}/>
+					<TopNavbar setMode={setMode} userID={userID} username={username} setUserID={setUserID} setUsername={setUsername}/>
 				</div>
 				<div className="appBody">
 					{mode==="Home"?
@@ -33,8 +33,8 @@ function App() {
 						</div>
 					:gameRoomID !== null?
 						<>
-							<GameRoom setMode={setMode} roomid={gameRoomID} roomname={gameRoomEnter} playername={username} playerid={userID} setGameroomenter={setGameRoomEnter} setGameroomid={setGameRoomID}/>
 							<Chatroom roomid={gameRoomID} userid={userID} name={username} />
+							<GameRoom setMode={setMode} roomid={gameRoomID} roomname={gameRoomEnter} playername={username} playerid={userID} setGameroomenter={setGameRoomEnter} setGameroomid={setGameRoomID}/>
 						</>
 					:mode === "FindingRoom"?
 						<div className="homepage">
@@ -42,7 +42,7 @@ function App() {
 							<RoomList user_id={userID} user_name={username} setGameroomenter={setGameRoomEnter} setGameroomid={setGameRoomID}/>
 						</div>
 					:mode === "Demo"?
-						<Demo />
+						<Demo username={username}/>
 					:
 						<div className="homepage">
 							<News />

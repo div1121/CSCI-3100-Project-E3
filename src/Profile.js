@@ -60,7 +60,7 @@ function ChangePasswordConfirm({ userID, password, newPassword, reNewPassword, s
 			alert('Internal Error');
 		}
 	};
-	return <Button variant="contained" onClick={changePassword}>Confirm</Button>;
+	return <Button variant="contained" type="submit" onClick={changePassword}>Confirm</Button>;
 }
 
 function ChangePasswordButton({ userID }) {
@@ -87,7 +87,7 @@ function ChangePasswordButton({ userID }) {
 				onClose={() => setShow(false)}
 			>
 				<div style={modalStyle} className={classes.paper}>
-					<div className="form">
+					<form className="form">
 						<h1>Change Password</h1>
 						<input
 							type = 'password'
@@ -114,7 +114,7 @@ function ChangePasswordButton({ userID }) {
 							<ChangePasswordConfirm userID={userID} password={password} newPassword={newPassword} reNewPassword={reNewPassword} setShow={setShow}/>
 							<Button variant="contained" onClick={() => setShow(false)}>Cancel</Button>
 						</div>
-					</div>
+					</form>
 				</div>
 			</Modal>
 		</div>

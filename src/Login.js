@@ -69,7 +69,7 @@ function Register({ setUserID, setUsername, name, email, password, rePassword })
 			alert('Internal error');
 		}
 	};
-	return <Button variant="contained" color="primary" onClick={register}>Register</Button>;
+	return <Button variant="contained" type = "submit" color="primary" onClick={register}>Register</Button>;
 }
 
 function LoginWithEmail({ setUserID, setUsername, email, password}) {
@@ -94,7 +94,7 @@ function LoginWithEmail({ setUserID, setUsername, email, password}) {
 			alert('Internal Error');
 		}
 	};
-	return <Button variant="contained" onClick={loginWithEmail}>Login</Button>;
+	return <Button variant="contained" type = "submit" onClick={loginWithEmail}>Login</Button>;
 }
 
 function LogoutButton({ setUserID, setUsername }) {
@@ -108,7 +108,7 @@ function LogoutButton({ setUserID, setUsername }) {
 			alert('Failed to connect');
 		}
 	};
-	return <Button variant="contained" onClick={logout}>Log out</Button>;
+	return <Button variant="contained" onClick={logout}>Logout</Button>;
 }
 
 function LoginForm({ setUserID, setUsername }) {
@@ -130,7 +130,7 @@ function LoginForm({ setUserID, setUsername }) {
 	}, [mode]);
 	
 	return (
-		<div className='form'>
+		<form className='form'>
 			<h1>Join us and play!</h1>
 			{mode === 'Register'?
 			<input
@@ -187,7 +187,7 @@ function LoginForm({ setUserID, setUsername }) {
 					{mode === 'Login' ? 'register a new account' : 'go to login'}
 				</a>
 			</div>
-		</div>
+		</form>
 	);
 }
 
