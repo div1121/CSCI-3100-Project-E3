@@ -59,7 +59,7 @@ function ChangePasswordConfirm({ userID, password, newPassword, reNewPassword, s
 					setShow(false);
 				});
 			}
-		} catch (error) 
+		} catch (error) {
 			alertify.error('Internal Error');
 		}
 	};
