@@ -15,6 +15,7 @@ class Game extends Component {
     constructor(props) {
         super(props)
         this.state = {
+			scoreUpdate: false,
             showGameBoard: false,
             gameStart: false,
             gameOver: false,
@@ -393,6 +394,7 @@ class Game extends Component {
     render() {
 
         let {
+			scoreUpdate,
             gameStart,
             gameOver,
             boardWidth,
@@ -415,7 +417,7 @@ class Game extends Component {
 		let status = ""
 
         if (gameStart) {
-            if (gameOver) {
+            if (gameOver&&!scoreUpdate) {
                 let finishLevel = boardWidth + boardHeight - 2
                 if (playerLevel[ranking[0]] === finishLevel) {
                     playerScore[ranking[0]] = preScore[ranking[0]] + 2
@@ -439,11 +441,12 @@ class Game extends Component {
                     playerScore[ranking[3]] = preScore[ranking[3]] - 4
                 }
                 for (let i = 0; i < playerNumber; i++) {
-                    fetch(baseURL + '/updateAccount?' + new URLSearchParams({
+					axios.post("/updateScore", {
                         _id: playerID[i],
                         score: playerScore[i],
-                    }))
+					})
                 }
+				scoreUpdate = true
             }
 
             status = "Number of players:" + playerNumber
