@@ -8,7 +8,6 @@ import RoomList from "./RoomList";
 import GameRoom from './GameRoom';
 import Game from './Game';
 import Demo from './Demo';
-import HomeButton from './HomeButton';
 
 function App() {
 	const [userID, setUserID] = useState(sessionStorage.getItem('userID'));
@@ -24,8 +23,7 @@ function App() {
 			:
 			<>
 				<div className="appHeader">
-					<TopNavbar userID={userID} username={username} setUserID={setUserID} setUsername={setUsername}/>
-					<HomeButton setMode={setMode}/>
+					<TopNavbar setMode={setMode} userID={userID} username={username} setUserID={setUserID} setUsername={setUsername}/>
 				</div>
 				<div className="appBody">
 					{mode==="Home"?
@@ -39,9 +37,12 @@ function App() {
 							<Chatroom roomid={gameRoomID} userid={userID} name={username} />
 						</>
 					:mode === "FindingRoom"?
-						<RoomList user_id={userID} user_name={username} setGameroomenter={setGameRoomEnter} setGameroomid={setGameRoomID}/>
+						<div className="homepage">
+							<News />
+							<RoomList user_id={userID} user_name={username} setGameroomenter={setGameRoomEnter} setGameroomid={setGameRoomID}/>
+						</div>
 					:mode === "Demo"?
-						<div className="game"><Demo /></div>
+						<Demo />
 					:
 						<div className="homepage">
 							<News />
