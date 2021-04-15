@@ -112,7 +112,7 @@ class RoomList extends React.Component {
             <Roomline roomname={room.roomname} numofusers={room.numofusers} handleadd={()=>this.handleEnterRoom(room._id,room.roomname)} loading={this.state.loading}></Roomline>
         );
         return (
-            <div>
+            <div className="menu">
                 <h1>Room List</h1>
                 <table>
                     {displaylist}
