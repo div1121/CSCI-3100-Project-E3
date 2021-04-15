@@ -10,23 +10,20 @@ class Playerline extends Component{
         if (this.props.isready){
             str = "Cancel"
         }
-        return (<tr>
-            <td>
-                {this.props.playername}
-            </td>
+        return (
+			<div className="gameRoomPlayerLine">
+				<span>
+					{this.props.playername}
+				</span>
                 {
                     this.props.handleready != null &&
-                    <td>
                         <button onClick={this.props.handleready}>{str}</button>
-                    </td>
                 }
                 {
-                    this.props.position && this.props.ready_num===this.props.totalplayer &&
-                    <td>
+	                   this.props.position && this.props.ready_num===this.props.totalplayer &&
                         <button onClick={this.props.startgame}>Start</button>
-                    </td>
                 }
-            </tr>
+			</div>
         )
     }
 }
@@ -152,20 +149,22 @@ class Gameroom extends Component{
                                      handleready={list[i]}
                                      position={i===0 && list[0]!==null}
                                      ready_num={this.state.ready_num}
-                                     totalplayer={this.state.player_num}
 									 setMode={this.props.setMode}
 									 roomid={this.state.roomid}
 									 startgame={this.startgame}/>);
         }
-        return (<div>
-            <h1>Game Room</h1>
-            <h1>You're in: {this.props.roomname}</h1>
-            <table>
-                {display}
-            </table>
-            <h2>Number of ready: {this.state.ready_num}</h2>
-            <button onClick={this.handleLeaveRoom}>Leave</button>
-        </div>)
+        return (
+			<div className="gameRoom">
+				<h1>You're in: {this.props.roomname}</h1>
+				<div className="gameRoomPlayers">
+					{display}
+				</div>
+				<div className="gameRoomFooter">
+					<h1>Number of ready: {this.state.ready_num}</h1>
+					<button onClick={this.handleLeaveRoom}>Leave</button>
+				</div>
+			</div>
+		)
     }
 }
 
