@@ -148,8 +148,10 @@ class GameBoard extends Component {
 
     render() {
         let {
+            gameTime,
             playerNumber,
             playerName,
+            playerIndex,
             preScore,
             playerScore,
             playerPosition,
@@ -173,7 +175,6 @@ class GameBoard extends Component {
             [man_3_back, man_3_front, man_3_left, man_3_right],
             [man_4_back, man_4_front, man_4_left, man_4_right]
         ]
-        //console.log(board);
         return(
             <div>
                 {board.map(function(boardRow, i) {
@@ -181,10 +182,16 @@ class GameBoard extends Component {
                     let border_square = border_long_2
                     let border_long = empty_img
                     let w_0 = "0", w_1 = "300", w_2 = "0"
-                    let timePass = 64 + startTime - currentTime
+                    let timePass = (gameTime + 4) + startTime - currentTime
                     let t_0 = "Time: " + timePass, t_1 = "", t_2 = "", t_3 = "", t_4 = "", t_5 = "", t_6 = ""
-                    let colour_0 = "white"
+                    let colour_0 = "white", colour_1 = "white"
                     if (i < playerNumber) {
+                        if (ranking[i] === playerIndex) {
+                            if (i === 0) colour_1 = "yellow"
+                            if (i === 1) colour_1 = "cyan"
+                            if (i === 2) colour_1 = "orange"
+                            if (i === 3) colour_1 = "gray"
+                        }
                         playerPos[0].x = playerPosition[ranking[i]].x
                         playerPos[0].y = playerPosition[ranking[i]].y
                         w_1 = "100"
@@ -244,13 +251,13 @@ class GameBoard extends Component {
                     }
                     else {
                         if (gameOver) t_0 = "GAME OVER!"
-                        if (timePass > 61) {
-                            t_0 = "Ready... " + (timePass - 61)
+                        if (timePass > (gameTime + 1)) {
+                            t_0 = "Ready... " + (timePass - (gameTime + 1))
                         }
-                        if (timePass === 61) {
+                        if (timePass === (gameTime + 1)) {
                             t_0 = "GO!!!"
                         }
-                        if (timePass <= 5 || timePass >= 61) {
+                        if ((timePass <= 5 && timePass >= 0) || timePass >= (gameTime + 1)) {
                             colour_0 = "red"
                         }
                     }
@@ -349,7 +356,7 @@ class GameBoard extends Component {
                                             bordercolor = "black"
                                             style = {{
                                                 backgroundImage: `url(${border_long})`,
-                                                color: "white",
+                                                color: colour_1,
                                                 fontSize: "12px"
                                             }}
                                         >
