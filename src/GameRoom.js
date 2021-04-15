@@ -149,6 +149,7 @@ class Gameroom extends Component{
                                      handleready={list[i]}
                                      position={i===0 && list[0]!==null}
                                      ready_num={this.state.ready_num}
+                                     totalplayer={this.state.player_num}
 									 setMode={this.props.setMode}
 									 roomid={this.state.roomid}
 									 startgame={this.startgame}/>);
