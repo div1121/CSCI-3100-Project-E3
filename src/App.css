@@ -10,12 +10,15 @@
 }
 
 .appHeader {
-	margin-right: 5px;
 	display: flex;
 	background-color: #343a40;
     align-items: center;
 	height: 100px;
 	width: 100vw;
+}
+
+.appHeader > .MuiButton-root {
+	margin-right: 10px;
 }
 
 .appBody {

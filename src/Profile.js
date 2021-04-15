@@ -133,8 +133,8 @@ function ProfileButton({ userID, username, setUsername }) {
 				_id: userID,
 			}).then(res => {
 				setScore(res.data[0].score);
+				setShow(true);
 			});
-			setShow(false);
 		} catch (error) {
 			alert('Connection Error');
 		}
@@ -142,7 +142,7 @@ function ProfileButton({ userID, username, setUsername }) {
 	
 	return (
 		<div>
-			<Button variant="contained" onClick={() => setShow(true)}>
+			<Button variant="contained" onClick={showProfile}>
 				Profile
 			</Button>
 			<Modal
@@ -156,7 +156,7 @@ function ProfileButton({ userID, username, setUsername }) {
 						<h3>Score: {score}</h3>
 						<div className="formFooter">
 							<ChangePasswordButton userID={userID} />
-							<Button variant="primary" onClick={showProfile}>Back</Button>
+							<Button variant="primary" onClick={() => setShow(false)}>Back</Button>
 						</div>
 					</div>
 				</div>
