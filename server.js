@@ -221,10 +221,10 @@ io.on('connection', (socket) =>{
         // console.log(doc);
         io.to(data.roomid).emit('readychange',data);
     });
-	
+
     socket.on('ranking', async (data)=>{
         //userid, username
-        var info = {userid:data.userid,name:data.name,socketid:socket.id};
+        var info = {userid:data.userid,name:data.name,usersocket:socket,socketid:socket.id};
         globalplayer.push(info);
         console.log(globalplayer);
         if (globalplayer.length==4){
@@ -240,10 +240,10 @@ io.on('connection', (socket) =>{
                 let memobj = await roommember.save();
             }
             for (var i=0;i<temp.length;i++) {
-                var ele = temp[i];
-                var sid = ele.socketid;
-                io.to(sid).emit('getroominfo',{roomid:id, roomname:"Ranking"});
+                var s = temp[i].usersocket;
+                s.join(id);
             }
+            io.to(id).emit('getroominfo',{roomid:id, roomname:"Ranking"});
             io.emit('createroom',obj);
         }
     });
