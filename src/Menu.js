@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import ws from './service';
 
-function Match({ userID, username, setGameRoomEnter, setGameRoomID }){
+function Match({ setMode, userID, username, setGameRoomEnter, setGameRoomID }){
 	const [loading, setLoading] = useState(false);
 	const matching = () => {
 		if(userID===null){
@@ -14,6 +14,7 @@ function Match({ userID, username, setGameRoomEnter, setGameRoomID }){
 	}
 	useEffect(() => {
 		ws.on('getroominfo',(data)=>{
+			setMode("FindingRoom");
 			console.log("OK");
 			setLoading(!loading);
 			setGameRoomEnter(data.roomname);
@@ -53,7 +54,7 @@ function Menu({ setMode, userID, username, setGameRoomEnter, setGameRoomID }) {
 	return(
 		<div className='menu'>
 			<h1>Menu</h1>
-			<Match userID={userID} username={username} setGameRoomEnter={setGameRoomEnter} setGameRoomID={setGameRoomID}/>
+			<Match setMode={setMode} userID={userID} username={username} setGameRoomEnter={setGameRoomEnter} setGameRoomID={setGameRoomID}/>
 			<CustomRoom setMode={setMode} userID={userID}/>
 			<Demo setMode={setMode} userID={userID}/>
 		</div>
