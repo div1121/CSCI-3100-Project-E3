@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button } from 'react-bootstrap';
+import { Button } from '@material-ui/core';
 import ws from './service.js';
 
 function HomeButton({ userID, username, gameRoomEnter, gameRoomID, setGameRoomEnter, setGameRoomID, setMode }) {
@@ -11,7 +11,7 @@ function HomeButton({ userID, username, gameRoomEnter, gameRoomID, setGameRoomEn
 		}
 		setMode("Home");
 	}
-	return <button size="lg" variant="primary" onClick={home}>Home</button>
+	return <Button variant="contained" color="default" onClick={home}>Home</Button>
 }
 
 export default HomeButton;
