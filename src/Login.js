@@ -108,7 +108,7 @@ function LogoutButton({ setUserID, setUsername }) {
 			alert('Failed to connect');
 		}
 	};
-	return <Button variant="contained" onClick={logout}>Log out</Button>;
+	return <Button variant="contained" onClick={logout}>Logout</Button>;
 }
 
 function LoginForm({ setUserID, setUsername }) {

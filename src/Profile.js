@@ -29,7 +29,7 @@ function ChangePasswordConfirm({ userID, password, newPassword, reNewPassword, s
 		var canUpdate = false;
 		e.preventDefault();
 		try {
-			await axios.post("/loginAccount", {
+			await axios.post("/findAccount", {
 				_id: userID,
 				password: password,
 			}).then(res => {
@@ -129,7 +129,7 @@ function ProfileButton({ userID, username, setUsername }) {
 
 	const showProfile = async () => {
 		try {
-			await axios.post("/loginAccount", {
+			await axios.post("/findAccount", {
 				_id: userID,
 			}).then(res => {
 				setScore(res.data[0].score);
