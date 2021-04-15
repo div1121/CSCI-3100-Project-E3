@@ -105,7 +105,7 @@ class Game extends Component {
                     for (let i = 0; i < boardWidth + boardHeight - 1; i++) levelCounter.push([])
                     for (let i = 0; i < playerNumber; i++) {
                         playerFacing.push(1)
-                        playerPosition.push({x: Math.floor(areaWidth / 2) + 20, y: Math.floor(areaHeight / 2) + 15})
+                        playerPosition.push({x: Math.floor(areaWidth / 2), y: Math.floor(areaHeight / 2)})
                         prevPlayerPos.push({x: Math.floor(areaWidth / 2), y: Math.floor(areaHeight / 2)})
                     }
                     let level = 0
