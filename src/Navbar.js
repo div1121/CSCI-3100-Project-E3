@@ -1,7 +1,8 @@
 import { LogoutButton, LoginButton } from './Login';
 import { ProfileButton } from './Profile';
+import HomeButton from './HomeButton';
 
-function TopNavbar({ userID, username, setUserID, setUsername }) {
+function TopNavbar({ setMode, userID, username, setUserID, setUsername }) {
 	return(
 		<div className="topNavbar">
 			<div className="topNavbarLeft">
@@ -11,12 +12,14 @@ function TopNavbar({ userID, username, setUserID, setUsername }) {
 			{userID===null?
 				<div className="topNavbarRight">
 					<LoginButton setUserID={setUserID} setUsername={setUsername}/>
+					<HomeButton setMode={setMode}/>
 				</div>
 			:(
 				<div className="topNavbarRight">
 					<h3>Welcome {username}</h3>
 					<ProfileButton userID={userID} username={username} setUsername={setUsername}/>
 					<LogoutButton setUserID={setUserID} setUsername={setUsername}/>
+					<HomeButton setMode={setMode}/>
 				</div>
 			)}
 		</div>
