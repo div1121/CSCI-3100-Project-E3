@@ -409,7 +409,7 @@ class Game extends Component {
             }
         }
 
-        return(<div>
+        return(
             <div style={{
                 backgroundImage: `url(${background})`,
                 height:'100%',
@@ -510,11 +510,10 @@ class Game extends Component {
                                 this.state.gameOver
                             }
                             />)
-                    }
-                </div>
+                }
             </div>
-            )
-        }
+        )
     }
+}
 
     export default Game;
