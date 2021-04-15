@@ -93,7 +93,7 @@ app.post('/forgetPassword', (req, res) => {
 	})
 })
 
-app.post('/loginAccount', (req, res) => {
+app.post('/findAccount', (req, res) => {
 	const dbUser = req.body;
 	
 	User.find(dbUser, {"_id" : 1, "name" : 1, "score" : 1}, (err, data) => {
