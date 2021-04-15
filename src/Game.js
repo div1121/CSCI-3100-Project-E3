@@ -397,8 +397,6 @@ class Game extends Component {
             gameOver,
             boardWidth,
             boardHeight,
-            startTime,
-            currentTime,
             randomEntrances,
             playerID,
             playerName,
@@ -449,13 +447,15 @@ class Game extends Component {
             }
 
             status = "Number of players:" + playerNumber
-            //status = "Current Time: " + currentTime
             return(<div>
                 <div style={{
                     backgroundImage: `url(${background})`,
                     color: "white"
                     }}>
-                    <div className = "status">
+                    <div 
+                        className = "status"
+                        style = {{textAlign: "center"}}
+                    >
                         {status}
                     </div>
                     <KeyHandler
