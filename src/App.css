@@ -273,6 +273,14 @@
 	display: flex;
 }
 
+.chat:hover:nth-child(odd){
+	background-color:#D3D3D3;
+}
+
+.chat:hover:nth-child(even){
+	background-color:#bfc1c2;
+}
+
 .chat > .chatName {
 	width: 100px;
 	text-align: left;
@@ -328,6 +336,12 @@
 	width: 120px;
 	border-radius: 5px;
 }
+
+.gameRoomPlayerLine > button:hover {
+	background-color:#D3D3D3;
+	box-shadow: 0 2px 2px 0 rgba(0,0,0,0.24), 0 2px 2px 0 rgba(0,0,0,0.19);
+}
+
 
 .gameRoomFooter {
 	display: flex;
