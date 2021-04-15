@@ -18,13 +18,15 @@ function App() {
 
 	return (
 		<div className="app">
-			{mode === "Game"?
-				<div className="game"><Game userid={userID} roomid={gameRoomID} /></div>
-			:
-			<>
+			{
+				mode!=="Game"&&
 				<div className="appHeader">
 					<TopNavbar setMode={setMode} userID={userID} username={username} setUserID={setUserID} setUsername={setUsername}/>
 				</div>
+			}
+			{mode === "Game"||mode === "GameEnd"?
+				<div className="game"><Game userid={userID} roomid={gameRoomID} setMode={setMode}/></div>
+			:
 				<div className="appBody">
 					{mode==="Home"?
 						<div className="homepage">
@@ -50,7 +52,6 @@ function App() {
 						</div>
 					}
 				</div>
-			</>
 			}
 		</div>
 	);
