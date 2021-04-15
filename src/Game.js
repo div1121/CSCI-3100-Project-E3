@@ -6,6 +6,7 @@ import background from "./picture/background.jfif";
 import _ from 'lodash'
 import KeyHandler, {KEYDOWN} from 'react-key-handler';
 import ws from './service';
+import axios from './Axios';
 //const baseURL = "http://localhost:9000";
 const baseURL = "https://magic-maze-backend.herokuapp.com";
 
@@ -87,34 +88,34 @@ class Game extends Component {
                 }
                 preScore = []
                 playerScore = []
-                fetch(baseURL + '/loginAccount?' + new URLSearchParams({_id:playerID[0]}))
-                .then(res => res.json())
-                .then(res => {
-                    preScore.push(res[0].score)
-                    playerScore.push(res[0].score)
+				axios.post("/findAccount", {
+					_id: playerID[0],
+				}).then(res => {
+                    preScore.push(res.data[0].score)
+                    playerScore.push(res.data[0].score)
                     //alert(res[0].score)
-                    fetch(baseURL + '/loginAccount?' + new URLSearchParams({_id:playerID[1]}))
-                    .then(res => res.json())
-                    .then(res => {
-                        preScore.push(res[0].score)
-                        playerScore.push(res[0].score)
-                        //alert(res[0].score)
-                        fetch(baseURL + '/loginAccount?' + new URLSearchParams({_id:playerID[2]}))
-                        .then(res => res.json())
-                        .then(res => {
-                            preScore.push(res[0].score)
-                            playerScore.push(res[0].score)
-                            //alert(res[0].score)
-                            fetch(baseURL + '/loginAccount?' + new URLSearchParams({_id:playerID[3]}))
-                            .then(res => res.json())
-                            .then(res => {
-                                preScore.push(res[0].score)
-                                playerScore.push(res[0].score)
-                                //alert(res[0].score)
-                            })
-                        })
-                    })
-                })
+					axios.post("/findAccount", {
+						_id: playerID[1],
+					}).then(res => {
+						preScore.push(res.data[0].score)
+						playerScore.push(res.data[0].score)
+						//alert(res[0].score)
+						axios.post("/findAccount", {
+							_id: playerID[2],
+						}).then(res => {
+							preScore.push(res.data[0].score)
+							playerScore.push(res.data[0].score)
+							//alert(res[0].score)
+							axios.post("/findAccount", {
+								_id: playerID[3],
+							}).then(res => {
+								preScore.push(res.data[0].score)
+								playerScore.push(res.data[0].score)
+								//alert(res[0].score)
+							});
+						});
+					});
+				});
                 if (this.state.playerIndex === 0) {
                     ws.emit('entrances', {roomid: this.props.roomid})
                 }
