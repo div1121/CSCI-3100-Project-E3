@@ -279,6 +279,10 @@ io.on('connection', (socket) =>{
     });
     socket.on("disconnect", async () =>{
         console.log("disconnect");
+        const isMatch = (element) => element.socketid === socket.id;
+        var match = globalplayer.findIndex(isMatch);
+        if (match!==-1)
+            globalplayer.splice(globalplayer.findIndex(isMatch),1);
         let data = await RoomMember.findOne({socketID:socket.id});
         if (data) {
             await RoomMember.deleteOne({roomid:data.roomid, userid:data.userid});
@@ -296,12 +300,22 @@ io.on('connection', (socket) =>{
             socket.leave(data.roomid);
         }
     });
+
+    socket.on("cancelrank",(data)=>{
+        const isMatch = (element) => element.userid === data.userid;
+        var match = globalplayer.findIndex(isMatch);
+        if (match!==-1)
+            globalplayer.splice(globalplayer.findIndex(isMatch),1);
+        console.log(globalplayer);
+    });
+
     socket.on('move', (data)=>{
         socket.broadcast.to(data.roomid).emit('move',data);
 	});
     socket.on('startgame', async (data) => {
         io.to(data.roomid).emit('startgame');
     });
+
 	socket.on('entrances', (data) => {
 
 		const id = data.roomid;

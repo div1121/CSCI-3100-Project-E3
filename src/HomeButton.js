@@ -4,6 +4,7 @@ import ws from './service.js';
 
 function HomeButton({ userID, username, gameRoomEnter, gameRoomID, setGameRoomEnter, setGameRoomID, setMode }) {
 	const home = () => {
+		ws.emit('cancelrank',{userid: userID, name: username});
 		if (gameRoomID!=null) {
 			ws.emit("leaveroom", {roomid: gameRoomID, roomname: gameRoomEnter, userid: userID, name: username});
 			setGameRoomEnter(null);

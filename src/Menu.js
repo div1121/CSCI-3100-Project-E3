@@ -15,6 +15,11 @@ function Match({ setMode, userID, username, setGameRoomEnter, setGameRoomID }){
 			ws.emit('ranking',{userid: userID, name: username});
 		}
 	}
+	const cancel = () => {
+		console.log("hi");
+		setLoading(false);
+		ws.emit('cancelrank',{userid: userID, name: username});
+	}
 	useEffect(() => {
 		ws.on('getroominfo',(data)=>{
 			setMode("FindingRoom");
@@ -27,7 +32,7 @@ function Match({ setMode, userID, username, setGameRoomEnter, setGameRoomID }){
 	return (
 		<>
 		{loading===true?
-			<button className="menuButton" disabled>Matching<CircularProgress size="1.5rem"/></button>
+			<button className="menuButton" onClick={cancel}>Matching<CircularProgress size="1.5rem"/></button>
 		:
 			<button className="menuButton" onClick={matching}>Match</button>
 		}
