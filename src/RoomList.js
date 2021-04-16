@@ -75,6 +75,7 @@ class RoomList extends React.Component {
         });
 
         ws.on('failjoin',(data)=>{
+            this.setState({loading: false});
 	        alertify.message("Fail to join the room: "+ data.roomname);
         })
     }
