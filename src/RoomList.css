@@ -53,8 +53,10 @@
 
 .room {
 	width: 95%;
+	height: 30px;
 	padding: 10px;
 	display: flex;
+	align-items: center;
 	border-bottom: solid;
 	border-color: #DCDCDC;
 }
