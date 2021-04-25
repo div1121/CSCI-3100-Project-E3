@@ -321,70 +321,72 @@ class Game extends Component {
             playerPosition[playerIndex].x = newX
             playerPosition[playerIndex].y = newY
         }
-        let level = Math.floor(playerPosition[playerIndex].x / areaWidth) + Math.floor(playerPosition[playerIndex].y / areaHeight)
-        if (level > playerLevel[playerIndex]){
-            playerLevel[playerIndex] = level
-            levelCounter[level].push(playerIndex)
-        }
-        gameOver = true
-        for (let i = 0; i < playerNumber; i++) {
-            if (playerLevel[i] < boardHeight + boardWidth - 2) gameOver = false
-            else if (timePass < gameTime - 1) startTime = currentTime - (gameTime * 1000 - 1000)
-        }
-        if (gameOver) startTime = currentTime - (gameTime * 1000 + 5000)
         this.setState({
             playerPosition,
             prevPlayerPos,
             playerLevel,
-            levelCounter,
             startTime,
             gameOver
         })
-        this.setRanking()
-        let obj = {roomid: this.props.roomid, facing:this.state.playerFacing[this.state.playerIndex], level:this.state.playerLevel[this.state.playerIndex], prevpos:this.state.prevPlayerPos[this.state.playerIndex], pos: this.state.playerPosition[this.state.playerIndex], playerindex: this.state.playerIndex, levelcounter: this.state.levelCounter};
+        let obj = {roomid: this.props.roomid,
+                   facing:this.state.playerFacing[this.state.playerIndex],
+                   levels:this.state.playerLevel[this.state.playerIndex],
+                   prevpos:this.state.prevPlayerPos[this.state.playerIndex],
+                   pos: this.state.playerPosition[this.state.playerIndex],
+                   playerindex: this.state.playerIndex};
         ws.emit('move', obj);
     }
 
     componentDidMount() {
         ws.on('move', (data) => {
-            let pos = this.state.playerPosition;
-            let prevpos = this.state.prevPlayerPos;
-            let level = this.state.playerLevel;
-            let face = this.state.playerFacing;
-            pos[data.playerindex] = data.pos;
-            prevpos[data.playerindex] = data.prevpos;
-            level[data.playerindex] = data.level;
-            face[data.playerindex] = data.facing;
-            this.setState({
-                playerPosition: pos,
-                prevPlayerPos: prevpos,
-                playerLevel: level,
-                playerFacing: face,
-                levelCounter:data.levelcounter});
+            if (data.playerindex !== this.state.playerIndex) {
+                let pos = this.state.playerPosition;
+                let prevpos = this.state.prevPlayerPos;
+                let levels = this.state.playerLevel;
+                let face = this.state.playerFacing;
+                pos[data.playerindex] = data.pos;
+                prevpos[data.playerindex] = data.prevpos;
+                levels[data.playerindex] = data.levels;
+                face[data.playerindex] = data.facing;
+                this.setState({
+                    playerPosition: pos,
+                    prevPlayerPos: prevpos,
+                    playerLevel: levels,
+                    playerFacing: face});
+            }
             let {
-                gameStart,
                 gameOver,
                 gameTime,
                 boardWidth,
                 boardHeight,
+                areaWidth,
+                areaHeight,
                 startTime,
                 currentTime,
                 timePass,
+                playerPosition,
                 playerLevel,
+                levelCounter,
                 playerNumber
             } = this.state
-            this.setRanking();
-            if (gameStart) {
-                gameOver = true
-                for (let i = 0; i < playerNumber; i++) {
-                    if (playerLevel[i] < boardHeight + boardWidth - 2) gameOver = false
-                    else if (timePass < gameTime - 1) startTime = currentTime - (gameTime * 1000 - 1000)
-                }
-                if (gameOver) startTime = currentTime - (gameTime * 1000 + 5000)
-                this.setState({
-                    gameOver,
-                    startTime});
+            let level = Math.floor(playerPosition[data.playerindex].x / areaWidth) + Math.floor(playerPosition[data.playerindex].y / areaHeight)
+            if (level > playerLevel[data.playerindex]){
+                playerLevel[data.playerindex] = level
+                levelCounter[level].push(data.playerindex)
             }
+            this.setState({
+                levelCounter
+            })
+            this.setRanking();
+            gameOver = true
+            for (let i = 0; i < playerNumber; i++) {
+                if (playerLevel[i] < boardHeight + boardWidth - 2) gameOver = false
+                else if (timePass < gameTime - 1) startTime = currentTime - (gameTime * 1000 - 1000)
+            }
+            if (gameOver) startTime = currentTime - (gameTime * 1000 + 5000)
+            this.setState({
+                gameOver,
+                startTime});
         })
         ws.on('entrances',(data)=>{
             this.setState({randomEntrances: data});
@@ -457,7 +459,7 @@ class Game extends Component {
                 this.props.setMode("GameEnd")
             }
 
-            status = "Level Counter:"
+            /*status = "Level Counter:"
             for (let i = 8; i >= 0; i++) {
                 status += "["
                 let length = levelCounter[i].length
@@ -465,8 +467,9 @@ class Game extends Component {
                     status += levelCounter[i][j] + " "
                 }
                 status += "] "
-            }
-            //status = "Number of players:" + playerNumber
+            }*/
+            console.log(levelCounter)
+            status = "Number of players:" + playerNumber
             return(<div>
                 <div style={{
                     backgroundImage: `url(${background})`,
