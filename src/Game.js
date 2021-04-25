@@ -373,6 +373,7 @@ class Game extends Component {
                 playerLevel,
                 playerNumber
             } = this.state
+            this.setRanking();
             if (gameStart) {
                 gameOver = true
                 for (let i = 0; i < playerNumber; i++) {
@@ -384,7 +385,6 @@ class Game extends Component {
                     gameOver,
                     startTime});
             }
-            this.setRanking();
         })
         ws.on('entrances',(data)=>{
             this.setState({randomEntrances: data});
