@@ -457,7 +457,16 @@ class Game extends Component {
                 this.props.setMode("GameEnd")
             }
 
-            status = "Number of players:" + playerNumber
+            status = "Level Counter:"
+            for (let i = 8; i >= 0; i++) {
+                status += "["
+                length = levelCounter[i].length
+                for (let j = 0; j < length; j++) {
+                    status += levelCounter[i][j] + " "
+                }
+                status += "] "
+            }
+            //status = "Number of players:" + playerNumber
             return(<div>
                 <div style={{
                     backgroundImage: `url(${background})`,
@@ -566,7 +575,6 @@ class Game extends Component {
         }
         else {
             let loaded = 0
-            let haha = ""
             if (playerNumber > 0) loaded++
             if (randomEntrances.length > 0) loaded++
             if (playerID.length === playerNumber) loaded++
@@ -594,7 +602,7 @@ class Game extends Component {
                             verticalAlign: "center"
                         }
                     }>
-                Loading... {loadedPercent}% {haha}
+                Loading... {loadedPercent}%
                 </div>
             )
         }
