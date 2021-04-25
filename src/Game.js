@@ -419,11 +419,7 @@ class Game extends Component {
 		let status = ""
 
         if (gameStart) {
-            if (gameOver && !scoreUpdate && playerIndex === 0) {
-                scoreUpdate = true
-                this.setState({
-                    scoreUpdate
-                })
+            if (gameOver) {
                 let finishLevel = boardWidth + boardHeight - 2
                 if (playerLevel[ranking[0]] === finishLevel) {
                     playerScore[ranking[0]] = preScore[ranking[0]] + 2
@@ -446,15 +442,19 @@ class Game extends Component {
                 else {
                     playerScore[ranking[3]] = preScore[ranking[3]] - 4
                 }
-                for (let i = 0; i < playerNumber; i++) {
-					axios.post("/updateScore", {
-                        _id: playerID[i],
-                        score: playerScore[i],
-					})
+                if (!scoreUpdate && playerIndex === 0) {
+                    scoreUpdate = true
+                    this.setState({
+                        scoreUpdate
+                    })
+                    for (let i = 0; i < playerNumber; i++) {
+                        axios.post("/updateScore", {
+                            _id: playerID[i],
+                            score: playerScore[i],
+                        })
+                    }
                 }
-            }
-            if (gameOver) {
-				this.props.setMode("GameEnd")
+                this.props.setMode("GameEnd")
             }
 
             status = "Number of players:" + playerNumber
