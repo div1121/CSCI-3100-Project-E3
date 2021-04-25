@@ -130,7 +130,7 @@ function LogoutButton({ setUserID, setUsername }) {
 			alertify.error('Failed to connect');
 		}
 	};
-	return <Button variant="contained" onClick={logout}>Logout</Button>;
+	return <Button onClick={logout}>Logout</Button>;
 }
 
 //LoginForm is a functional component.
@@ -226,7 +226,7 @@ function LoginButton({ setUserID, setUsername }) {
 
 	return (
 		<div>
-			<Button variant="contained" color="primary" onClick={() => setShow(true)}>
+			<Button onClick={() => setShow(true)}>
 				Login
 			</Button>
 			<Modal

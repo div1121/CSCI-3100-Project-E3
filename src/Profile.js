@@ -145,7 +145,7 @@ function ProfileButton({ userID, username, setUsername }) {
 	
 	return (
 		<div>
-			<Button variant="contained" onClick={showProfile}>
+			<Button onClick={showProfile}>
 				Profile
 			</Button>
 			<Modal

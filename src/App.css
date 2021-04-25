@@ -11,13 +11,14 @@
 
 .appHeader {
 	display: flex;
-	background-color: #343a40;
     align-items: center;
+	background-color: black;
 	height: 100px;
 	width: 100vw;
 }
 
 .appHeader > .MuiButton-root {
+	color: white;
 	margin-right: 10px;
 }
 
@@ -30,7 +31,6 @@
 
 .homepage {
 	display: flex;
-	background-color: #ededed;
 	height: 100%;
 	width: 100vw;
 }

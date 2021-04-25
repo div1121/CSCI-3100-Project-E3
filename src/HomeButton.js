@@ -15,7 +15,7 @@ function HomeButton({ userID, username, gameRoomEnter, gameRoomID, setGameRoomEn
 		}
 		setMode("Home");
 	}
-	return <Button variant="contained" color="default" onClick={home}>Home</Button>
+	return <Button onClick={home}>Home</Button>
 }
 
 export default HomeButton;

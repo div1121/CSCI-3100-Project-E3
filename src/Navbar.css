@@ -1,11 +1,11 @@
 .topNavbar {
-	color: #ededed;
+	color: white;
 	display: flex;
 	width: 100%;
 }
 
 .topNavbarLeft {
-	margin-left: 10px;
+	margin-left: 20px;
 	width: 50%;
 	align-items: center;
 	display: flex;
@@ -17,11 +17,11 @@
 }
 
 .topNavbarLeft > span {
+	margin-top: 7px;
 	margin-left: 10px;
 }
 
 .topNavbarRight {
-	margin-right: 10px;
 	width: 50%;
 	align-items: center;
 	display: flex;
@@ -29,14 +29,15 @@
 }
 
 .topNavbarRight > h3 {
+	margin-right: 20px;
+}
+
+.topNavbarRight > .MuiButton-root {
+	color: white;
 	margin-right: 10px;
 }
 
-.topNavbarRight > Button {
-	margin-left: 10px;
-}
-
-.topNavbarRight > Button:hover{
-	background-color:#D3D3D3;
-	box-shadow: 0 12px 16px 0 rgba(0,0,0,0.24), 0 17px 50px 0 rgba(0,0,0,0.19);
+.topNavbarRight > div > .MuiButton-root {
+	color: white;
+	margin-right: 10px;
 }
