@@ -340,9 +340,9 @@ class Game extends Component {
             startTime,
             gameOver
         })
+        this.setRanking()
         let obj = {roomid: this.props.roomid, facing:this.state.playerFacing[this.state.playerIndex], level:this.state.playerLevel[this.state.playerIndex], prevpos:this.state.prevPlayerPos[this.state.playerIndex], pos: this.state.playerPosition[this.state.playerIndex], playerindex: this.state.playerIndex, levelcounter: this.state.levelCounter};
         ws.emit('move', obj);
-        this.setRanking()
     }
 
     componentDidMount() {
