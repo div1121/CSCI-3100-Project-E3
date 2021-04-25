@@ -1,4 +1,4 @@
-  import React, { Component } from 'react';
+import React, { Component } from 'react';
 import ws from './service';
 import alertify from 'alertifyjs';
 import 'alertifyjs/build/css/alertify.css';
@@ -11,13 +11,15 @@ class Roomline extends Component{
     render(){
         // invite button display (to be implemented)
         return (
-			<div className="room">
-                <span>{this.props.numofusers}/4</span>
-				<div className="roomname">
+			<tr>
+                <td>{this.props.numofusers}/4</td>
+				<td>
                     {this.props.roomname}
-                </div>
-                {!this.props.loading && <button onClick={this.props.handleadd}>Join</button>}
-            </div>
+                </td>
+                <td>
+                    {!this.props.loading && <button onClick={this.props.handleadd}>Join</button>}
+                </td>
+            </tr>
         )
     }
 }
@@ -114,16 +116,22 @@ class RoomList extends React.Component {
         return (
             <div className="roomListContainer">
                 <h1>Room List</h1>
-				<div className="roomList">
-					<div className="room">
-						<span><h4>Player No.</h4></span>
-						<div className="roomname">
-							<h4>Room name</h4>
-						</div>
-						<button className="hidden"/>
-					</div>
+                <div className="table">
+				<table className="fl-table">
+					<thead>
+                    <tr>
+                        <th>
+                            Player No.
+                        </th>
+                        <th>
+                            Room name
+                        </th>
+                        <th></th>
+                    </tr>
+					</thead>
 					{displaylist}
-				</div>
+				</table>
+                </div>
 				<form onSubmit={this.handleCreateRoom}>
 					<fieldset>
 						<legend>Create Room: </legend>
