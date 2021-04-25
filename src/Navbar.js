@@ -1,6 +1,9 @@
 import { LogoutButton, LoginButton } from './Login';
 import { ProfileButton } from './Profile';
+import './Navbar.css';
 
+//TopNavbar is a functional component.
+//It returns a navigation bar to facilitate users to carry out some basic operations anytime.
 function TopNavbar({ setMode, userID, username, setUserID, setUsername }) {
 	return(
 		<div className="topNavbar">

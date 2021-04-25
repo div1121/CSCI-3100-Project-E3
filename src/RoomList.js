@@ -1,7 +1,8 @@
-import React, { Component } from 'react';
+  import React, { Component } from 'react';
 import ws from './service';
 import alertify from 'alertifyjs';
 import 'alertifyjs/build/css/alertify.css';
+import './RoomList.css'
 import './Alert.css'
 import {PATH_TO_BACKEND} from './baseURL';
 const baseURL = PATH_TO_BACKEND;

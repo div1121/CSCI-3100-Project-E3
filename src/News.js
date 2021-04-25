@@ -1,3 +1,8 @@
+import './News.css';
+
+//News is a functional component.
+//It returns a list of news about our game.
+//The database and an admin page to manage this section have not been prepared yet so this is just a hardcoded sample.
 function News() {
 	return(
 		<div className='news'>

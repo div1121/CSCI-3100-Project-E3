@@ -7,6 +7,7 @@ import alertify from 'alertifyjs';
 import 'alertifyjs/build/css/alertify.css';
 import './Alert.css'
 
+//These are the styling for the pop up windows.
 function getModalStyle() {
 	const top = 50;
 	const left = 50;
@@ -17,7 +18,6 @@ function getModalStyle() {
 		transform: `translate(-${top}%, -${left}%)`,
 	};
 }
-
 const useStyles = makeStyles((theme) => ({
 	paper: {
 		position: 'absolute',

@@ -1,5 +1,6 @@
 import React from 'react';
 import ws from './service';
+import './ChatRoom.css';
 import {PATH_TO_BACKEND} from './baseURL';
 const baseURL = PATH_TO_BACKEND;
 

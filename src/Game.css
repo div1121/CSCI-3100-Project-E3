@@ -1,0 +1,14 @@
+.game {
+    background-image: url("./picture/background.jfif");
+    height: 100%;
+    width: 1280px ;
+	display: flex;
+	flex-direction: column;
+    color: white;
+	align-items: center;
+	justify-content: space-between;
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+}

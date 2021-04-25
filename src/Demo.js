@@ -5,6 +5,7 @@ import GameBoard from './GameBoard'
 import _ from 'lodash'
 import KeyHandler, {KEYDOWN} from 'react-key-handler';
 import alertify from 'alertifyjs';
+import './Game.css';
 import 'alertifyjs/build/css/alertify.css';
 import './Alert.css';
 

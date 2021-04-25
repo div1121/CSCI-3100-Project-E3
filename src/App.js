@@ -10,13 +10,17 @@ import Game from './Game';
 import Demo from './Demo';
 import HomeButton from './HomeButton';
 
+//App is the major component of the system.
 function App() {
+	//The system will store user id and username in session so that they can stay login after freshing the page.
 	const [userID, setUserID] = useState(sessionStorage.getItem('userID'));
 	const [username, setUsername] = useState(sessionStorage.getItem('username'));
 	const [gameRoomEnter, setGameRoomEnter] = useState(null);
 	const [gameRoomID, setGameRoomID] = useState(null);
+	//The system will use this state, "mode", to control what to display.
 	const [mode, setMode] = useState("Home");
 
+	//The app will display the corresponding components according to the current mode.
 	return (
 		<div className="app">
 			{
