@@ -452,6 +452,8 @@ class Game extends Component {
                         score: playerScore[i],
 					})
                 }
+            }
+            if (gameOver) {
 				this.props.setMode("GameEnd")
             }
 
