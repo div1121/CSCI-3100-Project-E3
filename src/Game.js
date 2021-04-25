@@ -7,6 +7,7 @@ import _ from 'lodash'
 import KeyHandler, {KEYDOWN} from 'react-key-handler';
 import ws from './service';
 import axios from './Axios';
+import './Game.css';
 import {PATH_TO_BACKEND} from './baseURL';
 const baseURL = PATH_TO_BACKEND;
 
