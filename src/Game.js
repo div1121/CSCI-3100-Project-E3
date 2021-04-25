@@ -460,7 +460,7 @@ class Game extends Component {
             status = "Level Counter:"
             for (let i = 8; i >= 0; i++) {
                 status += "["
-                length = levelCounter[i].length
+                let length = levelCounter[i].length
                 for (let j = 0; j < length; j++) {
                     status += levelCounter[i][j] + " "
                 }
