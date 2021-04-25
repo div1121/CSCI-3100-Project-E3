@@ -401,6 +401,7 @@ class Game extends Component {
             boardWidth,
             boardHeight,
             randomEntrances,
+            playerIndex,
             playerID,
             playerName,
             preScore,
@@ -418,7 +419,11 @@ class Game extends Component {
 		let status = ""
 
         if (gameStart) {
-            if (gameOver&&!scoreUpdate) {
+            if (gameOver && !scoreUpdate && playerIndex === 0) {
+                scoreUpdate = true
+                this.setState({
+                    scoreUpdate
+                })
                 let finishLevel = boardWidth + boardHeight - 2
                 if (playerLevel[ranking[0]] === finishLevel) {
                     playerScore[ranking[0]] = preScore[ranking[0]] + 2
