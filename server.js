@@ -28,7 +28,8 @@ const User = mongoose.model('userinfo', new Schema({
 
 const Room = mongoose.model('Room',new Schema({
     roomname: String,
-    numofusers: Number
+    numofusers: Number,
+    ingame: Boolean
 }));
 
 const RoomMember = mongoose.model('RoomMember',new Schema({
@@ -94,13 +95,13 @@ app.post('/forgetPassword', (req, res) => {
 })
 
 app.post('/findRanking', (req, res) => {
-	User.find(req.body, {"_id" : 1, "name" : 1, "score" : 1}, (err, data) => {
-		if (err) {
-			res.status(500).send(err);
-		} else {
-			res.status(200).send(data);
-		}
-	}).sort({"score" : -1}).limit(100)
+    User.find(req.body, {"_id" : 1, "name" : 1, "score" : 1}, (err, data) => {
+        if (err) {
+            res.status(500).send(err);
+        } else {
+            res.status(200).send(data);
+        }
+    }).sort({"score" : -1}).limit(100)
 })
 
 app.post('/findAccount', (req, res) => {
@@ -190,7 +191,7 @@ io.on('connection', (socket) =>{
     socket.on('createroom',async (data) => {
         console.log('create room')
 
-        const rom = {roomname: data.roomname, numofusers: 1};
+        const rom = {roomname: data.roomname, numofusers: 1, ingame:false};
         const room = new Room(rom);
         let obj = await room.save();
 
@@ -324,6 +325,9 @@ io.on('connection', (socket) =>{
 	});
     socket.on('startgame', async (data) => {
         io.to(data.roomid).emit('startgame');
+        const id = mongoose.Types.ObjectId(data.roomid);
+        let doc = await Room.findOneAndUpdate({_id: id},{ingame: true},{new: true});
+        io.emit("roomingame",data);
     });
 
 	socket.on('entrances', (data) => {

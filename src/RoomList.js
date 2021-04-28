@@ -5,6 +5,7 @@ import 'alertifyjs/build/css/alertify.css';
 import './RoomList.css'
 import './Alert.css'
 import {PATH_TO_BACKEND} from './baseURL';
+import CircularProgress from "@material-ui/core/CircularProgress";
 const baseURL = PATH_TO_BACKEND;
 
 class Roomline extends Component{
@@ -17,7 +18,9 @@ class Roomline extends Component{
                     {this.props.roomname}
                 </td>
                 <td>
-                    {!this.props.loading && <button onClick={this.props.handleadd}>Join</button>}
+                    {this.props.ingame && <span>in game <CircularProgress size="1.5rem"/></span>}
+                    {!this.props.ingame && !this.props.loading && <button onClick={this.props.handleadd}>Join</button>}
+                    {!this.props.ingame && this.props.loading && <CircularProgress size="1.5rem"/>}
                 </td>
             </tr>
         )
@@ -81,6 +84,15 @@ class RoomList extends React.Component {
             this.setState({loading: false});
 	        alertify.message("Fail to join the room: "+ data.roomname);
         })
+
+        ws.on('roomingame',(data)=>{
+            let display = this.state.room_list;
+            const isMatch = (element) => element._id === data.roomid;
+            var match = display.findIndex(isMatch);
+            if (match!==-1)
+                display[match].ingame = true;
+            this.setState({room_list:display});
+        });
     }
 
     handleChange(event) {
@@ -111,7 +123,7 @@ class RoomList extends React.Component {
         let room_list = this.state.room_list;
         //console.log(room_list);
         const displaylist = room_list.map((room) =>
-            <Roomline roomname={room.roomname} numofusers={room.numofusers} handleadd={()=>this.handleEnterRoom(room._id,room.roomname)} loading={this.state.loading}></Roomline>
+            <Roomline roomname={room.roomname} numofusers={room.numofusers} handleadd={()=>this.handleEnterRoom(room._id,room.roomname)} loading={this.state.loading} ingame={room.ingame}></Roomline>
         );
         return (
             <div className="roomListContainer">
