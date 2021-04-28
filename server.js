@@ -93,6 +93,16 @@ app.post('/forgetPassword', (req, res) => {
 	})
 })
 
+app.post('/findRanking', (req, res) => {
+	User.find(req.body, {"_id" : 1, "name" : 1, "score" : 1}, (err, data) => {
+		if (err) {
+			res.status(500).send(err);
+		} else {
+			res.status(200).send(data);
+		}
+	}).sort({"score" : -1}).limit(100)
+})
+
 app.post('/findAccount', (req, res) => {
 	const dbUser = req.body;
 	
@@ -132,7 +142,7 @@ app.post('/updateAccount', (req, res) => {
 
 app.post('/updateScore', (req, res) => {
 	const id = req.body._id;
-	const password = req.body.score;
+	const score = req.body.score;
 	
 	User.update({ "_id": id }, { "score": score }, {}, (err, data) => {
 		if (err) {
