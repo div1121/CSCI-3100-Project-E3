@@ -1,8 +1,14 @@
 import React from 'react';
 import ws from './service';
 import './ChatRoom.css';
+import man1 from './picture/man/man_1_front.gif';
+import man2 from './picture/man/man_2_front.gif';
+import man3 from './picture/man/man_3_front.gif';
+import man4 from './picture/man/man_4_front.gif';
 import {PATH_TO_BACKEND} from './baseURL';
 const baseURL = PATH_TO_BACKEND;
+
+const image_array = [man1,man2,man3,man4];
 
 class SendChat extends React.Component {
     constructor(props) {
@@ -23,7 +29,7 @@ class SendChat extends React.Component {
     }
   
     handleSubmit(event) {
-        let obj = {roomid:this.state.roomid, userid:this.state.playerid, name: this.state.name, message: this.state.value}
+        let obj = {roomid:this.state.roomid, userid:this.state.playerid, name: this.state.name, imageindex:this.props.imageindex, message: this.state.value}
         ws.emit('messages',obj);
         this.setState({value: ''});
         event.preventDefault();
@@ -53,7 +59,8 @@ class SendChat extends React.Component {
         for (var i=0;i<history.length;i++){
             let name = history[i].name;
             let message = history[i].message;
-            chatlist.push(<div className="chat"><h4 className="chatName">{name}</h4><h4>:</h4><span>{message}</span></div>);
+            let index = history[i].imageindex;
+            chatlist.push(<div className="container"><img src={image_array[index]} alt="Avatar"/><div>{message}</div><span className="time-right">{name}</span></div>);
         }
       return (
           <div className="chatRoom">

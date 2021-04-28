@@ -1,8 +1,14 @@
 import React, { Component } from 'react';
 import ws from './service';
 import './GameRoom.css';
+import man1 from './picture/man/man_1_front.gif';
+import man2 from './picture/man/man_2_front.gif';
+import man3 from './picture/man/man_3_front.gif';
+import man4 from './picture/man/man_4_front.gif';
 import {PATH_TO_BACKEND} from './baseURL';
 const baseURL = PATH_TO_BACKEND;
+
+const image_array =[man1,man2,man3,man4];
 
 //member
 class Playerline extends Component{
@@ -13,6 +19,7 @@ class Playerline extends Component{
         }
         return (
 			<div className="gameRoomPlayerLine">
+                <img src={this.props.image} alt="Avator" />
 				<span>
 					{this.props.playername}
 				</span>
@@ -59,6 +66,8 @@ class Gameroom extends Component{
                 for (var i=0;i<res.length;i++){
                     players.push(res[i].name);
                     players_ids.push(res[i].userid);
+                    if (res[i].userid===this.props.playerid)
+                        this.props.setImageIndex(i);
                     num++;
                     ready.push(res[i].ready);
                     if (res[i].ready)
@@ -147,6 +156,7 @@ class Gameroom extends Component{
         for (let i=0;i<this.state.player_num;i++){
             display.push(<Playerline isready={this.state.ready_state[i]}
                                      playername={this.state.player_list[i]}
+                                     image={image_array[i]}
                                      handleready={list[i]}
                                      position={i===0 && list[0]!==null}
                                      ready_num={this.state.ready_num}

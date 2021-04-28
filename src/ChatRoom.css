@@ -44,7 +44,7 @@
 	overflow: scroll;
 	overflow-x: hidden;
 }
-
+/*
 .chat {
 	width: 95%;
 	padding: 10px;
@@ -77,4 +77,43 @@
 	font-size: 20px;
 	text-align: left;
 	word-wrap: break-word;
+}
+*/
+
+.container {
+	border: 2px solid #dedede;
+	background-color: #f1f1f1;
+	border-radius: 5px;
+	padding: 10px;
+	margin: 10px 0;
+	width: 90%;
+	display: flex;
+}
+
+.darker {
+	border-color: #ccc;
+	background-color: #ddd;
+}
+
+.container::after {
+	content: "";
+	clear: both;
+	display: table;
+}
+
+.container img {
+	float: left;
+	max-width: 60px;
+	width: 100%;
+	margin-right: 20px;
+	border-radius: 50%;
+}
+
+.container div{
+	width:100%;
+}
+
+.time-right {
+	float: right;
+	color: #aaa;
 }

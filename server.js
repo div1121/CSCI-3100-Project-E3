@@ -44,6 +44,7 @@ const Message = mongoose.model('Message',new Schema({
     roomid: String,
     userid : String,
     name: String,
+    imageindex: Number,
     message : String
 }));
 

@@ -17,6 +17,7 @@ function App() {
 	const [username, setUsername] = useState(sessionStorage.getItem('username'));
 	const [gameRoomEnter, setGameRoomEnter] = useState(null);
 	const [gameRoomID, setGameRoomID] = useState(null);
+	const [imageindex, setImageIndex] = useState(null);
 	//The system will use this state, "mode", to control what to display.
 	const [mode, setMode] = useState("Home");
 
@@ -41,9 +42,9 @@ function App() {
 						</div>
 					:gameRoomID !== null?
 						<>
-							<Chatroom roomid={gameRoomID} userid={userID} name={username} />
-							<GameRoom setMode={setMode} roomid={gameRoomID} roomname={gameRoomEnter} playername={username} playerid={userID} setGameroomenter={setGameRoomEnter} setGameroomid={setGameRoomID}/>
-						</>
+							<Chatroom roomid={gameRoomID} userid={userID} name={username} imageindex={imageindex}/>
+							<GameRoom setMode={setMode} roomid={gameRoomID} roomname={gameRoomEnter} playername={username} playerid={userID} setGameroomenter={setGameRoomEnter} setGameroomid={setGameRoomID} setImageIndex={setImageIndex}/>
+							</>
 					:mode === "FindingRoom"?
 						<div className="homepage">
 							<News />
