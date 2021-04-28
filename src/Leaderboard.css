@@ -5,12 +5,14 @@
 	max-height: 300px;
 	flex-direction: column;
 	overflow: scroll;
-	overflow-x: hidden;
+}
+
+.fixed {
+	font-weight: bold;
 }
 
 .leaderboard > .leader {
-	margin-top: 1px;
-	margin-bottom: 1px;
+	margin: 1px 2px 1px 0;
 	padding: 10px;
 	display: flex;
 	border-radius: 10px;

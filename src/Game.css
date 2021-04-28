@@ -7,8 +7,4 @@
     color: white;
 	align-items: center;
 	justify-content: space-between;
-	-webkit-user-select: none;
-	-moz-user-select: none;
-	-ms-user-select: none;
-	user-select: none;
 }
