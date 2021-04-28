@@ -94,14 +94,38 @@ app.post('/forgetPassword', (req, res) => {
 	})
 })
 
+app.post('/findMyRanking', (req, res) => {
+	const dbUser = req.body;
+	const id = dbUser._id;
+	
+	User.find({}, {"_id" : 1}, (err, data) => {
+		if (err) {
+			res.status(500).send(err);
+		} else {
+			let count = 1;
+			for (let i = 0; i < data.length; i++) {
+				if(data[i]._id!=id){
+					count++;
+				} else {
+					break;
+				}
+			}
+			console.log(count);
+			res.status(200).send({"rank": count});
+		}
+	}).sort({"score" : -1})
+})
+
 app.post('/findRanking', (req, res) => {
-    User.find(req.body, {"_id" : 1, "name" : 1, "score" : 1}, (err, data) => {
-        if (err) {
-            res.status(500).send(err);
-        } else {
-            res.status(200).send(data);
-        }
-    }).sort({"score" : -1}).limit(100)
+	const dbUser = req.body;
+	
+	User.find(dbUser, {"_id" : 1, "name" : 1, "score" : 1}, (err, data) => {
+		if (err) {
+			res.status(500).send(err);
+		} else {
+			res.status(200).send(data);
+		}
+	}).sort({"score" : -1}).limit(100)
 })
 
 app.post('/findAccount', (req, res) => {
