@@ -1,5 +1,6 @@
 import { LogoutButton, LoginButton } from './Login';
 import { ProfileButton } from './Profile';
+import { LeaderboardButton } from './Leaderboard';
 import './Navbar.css';
 
 //TopNavbar is a functional component.
@@ -18,6 +19,7 @@ function TopNavbar({ setMode, userID, username, setUserID, setUsername }) {
 			:(
 				<div className="topNavbarRight">
 					<h3>Welcome {username} !</h3>
+					<LeaderboardButton userID={userID} username={username}/>
 					<ProfileButton userID={userID} username={username} setUsername={setUsername}/>
 					<LogoutButton setUserID={setUserID} setUsername={setUsername}/>
 				</div>

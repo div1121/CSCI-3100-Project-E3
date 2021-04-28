@@ -27,11 +27,14 @@ const useStyles = makeStyles((theme) => ({
 	},
 }));
 
+//LoginButton is a functional component.
+//It returns a button that will submit the reset password request.
 function ChangePasswordConfirm({ userID, password, newPassword, reNewPassword, setShow }) {
 	const changePassword = async (e) => {
 		var canUpdate = false;
 		e.preventDefault();
 		try {
+			//The function will first verify the current password and the new password.
 			await axios.post("/findAccount", {
 				_id: userID,
 				password: password,
@@ -48,6 +51,7 @@ function ChangePasswordConfirm({ userID, password, newPassword, reNewPassword, s
 					canUpdate = true;
 				}
 			});
+			//After verification, it will update the document in database.
 			if(canUpdate) {
 				await axios.post("/updateAccount", {
 					_id: userID,
@@ -66,6 +70,8 @@ function ChangePasswordConfirm({ userID, password, newPassword, reNewPassword, s
 	return <Button variant="contained" type="submit" onClick={changePassword}>Confirm</Button>;
 }
 
+//LoginButton is a functional component.
+//It returns a button that will open a password reset form on a small window.
 function ChangePasswordButton({ userID }) {
 	const classes = useStyles();
 	const [modalStyle] = useState(getModalStyle);
@@ -74,12 +80,14 @@ function ChangePasswordButton({ userID }) {
 	const [newPassword, setNewPassword] = useState("");
 	const [reNewPassword, setReNewPassword] = useState("");
 
+	//The inputs are reset when the modal is opened/closed.
 	React.useEffect(() => {
 		setPassword('');
 		setNewPassword('');
 		setReNewPassword('');
 	}, [show]);
 	
+	//The components consist of a button and a hidden modal
 	return (
 		<div>
 			<Button variant="contained" color="secondary" onClick={() => setShow(true)}>
@@ -115,7 +123,7 @@ function ChangePasswordButton({ userID }) {
 						/>
 						<div className="formFooter">
 							<ChangePasswordConfirm userID={userID} password={password} newPassword={newPassword} reNewPassword={reNewPassword} setShow={setShow}/>
-							<Button variant="contained" onClick={() => setShow(false)}>Cancel</Button>
+							<Button onClick={() => setShow(false)}>Cancel</Button>
 						</div>
 					</form>
 				</div>
@@ -124,14 +132,17 @@ function ChangePasswordButton({ userID }) {
 	);
 }
 
+//LoginButton is a functional component.
+//It returns a button that will open the user profile on a small window.
 function ProfileButton({ userID, username, setUsername }) {
 	const classes = useStyles();
 	const [modalStyle] = useState(getModalStyle);
 	const [show, setShow] = useState(false);
-	const [score, setScore] = useState(1000);
+	const [score, setScore] = useState(0);
 
 	const showProfile = async () => {
 		try {
+			//This function will use the userID to retrieve the user's data from the database.
 			await axios.post("/findAccount", {
 				_id: userID,
 			}).then(res => {
@@ -143,6 +154,7 @@ function ProfileButton({ userID, username, setUsername }) {
 		}
 	}
 	
+	//The components consist of a button and a hidden modal.
 	return (
 		<div>
 			<Button onClick={showProfile}>
@@ -159,7 +171,7 @@ function ProfileButton({ userID, username, setUsername }) {
 						<h3>Score: {score}</h3>
 						<div className="formFooter">
 							<ChangePasswordButton userID={userID} />
-							<Button variant="primary" onClick={() => setShow(false)}>Back</Button>
+							<Button onClick={() => setShow(false)}>Back</Button>
 						</div>
 					</div>
 				</div>

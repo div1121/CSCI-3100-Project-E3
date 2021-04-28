@@ -1,0 +1,47 @@
+.leaderboard {
+	width: 90%;
+	flex: 1;
+	display: flex;
+	max-height: 300px;
+	flex-direction: column;
+	overflow: scroll;
+	overflow-x: hidden;
+}
+
+.leaderboard > .leader {
+	margin-top: 1px;
+	margin-bottom: 1px;
+	padding: 10px;
+	display: flex;
+	border-radius: 10px;
+}
+
+.leaderboard > .self {
+	background-color: #DCDCDC;
+	font-weight: bold;
+}
+
+.leaderboard > .top {
+	color: #fdd813;
+	background-color: #5b83c2;
+	font-weight: bold;
+}
+
+.leaderboard > .self.top {
+	background-color: #1d305f;
+	font-weight: bold;
+}
+
+.leaderboard > .leader > .leaderRank {
+	flex: 0.2;
+}
+
+.leaderboard > .leader > .leaderName {
+	flex: 0.5;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+
+.leaderboard > .leader > .leaderScore {
+	flex: 0.3;
+}

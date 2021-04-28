@@ -55,8 +55,10 @@
 
 .room {
 	width: 95%;
+	height: 30px;
 	padding: 10px;
 	display: flex;
+	align-items: center;
 	border-bottom: solid;
 	border-color: #DCDCDC;
 }
@@ -90,8 +92,8 @@
 	border-radius: 50%;
 }
 
- */
-
+*/
+ 
 .table{
 	width:90%;
 	box-shadow: 0px 35px 50px rgba( 0, 0, 0, 0.2 );
@@ -186,4 +188,4 @@
 /* Handle on hover */
 ::-webkit-scrollbar-thumb:hover {
 	background: #555;
-}
+} 

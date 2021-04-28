@@ -218,12 +218,13 @@ function LoginForm({ setUserID, setUsername }) {
 }
 
 //LoginButton is a functional component.
-//It returns a button and if it is clicked, a little window contains the login form will pop out.
+//It returns a button that will open a login form on a small window.
 function LoginButton({ setUserID, setUsername }) {
 	const classes = useStyles();
 	const [modalStyle] = useState(getModalStyle);
 	const [show, setShow] = useState(false);
 
+	//The components consist of a button and a hidden modal.
 	return (
 		<div>
 			<Button onClick={() => setShow(true)}>
