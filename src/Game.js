@@ -466,15 +466,9 @@ class Game extends Component {
                 status += "] "
             }*/
             status = "Number of players: " + playerNumber
-            return(<div>
-                <div style={{
-                    backgroundImage: `url(${background})`,
-                    color: "white"
-                    }}>
-                    <div 
-                        className = "status"
-                        style = {{textAlign: "center"}}
-                    >
+            return(
+                <div className="game">
+                    <div className = "status">
                         {status}
                     </div>
                     <KeyHandler
@@ -569,7 +563,6 @@ class Game extends Component {
                                 />)
                         }
                     </div>
-                </div>
             )
         }
         else {

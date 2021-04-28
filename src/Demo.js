@@ -425,10 +425,6 @@ class Game extends Component {
 
         return(
             <div className="game">
-				<div className="hidden">invisible</div>
-                <div className = "status">
-                    {status}
-                </div>
                 <KeyHandler
                     keyEventName = {KEYDOWN}
                     keyValue = "ArrowUp"
@@ -457,7 +453,7 @@ class Game extends Component {
                         this.handleKeyLeft
                     }
                 />
-
+				<div className="gameBoard">
                 {
                     this.state.showGameBoard &&
                         ( <GameBoard
@@ -520,7 +516,7 @@ class Game extends Component {
                             }
                             />)
                 }
-				<div className="hidden">invisible</div>
+				</div>
             </div>
         )
     }

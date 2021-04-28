@@ -1,10 +1,17 @@
 .game {
     background-image: url("./picture/background.jfif");
     height: 100%;
-    width: 1280px ;
+    width: 1280px;
 	display: flex;
 	flex-direction: column;
     color: white;
 	align-items: center;
-	justify-content: space-between;
+}
+
+.game .status {
+	text-align: center;
+}
+
+.game .gameBoard {
+	margin-top:5px;
 }

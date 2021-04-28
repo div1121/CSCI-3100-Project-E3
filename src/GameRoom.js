@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 import ws from './service';
 import './GameRoom.css';
-import man1 from './picture/man/man_1_front.gif';
-import man2 from './picture/man/man_2_front.gif';
-import man3 from './picture/man/man_3_front.gif';
-import man4 from './picture/man/man_4_front.gif';
+import man1 from './picture/man/man_1_head.gif';
+import man2 from './picture/man/man_2_head.gif';
+import man3 from './picture/man/man_3_head.gif';
+import man4 from './picture/man/man_4_head.gif';
 import {PATH_TO_BACKEND} from './baseURL';
 const baseURL = PATH_TO_BACKEND;
 

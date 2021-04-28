@@ -44,7 +44,7 @@ function App() {
 						<>
 							<Chatroom roomid={gameRoomID} userid={userID} name={username} imageindex={imageindex}/>
 							<GameRoom setMode={setMode} roomid={gameRoomID} roomname={gameRoomEnter} playername={username} playerid={userID} setGameroomenter={setGameRoomEnter} setGameroomid={setGameRoomID} setImageIndex={setImageIndex}/>
-							</>
+						</>
 					:mode === "FindingRoom"?
 						<div className="homepage">
 							<News />
