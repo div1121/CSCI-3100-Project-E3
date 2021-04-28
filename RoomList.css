@@ -1,0 +1,171 @@
+.roomListContainer {
+	width:50%;
+	margin-top: 20px;
+	display: flex;
+    align-items: center;
+	justify-content: space-between;
+	flex-direction: column;
+}
+
+.roomListContainer > form {
+	width: 90%;
+	margin-bottom: 20px;
+}
+
+.roomListContainer > form > fieldset {
+	height: 80px;
+}
+
+.roomListContainer > form > fieldset > legend {
+	font-size: 30px;
+}
+
+.roomListContainer > form > fieldset > span {
+	width: 20%;
+	margin: 0px 10px 0px 10px;
+	font-size: 20px;
+}
+
+.roomListContainer > form > fieldset > input {
+	width: 50%;
+	height: 10px;
+	font-size: 20px;
+	outline-width: 0;
+	padding: 10px;
+	border: none;
+}
+
+.roomListContainer > form > fieldset > button {
+	width: 80px;
+	height: 31px;
+	font-size: 20px;
+}
+
+/*
+
+.roomList {
+	width: 90%;
+	flex: 1;
+	display: flex;
+	max-height: 300px;
+	flex-direction: column;
+	overflow: scroll;
+	overflow-x: hidden;
+}
+
+.room {
+	width: 95%;
+	height: 30px;
+	padding: 10px;
+	display: flex;
+	align-items: center;
+	border-bottom: solid;
+	border-color: #DCDCDC;
+}
+
+.room > span {
+	width: 20%;
+	margin-right: 5%;
+	font-size: 20px;
+	text-align: center;
+}
+
+.room:hover {
+	background-color:#D3D3D3;
+}
+
+.room > .roomname {
+	width: 65%;
+	font-size: 20px;
+}
+
+.room > button {
+	background-color: #404040;
+	border: none;
+	color: white;
+	padding: 5px;
+	text-align: center;
+	text-decoration: none;
+	display: inline-block;
+	font-size: 16px;
+	margin: 2px 2px;
+	border-radius: 50%;
+}
+
+*/
+ 
+.table{
+    background-image: url("./picture/floor.png");
+	opacity: 1.0;
+	width:90%;
+	box-shadow: 0px 35px 50px rgba( 0, 0, 0, 0.2 );
+	overflow: scroll;
+	flex: 1;
+	display: flex;
+	max-height: 300px;
+	flex-direction: column;
+}
+
+.fl-table {
+	border-radius: 5px;
+	font-size: 12px;
+	font-weight: normal;
+	border: none;
+	border-collapse: collapse;
+	width: 100%;
+	max-width: 100%;
+	white-space: nowrap;
+	background-color: white;
+}
+
+.fl-table td, .fl-table th {
+	padding: 8px;
+	border-color: #DCDCDC;
+	text-align: center;
+}
+
+.fl-table td {
+	border-right: 1px solid #f8f8f8;
+	font-size: 20px;
+}
+
+.fl-table thead th:nth-child(even) {
+    background-image: url("./picture/black_floor.jpg");
+	color: #ffffff;
+	width: 60%;
+	font-size: 20px;
+}
+
+
+.fl-table thead th:nth-child(odd) {
+    background-image: url("./picture/black_floor.jpg");
+	color: #ffffff;
+	width: 20%;
+	font-size: 20px;
+}
+
+.fl-table tr{
+    background-image: url("./picture/red_floor.jpg");
+	height: 50px;
+}
+
+.fl-table tr:nth-child(even) {
+    background-image: url("./picture/blue_floor.jpg");
+}
+
+.fl-table tr:hover {
+	opacity: 0.9;
+}
+
+.fl-table button {
+    background-image: url("./picture/floor.png");
+	border: none;
+	color: white;
+	padding: 5px;
+	text-align: center;
+	text-decoration: none;
+	display: inline-block;
+	font-size: 16px;
+	margin: 2px 2px;
+	border-radius: 50%;
+}

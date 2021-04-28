@@ -1,0 +1,55 @@
+.gameRoom {
+	width:50%;
+	margin: 20px 0px 50px 30px;
+	display: flex;
+	flex-direction: column;
+    align-items: left;
+}
+
+.gameRoom > h1 {
+	margin-bottom: 10px;
+}
+
+.gameRoomPlayers {
+	flex: 1;
+	display: flex;
+	flex-direction: column;
+}
+
+.gameRoomPlayerLine {
+	width: 100%;
+	margin: 30px 0px 10px 0px;
+	display: flex;
+}
+
+.gameRoomPlayerLine > span {
+	font-size: 30px;
+	width: 60%;
+}
+
+.gameRoomPlayerLine > button {
+	font-size: 30px;
+	margin-right: 5px;
+	width: 120px;
+	border-radius: 5px;
+}
+
+.gameRoomPlayerLine > button:hover {
+	background-color:#D3D3D3;
+	box-shadow: 0 2px 2px 0 rgba(0,0,0,0.24), 0 2px 2px 0 rgba(0,0,0,0.19);
+}
+
+
+.gameRoomFooter {
+	display: flex;
+}
+
+.gameRoomFooter > h1 {
+	width: 60%;
+}
+
+.gameRoomFooter > button {
+	font-size: 30px;
+	width: 120px;
+	border-radius: 5px;
+}
