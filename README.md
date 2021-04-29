@@ -1,18 +1,18 @@
-# CSCI-3100-Project-E3 Magic Maze
+# CSCI-3100-Project-E3 Magic Maze (Last Update: 30-4-2021)
 
 ## Introduction
 
-**Magic Maze v1.0 (Last Update: 30-4-2021)**
+**Magic Maze v1.0**
 
 For CUHK CSCI3100 Project Group E3 (2021 Spring)  
 Developers: Kenny CHAN, Knife NG, Benny CHENG, Jason CHU, Sun CHOI  
 You may view our game website on: https://luyou00001.github.io/CSCI-3100-Project-E3/  
 
-Magic Maze is a real-time fast-paced competitive maze game. Players can compete with each other by teleporting to the destination in the fastest way on the map. The map contains multiple routes for users to explore and find the fastest way to the end requires memories and fortune.
+Magic Maze is a real-time fast-paced competitive maze game running on a map in rectangular board form. Players can compete with each other by teleporting to the destination in the fastest way on the map. The map contains multiple routes for users to explore and find the fastest way to the end requires memories and fortune.
 
+We have "Matching" and "Custom Room" function for multi-player game mode. You can play with other players after logging in. We also provide a "Demo" function for standalone game mode. You can take it as a tutorial and get familiar with the game flow.
 
-## Game and GameBoard
-Our game is a maze game running on a map in rectangular board form. We have "Matching" and "Custom Room" function for multi-player game mode. You can play with other players after logging in. We also provide a "Demo" function for standalone game mode. You can take it as a tutorial and get familiar with the game flow.
+## Classes
 
 ### Game
 This class is to control the game flow, the movement of player and display the game information.
