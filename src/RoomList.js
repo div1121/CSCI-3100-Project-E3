@@ -18,9 +18,9 @@ class Roomline extends Component{
                     {this.props.roomname}
                 </td>
                 <td>
-                    {this.props.ingame && <span>in game <CircularProgress size="1.5rem"/></span>}
+                    {this.props.ingame && <span> Playing... <CircularProgress color="white" size="1rem"/></span>}
                     {!this.props.ingame && !this.props.loading && <button onClick={this.props.handleadd}>Join</button>}
-                    {!this.props.ingame && this.props.loading && <CircularProgress size="1.5rem"/>}
+                    {!this.props.ingame && this.props.loading && <CircularProgress color="white" size="1rem"/>}
                 </td>
             </tr>
         )
@@ -138,7 +138,9 @@ class RoomList extends React.Component {
                         <th>
                             Room name
                         </th>
-                        <th></th>
+                        <th>
+                            Status
+                        </th>
                     </tr>
 					</thead>
 					{displaylist}
