@@ -106,9 +106,11 @@ class RoomList extends React.Component {
     }
 
     handleCreateRoom(event) {
-        let obj = {roomname: this.state.input_room_name===""?this.props.user_name+"'s room":this.state.input_room_name, userid: this.props.user_id, name: this.props.user_name};
-        ws.emit('createroom',obj);
-        this.setState({ input_room_name: '', loading:true});
+		if(this.state.loading===false){
+			let obj = {roomname: this.state.input_room_name===""?this.props.user_name+"'s room":this.state.input_room_name, userid: this.props.user_id, name: this.props.user_name};
+			ws.emit('createroom',obj);
+			this.setState({ input_room_name: '', loading:true});
+		}
         event.preventDefault();
     }
 

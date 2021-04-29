@@ -13,15 +13,19 @@ const image_array =[man1,man2,man3,man4];
 //member
 class Playerline extends Component{
     render(){
+        let displayname = this.props.playername
         let str = "Ready"
+        let backgroundcolor = "rgba(0, 0, 0, 0.7)"
         if (this.props.isready){
             str = "Cancel"
+            displayname += " (Ready)"
+            backgroundcolor = "rgba(24, 57, 80, 0.8)"
         }
         return (
-			<div className="gameRoomPlayerLine">
-                <img src={this.props.image} alt="Avator" />
+			<div style = {{backgroundColor: `${backgroundcolor}`}} className="gameRoomPlayerLine">
+                <img align="center" height="40" width="40" src={this.props.image} alt="Avator"/>
 				<span>
-					{this.props.playername}
+                    　{displayname}
 				</span>
                 {
                     this.props.handleready != null &&
@@ -172,7 +176,7 @@ class Gameroom extends Component{
 					{display}
 				</div>
 				<div className="gameRoomFooter">
-					<h1>Number of ready: {this.state.ready_num}</h1>
+					<h1>Number of ready: {this.state.ready_num}/{this.state.player_num}</h1>
 					<button onClick={this.handleLeaveRoom}>Leave</button>
 				</div>
 			</div>

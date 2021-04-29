@@ -7,6 +7,7 @@ import alertify from 'alertifyjs';
 import './Leaderboard.css';
 import 'alertifyjs/build/css/alertify.css';
 import './Alert.css'
+import background from "./picture/floor.png";
 
 //These are the styling for the pop up windows.
 function getModalStyle() {
@@ -21,9 +22,10 @@ function getModalStyle() {
 }
 const useStyles = makeStyles((theme) => ({
 	paper: {
+		backgroundImage: `url(${background})`,
+		color: "white",
 		position: 'absolute',
 		width: 400,
-		backgroundColor: theme.palette.background.paper,
 		padding: theme.spacing(2, 4, 3),
 	},
 }));
@@ -89,7 +91,7 @@ function LeaderboardButton({ userID, username }) {
 						<div className="leaderboard">
 							{
 								rank.map(({id, name, score}, index) => (
-									<div className={`leader ${index<3 && "top"} ${id===userID && "self"}`}>
+									<div className={`leader ${index===0 && "top_1"} ${index===1 && "top_2"} ${index===2 && "top_3"} ${id===userID && "self"}`}>
 										<div className="leaderRank">{index+1}</div>
 										<div className="leaderName">{name}</div>
 										<div className="leaderScore">{score}</div>
@@ -105,7 +107,7 @@ function LeaderboardButton({ userID, username }) {
 							</div>
 						</div>
 						<div className="formFooter">
-							<Button onClick={() => setShow(false)}>Back</Button>
+							<Button style = {{color: "white"}} onClick={() => setShow(false)}>Back</Button>
 						</div>
 					</div>
 				</div>

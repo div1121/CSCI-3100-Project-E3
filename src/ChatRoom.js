@@ -29,9 +29,11 @@ class SendChat extends React.Component {
     }
   
     handleSubmit(event) {
-        let obj = {roomid:this.state.roomid, userid:this.state.playerid, name: this.state.name, imageindex:this.props.imageindex, message: this.state.value}
-        ws.emit('messages',obj);
-        this.setState({value: ''});
+		if(this.state.value!=''){
+			let obj = {roomid:this.state.roomid, userid:this.state.playerid, name: this.state.name, imageindex:this.props.imageindex, message: this.state.value}
+			ws.emit('messages',obj);
+			this.setState({value: ''});
+		}
         event.preventDefault();
     }
 
@@ -49,6 +51,7 @@ class SendChat extends React.Component {
             let his = this.state.history;
             his.push(message);
             this.setState({history:his});
+			document.getElementById('chatList').scrollTop = document.getElementById('chatList').scrollHeight;   
         });
     }
 
@@ -60,12 +63,22 @@ class SendChat extends React.Component {
             let name = history[i].name;
             let message = history[i].message;
             let index = history[i].imageindex;
-            chatlist.push(<div className="container"><img src={image_array[index]} alt="Avatar"/><div>{message}</div><span className="time-right">{name}</span></div>);
+            let output = name + ": " + message
+            let length = output.length
+            let count = 0;
+            let tail;
+            for (let i = 0; i < length; i++) {
+                count += output.charCodeAt(i) < 256 ? 1 : 2;
+                if (count > 44) break
+                else tail = i;
+            }
+            output = output.substr(0, tail + 1)
+            chatlist.push(<div className="container"><img src={image_array[index]} alt="Avatar"/><div>{output}</div></div>);
         }
       return (
           <div className="chatRoom">
               <h1>Chat Box</h1>
-			  <div className="chatList">
+			  <div className="chatList" id="chatList">
 				{chatlist}
 			  </div>
             <form onSubmit={this.handleSubmit}>

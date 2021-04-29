@@ -7,6 +7,7 @@ import { Button } from '@material-ui/core';
 import alertify from 'alertifyjs';
 import 'alertifyjs/build/css/alertify.css';
 import './Alert.css'
+import background from "./picture/floor.png";
 
 //These are the styling for the pop up windows.
 function getModalStyle() {
@@ -23,7 +24,8 @@ const useStyles = makeStyles((theme) => ({
 	paper: {
 		position: 'absolute',
 		width: 400,
-		backgroundColor: theme.palette.background.paper,
+		backgroundImage: `url(${background})`,
+		color: "white",
 		padding: theme.spacing(2, 4, 3),
 	},
 }));

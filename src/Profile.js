@@ -6,6 +6,7 @@ import { Button } from '@material-ui/core';
 import alertify from 'alertifyjs';
 import 'alertifyjs/build/css/alertify.css';
 import './Alert.css'
+import background from "./picture/floor.png";
 
 //These are the styling for the pop up windows.
 function getModalStyle() {
@@ -20,9 +21,10 @@ function getModalStyle() {
 }
 const useStyles = makeStyles((theme) => ({
 	paper: {
+		backgroundImage: `url(${background})`,
+		color: "white",
 		position: 'absolute',
 		width: 400,
-		backgroundColor: theme.palette.background.paper,
 		padding: theme.spacing(2, 4, 3),
 	},
 }));
@@ -171,7 +173,7 @@ function ProfileButton({ userID, username, setUsername }) {
 						<h3>Score: {score}</h3>
 						<div className="formFooter">
 							<ChangePasswordButton userID={userID} />
-							<Button onClick={() => setShow(false)}>Back</Button>
+							<Button style = {{color: "white"}} onClick={() => setShow(false)}>Back</Button>
 						</div>
 					</div>
 				</div>

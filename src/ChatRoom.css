@@ -3,12 +3,11 @@
 	margin: 20px 0px 50px 30px;
 	display: flex;	
 	flex-direction: column;
-	border-right: dashed;
 	justify-content: space-between;
 }
 
 .chatRoom > form {
-	width: 90%;
+	width: 95%;
 	margin-bottom: 20px;
 }
 
@@ -21,7 +20,7 @@
 }
 
 .chatRoom > form > fieldset > input {
-	width: 60%;
+	width: 81.8%;
 	height: 10px;
 	font-size: 20px;
 	outline-width: 0;
@@ -36,7 +35,8 @@
 }
 
 .chatList {
-	width: 90%;
+	font-size: 20px;
+	width: 100%;
 	flex: 1;
 	display: flex;
 	max-height: 300px;
@@ -83,11 +83,13 @@
 */
 
 .container {
-	border: 2px solid #dedede;
-	background-color: #f1f1f1;
+	color: cyan;
+	border: 2px solid #000000;
+	background-color: rgba(24, 57, 80, 0.8);
 	border-radius: 5px;
 	padding: 10px;
 	margin: 10px 0;
+	height: 20px;
 	width: 90%;
 	display: flex;
 }
@@ -105,9 +107,11 @@
 
 .container img {
 	float: left;
+	height: 100%;
 	max-width: 60px;
-	width: 100%;
-	margin-right: 20px;
+	height: 22px;
+	width: 22px;
+	margin-right: 10px;
 	border-radius: 50%;
 }
 

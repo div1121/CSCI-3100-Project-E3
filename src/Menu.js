@@ -16,7 +16,7 @@ function Match({ setMode, userID, username, setGameRoomEnter, setGameRoomID }){
 		if(userID===null){
 			alertify.error('Login first!');
 		}else {
-			setLoading(!loading);
+			setLoading(true);
 			//The server will make a queue for the players using this function.
 			ws.emit('ranking',{userid: userID, name: username});
 		}
@@ -32,16 +32,19 @@ function Match({ setMode, userID, username, setGameRoomEnter, setGameRoomID }){
 	useEffect(() => {
 		ws.on('getroominfo',(data)=>{
 			setMode("FindingRoom");
-			setLoading(!loading);
 			setGameRoomEnter(data.roomname);
 			setGameRoomID(data.roomid);
+			if(loading===true){
+				setMode("Game");
+			}
+			setLoading(false);
 		});
 	});
 	
 	return (
 		<>
 		{loading===true?
-			<button className="menuButton" onClick={cancel}>Matching <CircularProgress size="1.5rem"/></button>
+			<button className="menuButton" onClick={cancel}>Matching... <CircularProgress color="black" size="1.5rem"/></button>
 		:
 			<button className="menuButton" onClick={matching}>Match</button>
 		}
@@ -77,7 +80,6 @@ function Demo({ setMode, userID }) {
 function Menu({ setMode, userID, username, setGameRoomEnter, setGameRoomID }) {
 	return(
 		<div className='menu'>
-			<h1>Menu</h1>
 			<Match setMode={setMode} userID={userID} username={username} setGameRoomEnter={setGameRoomEnter} setGameRoomID={setGameRoomID}/>
 			<CustomRoom setMode={setMode} userID={userID}/>
 			<Demo setMode={setMode} userID={userID}/>
