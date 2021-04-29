@@ -1,0 +1,43 @@
+.topNavbar {
+	color: white;
+	display: flex;
+	width: 100%;
+}
+
+.topNavbarLeft {
+	margin-left: 20px;
+	width: 50%;
+	align-items: center;
+	display: flex;
+}
+
+.topNavbarLeft > a {
+	color: white;
+	text-decoration: none;
+}
+
+.topNavbarLeft > span {
+	margin-top: 7px;
+	margin-left: 10px;
+}
+
+.topNavbarRight {
+	width: 50%;
+	align-items: center;
+	display: flex;
+	justify-content: flex-end;
+}
+
+.topNavbarRight > h3 {
+	margin-right: 20px;
+}
+
+.topNavbarRight > .MuiButton-root {
+	color: white;
+	margin-right: 10px;
+}
+
+.topNavbarRight > div > .MuiButton-root {
+	color: white;
+	margin-right: 10px;
+}
