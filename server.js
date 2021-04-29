@@ -279,7 +279,8 @@ io.on('connection', (socket) =>{
         if (globalplayer.length==4){
             var temp = globalplayer.splice(0,5);
             globalplayer = globalplayer.splice(0,4);
-            var rom = {roomname: "Ranking", numofusers: 4};
+            var rname = globalplayer[0].name + "'s room";
+            var rom = {roomname: rname, numofusers: 4};
             var room = new Room(rom);
             let obj = await room.save();
             var id = obj._id.toString();
@@ -292,7 +293,7 @@ io.on('connection', (socket) =>{
                 var s = temp[i].usersocket;
                 s.join(id);
             }
-            io.to(id).emit('getroominfo',{roomid:id, roomname:"Ranking"});
+            io.to(id).emit('getroominfo',{roomid:id, roomname:rname});
             io.emit('createroom',obj);
         }
     });
