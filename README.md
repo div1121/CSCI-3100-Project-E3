@@ -12,9 +12,9 @@ Magic Maze is a real-time fast-paced competitive maze game. Players can compete 
 
 
 ## Game and GameBoard
-Our game is a maze game running on a map in rectangular board form. Currently we have a demo version of game which support standalone game mode only. The network version and GUI display of map are coming soon.
+Our game is a maze game running on a map in rectangular board form. We have "Matching" and "Custom Room" function for multi-player game mode. You can play with other players after logging in. We also provide a "Demo" function for standalone game mode. You can take it as a tutorial and get familiar with the game flow.
 
-### Game.js
+### Game
 This class is to control the game flow, the movement of player and display the game information.
 * Class state: Saving win statement, board dimensions, player position, entrances' positions, total number of movement.
 * initializeBoardPlayer(): Initialize the board dimension and player position. For the board dimension, the default setting is 5x5x5x5, which means we have 5x5 area board, and each area contains 5x5 cells. The player position will be set to the centre of the area (0, 0).
@@ -24,39 +24,51 @@ This class is to control the game flow, the movement of player and display the g
 * makeMove(newX, newY): Change the current position of player to (newX, newY). If (newX, newY) contains an entrance, player will be directed to the centre of the connected area of that entrance
 * render(): Display the game information (current included the player position and the connected area of each entrances. The later is for debug usage.) and detect the key pressed by the player.
 
-### GameBoard.js
+### GameBoard
 This class is to save the map information and display the map.
 * Class state: Saving the board state in an 4d array, each cell contain either '╬' (entrance), ' ' (empty) or '♂' (player).
 * setPlayerPosition(playerPosition), setBoard(props): Change the current position of player to playerPosition (an object includes x and y coordinates) and clear the previous position (set the state to ' '(empty)).
 * render(): Display the map according to the board state. Currently, the display will be in rectangular table form.
 
-## Game Room
-Brief outline of display of a player list inside a game room with ready option(before the custom game start)
+### Game Room
+* Brief outline of display of a player list inside a game room with ready option (before the custom game start)
 
-## Chat Room
-Allow multiple users to input message and the message of all users can be displayed to all users (only one chat room)
+### Chat Room
+* Allow multiple users to input message and the message of all users can be displayed to all users (only one chat room)
 
-## Login System
-The game requires users to login before they start playing.
-Users may login as guest, register a new account by email and password, login with their account and logout.
-Confirmation is required to create a new account.
+### Login System
+* The game requires users to login before they start playing.
+* Users may login as guest, register a new account by email and password, login with their account and logout.
+* Confirmation is required to create a new account.
 
-## User interface
-Our webpage uses the Bootstrap library to design the user interface.
+### User interface
+* Our webpage uses the Bootstrap library to design the user interface.
+* From v1.0, GUI is added.
 
-Matching Testcase:
-1. Only Four Players can enter the room (passed)
+## Test Cases
+
+### Game Testcase
+1. When a player move to a portal, he/she will teleport according to its entrance coordinates (passed)
+2. When a player move to next level, the ranking will change (passed)
+3. The earlier one attain the higher level will have higher ranking (passed)
+4. Count down time set to 5 when one of the player attain the terminal (passed)
+5. Update other players position (passed)
+6. Update score according to players' final ranking and finish status (passed)
+
+### Matching Testcase
+1. Players can only enter the room when four players are matching (passed)
 2. Less than four players will wait (passed)
 
-ChatRoom Testcase:
+### ChatRoom Testcase:
 1. Enter the romm will load history chat (passed)
 2. Send chat and everyone in room can see (passed)
 
-GameRoom Testcase:
+### GameRoom Testcase:
 1. Ready state change (passed)
 2. 4 readys with one start (passed)
+3. The game cannot start if there is only 1 player (passed)
 
-Roomlist Testcase:
+### Roomlist Testcase:
 1. New Room update (passed)
 2. New Room delete (passed)
 
