@@ -2,7 +2,7 @@
 
 ## Introduction
 
-**Magic Maze v0.2**  
+**Magic Maze v1.0 (Last Update: 30-4-2021)**
 
 For CUHK CSCI3100 Project Group E3 (2021 Spring)  
 Developers: Kenny CHAN, Knife NG, Benny CHENG, Jason CHU, Sun CHOI  
@@ -61,6 +61,11 @@ Roomlist Testcase:
 2. New Room delete (passed)
 
 ## Changelog
+
+### v1.0 (30-4-2021)
+* Significant improvement of UI
+* Improve and stabilize the server and many functions
+* Fix lots of bugs
 
 ### v0.2 (19-3-2021)
 * Finished basic UI
