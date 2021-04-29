@@ -1,0 +1,28 @@
+
+.alertify-notifier .ajs-message.ajs-error {
+    font-size: 20px;
+    font-family: serif;
+    text-align: center;
+    color: #fff;
+    background: rgba(217, 92, 92, 0.95);
+    text-shadow: -1px -1px 0 rgba(0, 0, 0, 0.5);
+}
+
+.alertify-notifier .ajs-message.ajs-success {
+    font-size: 20px;
+    font-family: serif;
+    text-align: center;
+    color: #fff;
+    background: rgba(91, 189, 114, 0.95);
+    text-shadow: -1px -1px 0 rgba(0, 0, 0, 0.5);
+}
+
+.alertify-notifier .ajs-message {
+    font-size: 20px;
+    font-family: serif;
+    background: rgba(255, 255, 255, 0.95);
+    color: #000;
+    text-align: center;
+    border: solid 1px #ddd;
+    border-radius: 2px;
+}
