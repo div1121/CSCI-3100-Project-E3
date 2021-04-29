@@ -63,7 +63,7 @@ function CustomRoom({ setMode, userID }) {
 			setMode("FindingRoom");
 		}
 	}
-	return <button className="menuButton" onClick={customRoom}>Custom room</button>
+	return <button className="menuButton" onClick={customRoom}>Custom Room</button>
 }
 
 //Demo is a functional component.
