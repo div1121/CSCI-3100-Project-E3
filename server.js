@@ -3,7 +3,6 @@ import mongoose from 'mongoose';
 import { createServer } from 'http';
 import { Server, Socket } from "socket.io";
 import Cors from 'cors';
-import nodemailer from 'nodemailer';
 
 const app = express();
 const port = process.env.PORT || 9000;
@@ -19,6 +18,7 @@ const Schema = mongoose.Schema;
 app.use(express.json());
 app.use(Cors());
 
+//Model of User
 const User = mongoose.model('userinfo', new Schema({	
 	name: String,	
 	email: String,	
@@ -26,12 +26,14 @@ const User = mongoose.model('userinfo', new Schema({
     score: Number	
 }));
 
+//Model of Room
 const Room = mongoose.model('Room',new Schema({
     roomname: String,
     numofusers: Number,
     ingame: Boolean
 }));
 
+//Model of RoomMember
 const RoomMember = mongoose.model('RoomMember',new Schema({
     roomid: String,
     userid : String,
@@ -40,6 +42,7 @@ const RoomMember = mongoose.model('RoomMember',new Schema({
     ready: Boolean
 }));
 
+//Model of Message
 const Message = mongoose.model('Message',new Schema({
     roomid: String,
     userid : String,
@@ -48,6 +51,7 @@ const Message = mongoose.model('Message',new Schema({
     message : String
 }));
 
+//URL connect to MongoDB
 const dbUrl = 'mongodb+srv://csci3100e3:magicmaze@cluster0.ablzq.mongodb.net/userdb?retryWrites=true&w=majority';
 
 mongoose.connect(dbUrl,{
@@ -56,45 +60,14 @@ mongoose.connect(dbUrl,{
 	userUnifiedTopology: true
 });
 
+//Used to check whether the server is running
 app.get('/', (req,res) => {
     res.send('App Works !!!!');
 });
 
 const db = mongoose.connection;
 
-const transporter = nodemailer.createTransport({
-	service: 'gmail',
-	auth: {
-		user: 'csci3100magicmaze@gmail.com',
-		pass: 'magicmazecsci3100'
-	}
-});
-
-app.post('/forgetPassword', (req, res) => {
-	const dbUser = req.body;
-	User.find(dbUser, {"email" : 1}, (err, data) => {
-		if (err) {
-			res.status(500).send(err);
-		} else {
-			res.status(200).send(data);
-			console.log(data[0]);
-			const mailOptions = {
-				from: 'csci3100magicmaze@gmail.com',
-				to: data[0].email,
-				subject: 'Sending Email using Node.js',
-				text: 'That was easy!'
-			};
-			transporter.sendMail(mailOptions, (error, info) => {
-				if (error) {
-					console.log(error);
-				} else {
-					console.log('Email sent: ' + info.response);
-				}
-			});
-		}
-	})
-})
-
+//A function that retrieve the rank of all users from the database and count the rank of a specific user by the user id
 app.post('/findMyRanking', (req, res) => {
 	const dbUser = req.body;
 	const id = dbUser._id;
@@ -117,6 +90,7 @@ app.post('/findMyRanking', (req, res) => {
 	}).sort({"score" : -1})
 })
 
+//A function that retrieve the name and score of all users from the database sorted by score in descending order
 app.post('/findRanking', (req, res) => {
 	const dbUser = req.body;
 	
@@ -129,6 +103,7 @@ app.post('/findRanking', (req, res) => {
 	}).sort({"score" : -1}).limit(100)
 })
 
+//A function that find the name and score of a user from database
 app.post('/findAccount', (req, res) => {
 	const dbUser = req.body;
 	
@@ -141,6 +116,7 @@ app.post('/findAccount', (req, res) => {
 	})
 })
 
+//A function that create a new user on databsae
 app.post('/createAccount', (req, res) => {
 	const dbUser = req.body;
 	
@@ -153,6 +129,7 @@ app.post('/createAccount', (req, res) => {
 	})
 })
 
+//A function that update the password of a user on database
 app.post('/updateAccount', (req, res) => {
 	const id = req.body._id;
 	const password = req.body.password;
@@ -166,6 +143,7 @@ app.post('/updateAccount', (req, res) => {
 	})
 })
 
+//A function that update the score of a user on database
 app.post('/updateScore', (req, res) => {
 	const id = req.body._id;
 	const score = req.body.score;
