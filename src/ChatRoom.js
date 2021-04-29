@@ -63,6 +63,7 @@ class SendChat extends React.Component {
             let name = history[i].name;
             let message = history[i].message;
             let index = history[i].imageindex;
+            let userid = history[i].userid;
             let output = name + ": " + message
             let length = output.length
             let count = 0;
@@ -73,7 +74,9 @@ class SendChat extends React.Component {
                 else tail = i;
             }
             output = output.substr(0, tail + 1)
-            chatlist.push(<div className="container"><img src={image_array[index]} alt="Avatar"/><div>{output}</div></div>);
+            let fontcolor = "white"
+            if (userid === this.state.playerid) fontcolor = "cyan"
+            chatlist.push(<div style = {{color: `${fontcolor}`}} className="container"><img src={image_array[index]} alt="Avatar"/><div>{output}</div></div>);
         }
       return (
           <div className="chatRoom">

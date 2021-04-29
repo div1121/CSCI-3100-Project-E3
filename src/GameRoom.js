@@ -16,15 +16,19 @@ class Playerline extends Component{
         let displayname = this.props.playername
         let str = "Ready"
         let backgroundcolor = "rgba(0, 0, 0, 0.7)"
-        if (this.props.isready){
+        if (this.props.isready) {
             str = "Cancel"
             displayname += " (Ready)"
             backgroundcolor = "rgba(24, 57, 80, 0.8)"
         }
+        let fontcolor = "white"
+        if (this.props.ismyself) {
+            fontcolor = "cyan"
+        }
         return (
 			<div style = {{backgroundColor: `${backgroundcolor}`}} className="gameRoomPlayerLine">
                 <img align="center" height="40" width="40" src={this.props.image} alt="Avator"/>
-				<span>
+				<span style = {{color: `${fontcolor}`}}>
                     　{displayname}
 				</span>
                 {
@@ -32,7 +36,7 @@ class Playerline extends Component{
                         <button onClick={this.props.handleready}>{str}</button>
                 }
                 {
-	                   this.props.position && this.props.ready_num===this.props.totalplayer &&
+	                   this.props.position && this.props.ready_num===this.props.totalplayer && this.props.totalplayer > 1 &&
                         <button onClick={this.props.startgame}>Start</button>
                 }
 			</div>
@@ -160,6 +164,7 @@ class Gameroom extends Component{
         for (let i=0;i<this.state.player_num;i++){
             display.push(<Playerline isready={this.state.ready_state[i]}
                                      playername={this.state.player_list[i]}
+                                     ismyself={this.props.playerid===this.state.player_id[i]}
                                      image={image_array[i]}
                                      handleready={list[i]}
                                      position={i===0 && list[0]!==null}
