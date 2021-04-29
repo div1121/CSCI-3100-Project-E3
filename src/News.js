@@ -7,7 +7,10 @@ function News() {
 	return(
 		<div className='news'>
 			<div>
-				<h1>Check out the news about Magic Maze!</h1>
+				<h1>Check out the news about Magic Maze v1.0!</h1>
+			</div>
+			<div className="newsPiece">
+				<h4>30/4/2021: Magic Maze v1.0 finished! Thank you all!😆😆😆</h4>
 			</div>
 			<div className="newsPiece">
 				<h4>16/4/2021: Today is our demonstration😆</h4>
