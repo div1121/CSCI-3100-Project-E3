@@ -1,3 +1,5 @@
+// Chat room provides the chat function in the game room
+
 import React from 'react';
 import ws from './service';
 import './ChatRoom.css';
@@ -8,9 +10,11 @@ import man4 from './picture/man/man_4_head.gif';
 import {PATH_TO_BACKEND} from './baseURL';
 const baseURL = PATH_TO_BACKEND;
 
+// Image load from resource for display
 const image_array = [man1,man2,man3,man4];
 
 class Chatroom extends React.Component {
+    // constructor
     constructor(props) {
       super(props);
       this.state = {roomid:this.props.roomid, playerid:this.props.userid, name:this.props.name, value: '', history: []};
@@ -18,6 +22,7 @@ class Chatroom extends React.Component {
       this.handleSubmit = this.handleSubmit.bind(this);
     }
 
+    // handle the change in the input text bos (for sending chat)
     handleChange(event) {
         const target = event.target;
         const value = target.type === 'checkbox' ? target.checked : target.value;
@@ -27,7 +32,8 @@ class Chatroom extends React.Component {
             [name]: value
         });
     }
-  
+
+    // handle the submit message and pass to the backend for processing
     handleSubmit(event) {
 		if(this.state.value!=''){
 			let obj = {roomid:this.state.roomid, userid:this.state.playerid, name: this.state.name, imageindex:this.props.imageindex, message: this.state.value}
@@ -39,6 +45,8 @@ class Chatroom extends React.Component {
 
     componentDidMount(){
 		//console.log("hihiihhiihihiihi");
+
+        // initialize the previous chat history from the database
         fetch(baseURL+'/messages?'+new URLSearchParams({roomid:this.props.roomid}))
             .then(res=>res.json())
             .then(res=>{
@@ -46,6 +54,8 @@ class Chatroom extends React.Component {
                 //console.log(res);
                 //console.log(this.props.roomname);
             });
+
+        // handle the message received from all other users in the room in real time
         ws.on('message', message => {
             // console.log(message);
             let his = this.state.history;
@@ -55,10 +65,12 @@ class Chatroom extends React.Component {
         });
     }
 
+    // render
     render(){
         //console.log(this.state.history);
         let history = this.state.history;
         let chatlist = [];
+        // forming the chat list element for display
         for (var i=0;i<history.length;i++){
             let name = history[i].name;
             let message = history[i].message;

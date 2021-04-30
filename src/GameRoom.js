@@ -1,3 +1,5 @@
+// Game room is the room for players before enter the game (chat and send ready)
+
 import React, { Component } from 'react';
 import ws from './service';
 import './GameRoom.css';
@@ -8,9 +10,10 @@ import man4 from './picture/man/man_4_head.gif';
 import {PATH_TO_BACKEND} from './baseURL';
 const baseURL = PATH_TO_BACKEND;
 
+// Image load from resource for display
 const image_array =[man1,man2,man3,man4];
 
-//member
+// Player information of the game room (one line)
 class Playerline extends Component{
     render(){
         let displayname = this.props.playername
@@ -44,9 +47,9 @@ class Playerline extends Component{
     }
 }
 
-// Class Chatroom (to be imported)
-
+// Game room
 class Gameroom extends Component{
+    // constructor
     constructor(props) {
         super(props);
         this.state = {roomid:this.props.roomid, roomname: this.props.roomname, player_list: [], player_id: [], player_num: 0, ready_num: 0 ,ready_state: []};
@@ -56,11 +59,14 @@ class Gameroom extends Component{
         this.startgame = this.startgame.bind(this);
     }
 
+    // function to start game (click start button) and send information to backend
 	startgame()	{
         ws.emit('startgame',{roomid:this.props.roomid});
 	}
 	
     componentDidMount(){
+
+        // initialize the existing room memeber in the room from the database
         fetch(baseURL+'/roommember?'+new URLSearchParams({roomid:this.props.roomid}))
             .then(res=>res.json())
             .then(res=>{
@@ -85,6 +91,8 @@ class Gameroom extends Component{
                 console.log(res);
                 this.setState({player_list:players, player_id:players_ids,player_num:num, ready_num:t, ready_state:ready});
             });
+
+        // function for receiving new member entering the room and update the information (real time)
         ws.on('addroommember', data =>{
             let players = this.state.player_list;
             let players_ids = this.state.player_id;
@@ -97,14 +105,17 @@ class Gameroom extends Component{
             this.setState({player_list:players, player_id:players_ids, player_num:num,ready_state:ready});
         });
 
+        // function for receiving the change in ready state and update (real time)
         ws.on('readychange', data => {
             this.setState({ready_num: data.ready_num, ready_state:data.ready_state});
         });
-		
+
+        // function for receiving the signal of start game and update (real time)
         ws.on('startgame', () => {
             this.props.setMode("Game");
         });
 
+        // fucntion for receiving member leave the room and update (real time)
         ws.on('decreaseroommember', data =>{
             let players = this.state.player_list;
             let players_ids = this.state.player_id;
@@ -126,6 +137,7 @@ class Gameroom extends Component{
         });
     }
 
+    // function for set user state as ready
     addready(i){
         let array = this.state.ready_state;
         array[i] = true;
@@ -133,6 +145,7 @@ class Gameroom extends Component{
         ws.emit('readychange',{roomid:this.state.roomid, userid:this.props.playerid, ready_num: ready_num, ready_state:array, save:true})
     }
 
+    // function for set user state as not ready
     minusready(i){
         let array = this.state.ready_state;
         array[i] = false;
@@ -140,6 +153,7 @@ class Gameroom extends Component{
         ws.emit('readychange',{roomid:this.state.roomid, userid:this.props.playerid, ready_num: ready_num, ready_state:array, save:false})
     }
 
+    // function for handle a user leave the room (click the leave button)
     handleLeaveRoom(){
         ws.emit('leaveroom',{roomid:this.state.roomid, roomname:this.state.roomname, userid:this.props.playerid, name:this.props.playername});
         //this.setState({game_room_enter:null, game_room_id:null});
@@ -147,7 +161,6 @@ class Gameroom extends Component{
         this.props.setGameroomid(null);
     }
 
-    //invite button function for each player (to be implemented)
     render(){
         let list = [];
         for (let i=0;i<this.state.player_num;i++){
@@ -160,6 +173,7 @@ class Gameroom extends Component{
                 list.push(null);
             }
         }
+        // holding the list of players in the room
         let display = [];
         for (let i=0;i<this.state.player_num;i++){
             display.push(<Playerline isready={this.state.ready_state[i]}

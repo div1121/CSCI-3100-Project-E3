@@ -1,3 +1,5 @@
+// Custome room is for player to create new room and join the existing room
+
 import React, { Component } from 'react';
 import ws from './service';
 import alertify from 'alertifyjs';
@@ -8,9 +10,9 @@ import {PATH_TO_BACKEND} from './baseURL';
 import CircularProgress from "@material-ui/core/CircularProgress";
 const baseURL = PATH_TO_BACKEND;
 
+// each room information
 class Roomline extends Component{
     render(){
-        // invite button display (to be implemented)
         return (
 			<tr>
                 <td>{this.props.numofusers}/4</td>
@@ -27,7 +29,9 @@ class Roomline extends Component{
     }
 }
 
+// room list
 class RoomList extends React.Component {
+    // constructor
     constructor(props) {
         super(props);
         this.state = {room_list:[], input_room_name:"", loading:false};
@@ -37,9 +41,12 @@ class RoomList extends React.Component {
     }
 
     componentDidMount(){
+        // initialize the existing room from the database
         fetch(baseURL+'/room')
             .then(res=>res.json())
             .then(res=>this.setState({room_list:res}));
+
+        // function for receiving other user create a new room, update (real time)
         ws.on('createroom', data => {
             console.log(data);
             let display = this.state.room_list;
@@ -47,6 +54,8 @@ class RoomList extends React.Component {
             //console.log(display);
             this.setState({room_list:display});
         });
+
+        // function for receiving other users join a room,  update (real time)
         ws.on('addroomlist', data => {
             let display = this.state.room_list;
             const isMatch = (element) => element._id === data._id;
@@ -55,6 +64,8 @@ class RoomList extends React.Component {
                 display[match].numofusers += 1;
             this.setState({room_list:display});
         });
+
+        // function for receiving other users leave a room, update (real time)
         ws.on('downroomlist', data => {
             let display = this.state.room_list;
             const isMatch = (element) => element._id === data._id;
@@ -63,6 +74,8 @@ class RoomList extends React.Component {
                 display[match].numofusers -= 1;
             this.setState({room_list:display});
         });
+
+        // function for receiving all users leave a room, update (real time)
         ws.on('deleteroom', data => {
             let display = this.state.room_list;
             const isMatch = (element) => element._id === data._id;
@@ -72,6 +85,7 @@ class RoomList extends React.Component {
             this.setState({room_list:display});
         });
 
+        // function for receiving game room information from the server (real time)
         ws.on('getroominfo',(data)=>{
             console.log("OK");
             console.log(data);
@@ -80,11 +94,13 @@ class RoomList extends React.Component {
             this.props.setGameroomid(data.roomid);
         });
 
+        // function for receiving fail to join an room message from the server (real time)
         ws.on('failjoin',(data)=>{
             this.setState({loading: false});
 	        alertify.message("Fail to join the room: "+ data.roomname);
         })
 
+        // function for a room has entered into the game (real time)
         ws.on('roomingame',(data)=>{
             let display = this.state.room_list;
             const isMatch = (element) => element._id === data.roomid;
@@ -95,6 +111,7 @@ class RoomList extends React.Component {
         });
     }
 
+    // handle the change in input for creating new game room (room name)
     handleChange(event) {
         const target = event.target;
         const value = target.type === 'checkbox' ? target.checked : target.value;
@@ -105,6 +122,7 @@ class RoomList extends React.Component {
         });
     }
 
+    // handle create room function and send information to the backend
     handleCreateRoom(event) {
 		if(this.state.loading===false){
 			let obj = {roomname: this.state.input_room_name===""?this.props.user_name+"'s room":this.state.input_room_name, userid: this.props.user_id, name: this.props.user_name};
@@ -114,16 +132,18 @@ class RoomList extends React.Component {
         event.preventDefault();
     }
 
+    // handle join room function and send information to the backend
     handleEnterRoom(roomid,roomname){
         let obj = {roomid: roomid, roomname: roomname, userid: this.props.user_id, name: this.props.user_name};
         ws.emit('joinroom', obj);
         this.setState({loading: true});
     }
 
-
+    //render
     render() {
         let room_list = this.state.room_list;
         //console.log(room_list);
+        // room list
         const displaylist = room_list.map((room) =>
             <Roomline roomname={room.roomname} numofusers={room.numofusers} handleadd={()=>this.handleEnterRoom(room._id,room.roomname)} loading={this.state.loading} ingame={room.ingame}></Roomline>
         );
