@@ -32,9 +32,20 @@ This class is to save the map information and display the map.
 
 ### Game Room
 * Brief outline of display of a player list inside a game room with ready option (before the custom game start)
+* Player can set ready and cancel ready by addready() and minusready()
+* Player can leave the romm by clicking the leave button using handleLeaveRoom()
+* Update member information and their ready states according to the backend
 
 ### Chat Room
 * Allow multiple users to input message and the message of all users can be displayed to all users (only one chat room)
+* Player can send the message by handleSubmit()
+* Update the chat log according to the backedn
+
+
+### Room List (Custom Room)
+* Display the existing room in the database and allow user to create new room
+* Player can create room by input the room name and submit by handleSubmit()
+* Player can join room by clicking the join button to corresponding room
 
 ### Login System
 * The game requires users to login before they start playing.
