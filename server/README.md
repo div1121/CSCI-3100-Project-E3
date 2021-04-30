@@ -12,65 +12,52 @@ Magic Maze is a real-time fast-paced competitive maze game running on a map in r
 
 We have "Matching" and "Custom Room" function for multi-player game mode. You can play with other players after logging in. We also provide a "Demo" function for standalone game mode. You can take it as a tutorial and get familiar with the game flow.
 
-## Classes
+## Backend
+
+Start the server by:
+
+npm run build or node server.js
+
+Using socket.io + node.js + express + mongodb + mongoose as the support of the backend.
 
 ### Game
-This class is to control the game flow, the movement of player and display the game information.
-* Class state: Saving win statement, board dimensions, player position, entrances' positions, total number of movement.
-* initializeBoardPlayer(): Initialize the board dimension and player position. For the board dimension, the default setting is 5x5x5x5, which means we have 5x5 area board, and each area contains 5x5 cells. The player position will be set to the centre of the area (0, 0).
-* setEntrances(): Randomly set the destination of area of each entrances for each game. Each area contains exactly 4 entrances, connected to the front-nearby 4 areas respectively (for those areas along the board boundary, some entrances will direct to itself)
-* countTotalMoves(): Count the total number of movements of player.
-* handleKeyUp(e), handleKeyDown(e), handleKeyLeft(e), handleKeyRight(e): Send the movement instruction (call the makeMove function) and check whether the move is valid according to the key pressed by the player. If the player runs out of the current area boundary, the move will be invalid and won't be processed.
-* makeMove(newX, newY): Change the current position of player to (newX, newY). If (newX, newY) contains an entrance, player will be directed to the centre of the connected area of that entrance
-* render(): Display the game information (current included the player position and the connected area of each entrances. The later is for debug usage.) and detect the key pressed by the player.
-
-### GameBoard
-This class is to save the map information and display the map.
-* Class state: Saving the board state in an 4d array, each cell contain either '╬' (entrance), ' ' (empty) or '♂' (player).
-* setPlayerPosition(playerPosition), setBoard(props): Change the current position of player to playerPosition (an object includes x and y coordinates) and clear the previous position (set the state to ' '(empty)).
-* render(): Display the map according to the board state. Currently, the display will be in rectangular table form.
+socket(move): for movement in game
+socket(entrances): set entrace set for one game to all players in the same game
+app.post(updateScores): update the score of a user on database
 
 ### Game Room
-* Brief outline of display of a player list inside a game room with ready option (before the custom game start)
+app.get(roommember): user fetch the existing room member information in the room
+socket(startgame): start the game
+socket(leaveroom): user leave the room
+socket(readychange): user change its ready state
+
+### Matching
+socket(ranking): user match the room
+socket(cancelrank): cancel the matching
 
 ### Chat Room
-* Allow multiple users to input message and the message of all users can be displayed to all users (only one chat room)
+app.get(messages): user fetch previous chat history information
+sokcet(messages): user send message
+
+### Room List
+app.get(room): user fetch the existing room information
+socket(joinroom): user join an existing room
+socket(createroom): user create a new room
+
+### Profile
+app.post('/updateAccount'): update the password of a user on database
+app.post('/findAccount'): find the name and score of a user from database
 
 ### Login System
-* The game requires users to login before they start playing.
-* Users may login as guest, register a new account by email and password, login with their account and logout.
-* Confirmation is required to create a new account.
+app.post('/createAccount'): create a new user on databsae
+
+### Leader Board
+app.post('/findRanking'): the name and score of all users from the database sorted by score in descending order
+app.post('/findMyRanking'): retrieve the rank of all users from the database and count the rank of a specific user by the user id
 
 ### User interface
 * Our webpage uses the Bootstrap library to design the user interface.
 * From v1.0, GUI is added.
-
-## Test Cases
-
-### Game Testcase
-1. When a player move to a portal, he/she will teleport according to its entrance coordinates (passed)
-2. When a player move to next level, the ranking will change (passed)
-3. The earlier one attain the higher level will have higher ranking (passed)
-4. Count down time set to 5 when one of the player attain the terminal (passed)
-5. Update other players position (passed)
-6. Update score according to players' final ranking and finish status (passed)
-
-### Matching Testcase
-1. Players can only enter the room when four players are matching (passed)
-2. Less than four players will wait (passed)
-
-### ChatRoom Testcase:
-1. Enter the romm will load history chat (passed)
-2. Send chat and everyone in room can see (passed)
-
-### GameRoom Testcase:
-1. Ready state change (passed)
-2. 4 readys with one start (passed)
-3. The game cannot start if there is only 1 player (passed)
-
-### Roomlist Testcase:
-1. New Room update (passed)
-2. New Room delete (passed)
 
 ## Changelog
 
