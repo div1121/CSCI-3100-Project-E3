@@ -21,39 +21,39 @@ npm run build or node server.js
 Using socket.io + node.js + express + mongodb + mongoose as the support of the backend.
 
 ### Game
-socket(move): for movement in game
-socket(entrances): set entrace set for one game to all players in the same game
-app.post(updateScores): update the score of a user on database
+* socket(move): for movement in game
+* socket(entrances): set entrace set for one game to all players in the same game
+* app.post(updateScores): update the score of a user on database
 
 ### Game Room
-app.get(roommember): user fetch the existing room member information in the room
-socket(startgame): start the game
-socket(leaveroom): user leave the room
-socket(readychange): user change its ready state
+* app.get(roommember): user fetch the existing room member information in the room
+* socket(startgame): start the game
+* socket(leaveroom): user leave the room
+* socket(readychange): user change its ready state
 
 ### Matching
-socket(ranking): user match the room
-socket(cancelrank): cancel the matching
+* socket(ranking): user match the room
+* socket(cancelrank): cancel the matching
 
 ### Chat Room
-app.get(messages): user fetch previous chat history information
-sokcet(messages): user send message
+* app.get(messages): user fetch previous chat history information
+* sokcet(messages): user send message
 
 ### Room List
-app.get(room): user fetch the existing room information
-socket(joinroom): user join an existing room
-socket(createroom): user create a new room
+* app.get(room): user fetch the existing room information
+* socket(joinroom): user join an existing room
+* socket(createroom): user create a new room
 
 ### Profile
-app.post('/updateAccount'): update the password of a user on database
-app.post('/findAccount'): find the name and score of a user from database
+* app.post('/updateAccount'): update the password of a user on database
+* app.post('/findAccount'): find the name and score of a user from database
 
 ### Login System
-app.post('/createAccount'): create a new user on databsae
+* app.post('/createAccount'): create a new user on databsae
 
 ### Leader Board
-app.post('/findRanking'): the name and score of all users from the database sorted by score in descending order
-app.post('/findMyRanking'): retrieve the rank of all users from the database and count the rank of a specific user by the user id
+* app.post('/findRanking'): the name and score of all users from the database sorted by score in descending order
+* app.post('/findMyRanking'): retrieve the rank of all users from the database and count the rank of a specific user by the user id
 
 ### User interface
 * Our webpage uses the Bootstrap library to design the user interface.
