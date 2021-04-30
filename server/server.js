@@ -1,3 +1,5 @@
+// import
+
 import express from 'express';
 import mongoose from 'mongoose';
 import { createServer } from 'http';
@@ -17,6 +19,8 @@ const Schema = mongoose.Schema;
 
 app.use(express.json());
 app.use(Cors());
+
+// Schema for database
 
 //Model of User
 const User = mongoose.model('userinfo', new Schema({	
@@ -157,6 +161,7 @@ app.post('/updateScore', (req, res) => {
 	})
 })
 
+// A function that load the message of the room once a user enter a room
 app.get('/messages', (req, res) => {
     const id = req.query.roomid;
     //console.log(id);
@@ -171,6 +176,7 @@ app.get('/messages', (req, res) => {
     });
 });
 
+// A function that load the member of the room once a user enter a room
 app.get('/roommember', (req, res) => {
     const id = req.query.roomid;
     //console.log(name);
@@ -180,18 +186,25 @@ app.get('/roommember', (req, res) => {
     });
 });
 
+// A function that load all room information once a user enter custom room
 app.get('/room', (req, res) => {
     Room.find({}, (err, messages) => {
         res.send(messages);
     });
 });
 
+// global array for matching
 var globalplayer = [];
-		
+
+
+//socket io connect (user connect)
 io.on('connection', (socket) =>{
-    // data -> roomname / userid / user name (name)
+
     console.log('a user is connected')
+
+    // function for a user create room and update in database and send to all users for update
     socket.on('createroom',async (data) => {
+        // data -> roomname / userid / user name (name)
         console.log('create room')
 
         const rom = {roomname: data.roomname, numofusers: 1, ingame:false};
@@ -209,6 +222,7 @@ io.on('connection', (socket) =>{
         socket.emit('getroominfo',{roomid:id, roomname:data.roomname});
     });
 
+    // function for a user join room and update in database and send to all users for update
     socket.on('joinroom',async (data) => {
         // roomid, roomname, userid, username
         console.log('in room')
@@ -234,6 +248,7 @@ io.on('connection', (socket) =>{
         }
     });
 
+    // function for a user send message in the room and update in database and send to all users for update in the room (real time communication)
     socket.on('messages',async (data)=>{
         //roomid, userid, name, message
         const message = new Message(data);
@@ -241,6 +256,7 @@ io.on('connection', (socket) =>{
         io.to(data.roomid).emit('message',data);
     });
 
+    // function for a user send its ready state in the room and update in database and send to all users for update
     socket.on('readychange',async (data)=>{
         // roomid, userid, number , ready array, save
         // console.log(data.save);
@@ -249,6 +265,7 @@ io.on('connection', (socket) =>{
         io.to(data.roomid).emit('readychange',data);
     });
 
+    // function for a user to match for a room, after at least 4 players in match, it create an room for them and send information to them
     socket.on('ranking', async (data)=>{
         //userid, username
         var info = {userid:data.userid,name:data.name,usersocket:socket,socketid:socket.id};
@@ -275,7 +292,8 @@ io.on('connection', (socket) =>{
             io.emit('createroom',obj);
         }
     });
-	
+
+    // function for a user leave the room and update in database and send to all users for update
     socket.on("leaveroom", async (data) => {
         // data -> roomid, roomname / userid / user name (name)
         await RoomMember.deleteOne({roomid:data.roomid, userid:data.userid});
@@ -292,6 +310,8 @@ io.on('connection', (socket) =>{
         }
         socket.leave(data.roomid);
     });
+
+    // function for a user suddenly disconnect -> clear some record in database
     socket.on("disconnect", async () =>{
         console.log("disconnect");
         const isMatch = (element) => element.socketid === socket.id;
@@ -316,6 +336,7 @@ io.on('connection', (socket) =>{
         }
     });
 
+    // function for a user cancel the matching -> remove user data from queue
     socket.on("cancelrank",(data)=>{
         const isMatch = (element) => element.userid === data.userid;
         var match = globalplayer.findIndex(isMatch);
@@ -324,6 +345,7 @@ io.on('connection', (socket) =>{
         console.log(globalplayer);
     });
 
+    // function for a user to move in the game and send to all users in the game for update
     socket.on('move', (data)=>{
         io.to(data.roomid).emit('move',data);
 	});
@@ -334,6 +356,7 @@ io.on('connection', (socket) =>{
         io.emit("roomingame",data);
     });
 
+    // function for initialize the entrance and and send to all users in the game for update
 	socket.on('entrances', (data) => {
 
 		const id = data.roomid;
