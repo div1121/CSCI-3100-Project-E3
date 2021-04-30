@@ -41,7 +41,6 @@ This class is to save the map information and display the map.
 * Player can send the message by handleSubmit()
 * Update the chat log according to the backedn
 
-
 ### Room List (Custom Room)
 * Display the existing room in the database and allow user to create new room
 * Player can create room by input the room name and submit by handleSubmit()
@@ -56,7 +55,7 @@ This class is to save the map information and display the map.
 * The player can see its name and score
 
 ### Leader Board
-* THe player can see the leader board of the score
+* The player can see the leader board of the score
 
 ### User interface
 * Our webpage uses the Bootstrap library to design the user interface.
