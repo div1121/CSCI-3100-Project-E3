@@ -133,6 +133,10 @@ class Gameroom extends Component{
             players.splice(temp,1);
             ready.splice(temp,1);
             players_ids.splice(temp,1);
+            const disMatch = (element) => element === this.props.playerid;
+            let etemp = players_ids.findIndex(isMatch);
+            if (etemp!==-1)
+                this.props.setImageIndex(etemp);
             this.setState({player_list:players, player_id:players_ids, player_num:num,ready_num:t,ready_state:ready});
         });
     }
