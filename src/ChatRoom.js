@@ -10,7 +10,7 @@ const baseURL = PATH_TO_BACKEND;
 
 const image_array = [man1,man2,man3,man4];
 
-class SendChat extends React.Component {
+class Chatroom extends React.Component {
     constructor(props) {
       super(props);
       this.state = {roomid:this.props.roomid, playerid:this.props.userid, name:this.props.name, value: '', history: []};
@@ -96,4 +96,4 @@ class SendChat extends React.Component {
     }
   }
 
-  export default SendChat;
+  export default Chatroom;
