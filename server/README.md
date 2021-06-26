@@ -45,15 +45,15 @@ Using socket.io + node.js + express + mongodb + mongoose as the support of the b
 * socket(createroom): user create a new room
 
 ### Profile
-* app.post('/updateAccount'): update the password of a user on database
-* app.post('/findAccount'): find the name and score of a user from database
+* app.post(updateAccount): update the password of a user on database
+* app.post(findAccount): find the name and score of a user from database
 
 ### Login System
-* app.post('/createAccount'): create a new user on databsae
+* app.post(createAccount): create a new user on databsae
 
 ### Leader Board
-* app.post('/findRanking'): the name and score of all users from the database sorted by score in descending order
-* app.post('/findMyRanking'): retrieve the rank of all users from the database and count the rank of a specific user by the user id
+* app.post(findRanking): the name and score of all users from the database sorted by score in descending order
+* app.post(findMyRanking): retrieve the rank of all users from the database and count the rank of a specific user by the user id
 
 ### User interface
 * Our webpage uses the Bootstrap library to design the user interface.
