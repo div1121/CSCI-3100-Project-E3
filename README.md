@@ -1,10 +1,9 @@
-# CSCI-3100-Project-E3 Magic Maze (Last Update: 30-4-2021)
+# Magic Maze (Last Update: 30-4-2021)
 
 ## Introduction
 
 **Magic Maze v1.0**
 
-For CUHK CSCI3100 Project Group E3 (2021 Spring)  
 Developers: Kenny CHAN, Knife NG, Benny CHENG, Jason CHU, Sun CHOI  
 You may view our game website on: https://luyou00001.github.io/CSCI-3100-Project-E3/  
 
